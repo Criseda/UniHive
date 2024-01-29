@@ -23,8 +23,26 @@ Otherwise, add 'sudo' before each install (Mac, Linux)
 npm install -g nodemon
 npm install -g db-migrate
 npm install -g db-migrate-pg
+npm update -g npm
 ```
+## COMMANDS TO RUN AFTER GLOBAL INSTALLS
+```
+cd server
+npm install
+cd ..
+cd client
+npm install
 
+```
+START the servers:
+```
+cd server
+nodemon index
+cd ..
+cd client
+nodemon index
+```
+If there are any errors whatsapp me, there shouldn't be.
 ## Historic changes
 
 v0.1.0 - Initial commit
