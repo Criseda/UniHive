@@ -43,6 +43,28 @@ cd client
 nodemon index
 ```
 If there are any errors whatsapp me, there shouldn't be.
+
+## POSTGRES DATABASE SETUP
+run the psql script, login with your postgres account(copy what parameters it tells u to write)
+once logged in, enter the following commands:
+```
+CREATE USER unihive WITH PASSWORD 'unihiveftw';
+\du
+```
+The user unihive should pop up next to postgres, however, it has no permissions.
+Let's give it superuser permissions.
+```
+ALTER USER unihive SUPERUSER;
+\du
+```
+unihive user should now have superuser permissions.
+We will now switch to the unihive user and create the database
+```
+SET ROLE unihive;
+CREATE DATABASE unihive;
+\l
+```
+You should now see a new database 'unihive', with the owner being 'unihive', as opposed to postgres
 ## Historic changes
 
 v0.1.0 - Initial commit
