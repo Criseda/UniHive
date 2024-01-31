@@ -69,11 +69,19 @@ You should now see a new database 'unihive', with the owner being 'unihive', as 
 
 v0.1.0 - Initial commit
 
-### server side
-
 - npm init @ /server (to create package.json file)
 - npm i express pg cors (to install express, pg and cors)
 - added gitignore file
+
+Database commit:
+- created first iteration of database schema
+- set up database migration for the database
+- added 2 more node packages for server side: db-migrate, db-migrate-pg
+- be sure to run `npm install` after pulling this commit on the server side
+- be sure to have the unihive database and user in postgres
+- run the following command to install the tables in the database: `db-migrate up`
+- run the following command to delete the tables from the database: `db-migrate down`
+- alternate command to delete the tables from the database: `db-migrate reset`
 
 ### to install react
 
