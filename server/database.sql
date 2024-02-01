@@ -8,7 +8,7 @@ CREATE DATABASE unihive; -- to create the database
 -- users BUY items
 CREATE TABLE app_user (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(6) NOT NULL UNIQUE, --unique username given by API, 6 characters(i think)
+    username CHAR(6) NOT NULL UNIQUE, --unique username given by API, fixed 6 characters
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
