@@ -65,6 +65,16 @@ CREATE DATABASE unihive;
 \l
 ```
 You should now see a new database 'unihive', with the owner being 'unihive', as opposed to postgres
+
+Now it's time to create the tables in the database. open a terminal and run the following commands:
+```
+cd server
+db-migrate up
+```
+This will create the tables in the database. To delete the tables (if need be at any point), run the following command:
+```
+db-migrate down
+```
 ## Historic changes
 
 v0.1.0 - Initial commit
