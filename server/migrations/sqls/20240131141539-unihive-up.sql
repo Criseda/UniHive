@@ -4,7 +4,7 @@
 
 CREATE TABLE app_user (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(6) NOT NULL UNIQUE,
+    username CHAR(6) NOT NULL UNIQUE,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
