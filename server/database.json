@@ -1,0 +1,9 @@
+{
+    "dev": {
+      "driver": "pg",
+      "user": "unihive",
+      "password": "unihiveftw",
+      "host": "localhost",
+      "database": "unihive"
+    }
+  }
