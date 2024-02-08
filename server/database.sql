@@ -66,8 +66,7 @@ CREATE TABLE message (
     FOREIGN KEY (receiver_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-
---review table in the future?
+-- reviews table
 CREATE TABLE review (
     id SERIAL PRIMARY KEY,
     reviewer_id INT NOT NULL,
@@ -75,8 +74,8 @@ CREATE TABLE review (
     rating INT NOT NULL,
     review TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (reviewer_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (reviewee_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (reviewer_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (reviewee_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- reports table
 CREATE TABLE report (
