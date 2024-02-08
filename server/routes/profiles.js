@@ -9,7 +9,7 @@ const pool = require("../db");
 router.get("/", async (req, res) => {
   try {
     const allProfiles = await pool.query(
-      "SELECT profile.*, app_user.first_name, app_user.last_name FROM profile INNER JOIN app_user ON profile.user_id = app_user.id"
+      "SELECT app_user.first_name, app_user.last_name, profile.* FROM profile INNER JOIN app_user ON profile.user_id = app_user.id"
     );
     res.json(allProfiles.rows);
   } catch (err) {
@@ -23,7 +23,7 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const profile = await pool.query(
-      "SELECT profile.*, app_user.first_name, app_user.last_name FROM profile INNER JOIN app_user ON profile.user_id = app_user.id WHERE profile.id = $1",
+      "SELECT app_user.first_name, app_user.last_name, profile.* FROM profile INNER JOIN app_user ON profile.user_id = app_user.id WHERE profile.id = $1",
       [id]
     );
     res.json(profile.rows[0]);
