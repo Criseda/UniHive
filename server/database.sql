@@ -74,7 +74,7 @@ CREATE TABLE review (
     rating INT NOT NULL,
     review TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (reviewer_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (reviewer_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (reviewee_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- reports table
