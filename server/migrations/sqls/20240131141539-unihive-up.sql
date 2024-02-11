@@ -25,7 +25,7 @@ CREATE TABLE auction (
     seller_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    opening_bid INT NOT NULL,
+    opening_bid NUMERIC(12,2) NOT NULL,
     closing_date TIMESTAMP NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (seller_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -35,7 +35,7 @@ CREATE TABLE bid (
     id SERIAL PRIMARY KEY,
     bidder_id INT NOT NULL,
     auction_id INT NOT NULL,
-    amount INT NOT NULL,
+    amount NUMERIC(12,2) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (bidder_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (auction_id) REFERENCES auction (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -46,7 +46,7 @@ CREATE TABLE listing (
     seller_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price INT NOT NULL,
+    price NUMERIC(12,2) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (seller_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -69,7 +69,7 @@ CREATE TABLE review (
     review TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (reviewer_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (reviewee_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (reviewee_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE report (
