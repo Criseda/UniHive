@@ -12,6 +12,7 @@ Database commit:
 ## Cristian Preda @ 2nd Feb 2024
 RESTFUL API commit:
 - make sure to run these commands after pulling this commit on the server side: `npm install`, `db-migrate down`, `db-migrate up`.
+- renamed index.js to app.js. To run the server, use the following command: `nodemon app.js`
 - added the first iteration of the RESTFUL API
 - to send a request to the server, use the following URL: `http://localhost:5000/api/route/`, where route is the name of the route e.g `http://localhost:5000/api/users/`
 - use Postman to send requests to the server and test the API. The server is not yet connected to the frontend
