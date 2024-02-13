@@ -7,7 +7,7 @@ const Navbar = () => {
         {/* Logo on the left */}
         <a class="navbar-brand" href="/about">
           <img
-            src="logo.jpg"
+            src="/images/logo.jpg"
             alt="UniHive Logo"
             height="50"
             class="d-inline-block align-top"
