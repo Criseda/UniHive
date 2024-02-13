@@ -2,21 +2,21 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container">
         {/* Logo on the left */}
-        <a class="navbar-brand" href="/about">
+        <a className="navbar-brand" href="/about">
           <img
             src="/images/logo.jpg"
             alt="UniHive Logo"
             height="50"
-            class="d-inline-block align-top"
+            className="d-inline-block align-top"
           />
         </a>
 
         {/* Navbar toggle button for small screens */}
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarResponsive"
@@ -24,42 +24,42 @@ const Navbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
         {/* Navbar content */}
-        <div class="collapse navbar-collapse" id="navbarResponsive">
+        <div className="collapse navbar-collapse" id="navbarResponsive">
           {/* Left-aligned links */}
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/home">
-                <i class="bi-heart"></i> Home
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <a className="nav-link" href="/home">
+                <i className="bi-heart"></i> Home
               </a>
             </li>
           </ul>
 
-          {/* <Right-aligned icons */}
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi-heart"></i> Saved Items
+          {/* Right-aligned icons */}
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <a className="nav-link" href="#">
+                <i className="bi-heart"></i> Saved Items
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi-envelope"></i> Messages
+            <li className="nav-item">
+              <a className="nav-link" href="#">
+                <i className="bi-envelope"></i> Messages
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi-cash"></i> Current Bids
+            <li className="nav-item">
+              <a className="nav-link" href="#">
+                <i className="bi-cash"></i> Current Bids
               </a>
             </li>
 
             {/* Dropdown for additional menu items if needed */}
-            <li class="nav-item dropdown">
+            <li className="nav-item dropdown">
               <a
-                class="nav-link dropdown-toggle"
+                className="nav-link dropdown-toggle"
                 href="#"
                 id="navbarDropdown"
                 role="button"
@@ -69,11 +69,11 @@ const Navbar = () => {
               >
                 More
               </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a className="dropdown-item" href="#">
                   Settings
                 </a>
-                <a class="dropdown-item" href="#">
+                <a className="dropdown-item" href="#">
                   Logout
                 </a>
                 {/* Add more dropdown items as needed */}
