@@ -20,7 +20,7 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const auction = await pool.query(
-      "SELECT app_user.first_name, app_user.last_name, auction.* FROM auction INNER JOIN profile ON auction.seller_id = profile.id INNER JOIN app_user ON profile.user_id = app_user.id WHERE auction.id = $1",
+      "SELECT app_user.first_name, app_user.last_name, auction.* FROM auction INNER JOIN app_user ON auction.seller_id = app_user.id WHERE auction.id = $1",
       [id]
     );
     res.json(auction.rows[0]);
