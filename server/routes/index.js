@@ -5,7 +5,9 @@ const reviewsRouter = require("./reviews");
 const auctionsRouter = require("./auctions");
 const bidsRouter = require("./bids");
 const listingsRouter = require("./listings");
-const messaagesRouter = require("./messages");
+const messagesRouter = require("./messages");
+const listingImagesRouter = require("./listing_images");
+const auctionImagesRouter = require("./auction_images");
 
 const router = express.Router();
 
@@ -15,6 +17,8 @@ router.use("/reviews", reviewsRouter);
 router.use("/auctions", auctionsRouter);
 router.use("/bids", bidsRouter);
 router.use("/listings", listingsRouter);
-router.use("/messages", messaagesRouter);
+router.use("/messages", messagesRouter);
+router.use("/listing_images", listingImagesRouter);
+router.use("/auction_images", auctionImagesRouter);
 
 module.exports = router;
