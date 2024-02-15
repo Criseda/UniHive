@@ -21,6 +21,7 @@ CREATE TABLE auction (
     description TEXT NOT NULL,
     opening_bid NUMERIC(12,2) NOT NULL,
     closing_date TIMESTAMP NOT NULL,
+    image_path VARCHAR(255) NOT NULL, --url to image
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (seller_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -41,6 +42,7 @@ CREATE TABLE listing (
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     price NUMERIC(12,2) NOT NULL,
+    image_path VARCHAR(255) NOT NULL, --url to image
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (seller_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
