@@ -45,7 +45,7 @@ const Itemlist = () => {
           <div key={item.id} className="col-md-4 mb-4">
             <div className="card">
               <img
-                src={item.imageUrl}
+                src={item.image_path}
                 className="card-img-top"
                 alt={item.name}
               />
