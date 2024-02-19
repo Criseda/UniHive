@@ -30,10 +30,10 @@ router.get("/:id", async (req, res) => {
 // create a review
 router.post("/", async (req, res) => {
     try {
-        const { reviewer_id, reviewee_id, rating, review } = req.body;
+        const { reviewer_id, reviewed_id, rating, review } = req.body;
         const newReview = await pool.query(
-            "INSERT INTO review (reviewer_id, reviewee_id, rating, review) VALUES($1, $2, $3, $4) RETURNING *",
-            [reviewer_id, reviewee_id, rating, review]
+            "INSERT INTO review (reviewer_id, reviewed_id, rating, review) VALUES($1, $2, $3, $4) RETURNING *",
+            [reviewer_id, reviewed_id, rating, review]
         );
         res.json(newReview.rows[0]);
     } catch (error) {
