@@ -20,7 +20,7 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const auction = await pool.query(
-      "SELECT app_user.first_name, app_user.last_name, auction.* FROM auction INNER JOIN profile ON auction.seller_id = profile.id INNER JOIN app_user ON profile.user_id = app_user.id WHERE auction.id = $1",
+      "SELECT app_user.first_name, app_user.last_name, auction.* FROM auction INNER JOIN app_user ON auction.seller_id = app_user.id WHERE auction.id = $1",
       [id]
     );
     res.json(auction.rows[0]);
@@ -32,11 +32,11 @@ router.get("/:id", async (req, res) => {
 // create an auction
 router.post("/", async (req, res) => {
   try {
-    const { seller_id, name, description, opening_bid, closing_date } =
+    const { seller_id, name, description, opening_bid, closing_date, image_path } =
       req.body;
     const newAuction = await pool.query(
-      "INSERT INTO auction (seller_id, name, description, opening_bid, closing_date) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [seller_id, name, description, opening_bid, closing_date]
+      "INSERT INTO auction (seller_id, name, description, opening_bid, closing_date, image_path) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [seller_id, name, description, opening_bid, closing_date, image_path]
     );
     res.json(newAuction.rows[0]);
   } catch (err) {
@@ -49,7 +49,7 @@ router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     // seller should not be able to update the closing date or the opening bid once the auction has started
-    const { name, description } = req.body;
+    const { name, description, image_path } = req.body;
 
     // Initialize an array to hold the query parameters
     const params = [];
@@ -58,13 +58,17 @@ router.put("/:id", async (req, res) => {
     const sets = [];
 
     // for each property in the req.body, add the property to the set clause and the value to the params array
-    if (name !== undefined) {
+    if (name) {
       sets.push(`name = $${params.length + 1}`);
       params.push(name);
     }
-    if (description !== undefined) {
+    if (description) {
       sets.push(`description = $${params.length + 1}`);
       params.push(description);
+    }
+    if (image_path) {
+      sets.push(`image_path = $${params.length + 1}`);
+      params.push(image_path);
     }
 
     // add the id to the params array

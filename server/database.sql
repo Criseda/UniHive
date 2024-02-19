@@ -5,24 +5,16 @@ CREATE DATABASE unihive; -- to create the database
 
 -- Path: server/database.sql
 
--- users BUY items
 CREATE TABLE app_user (
     id SERIAL PRIMARY KEY,
     username CHAR(6) NOT NULL UNIQUE, --unique username given by API, fixed 6 characters
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
--- profiles SELL items
-CREATE TABLE profile (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL UNIQUE, --profile tied to user (1-1 relationship)
     rating INT, --rating of the user (calculated by averaging all reviews, init null)
     bio VARCHAR(255),
     avatar_path VARCHAR(255) NOT NULL, --url of the image for the avatar
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
+    banned BOOLEAN DEFAULT FALSE, --if the user is banned
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE auction (
@@ -32,8 +24,9 @@ CREATE TABLE auction (
     description TEXT NOT NULL,
     opening_bid NUMERIC(12,2) NOT NULL,
     closing_date TIMESTAMP NOT NULL,
+    image_path VARCHAR(255) NOT NULL, --url to image
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (seller_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE --auctions tied to profile not the user
+    FOREIGN KEY (seller_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE bid (
@@ -51,16 +44,17 @@ CREATE TABLE listing (
     seller_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price INT NOT NULL,
+    price NUMERIC(12,2) NOT NULL,
+    image_path VARCHAR(255) NOT NULL, --url to image
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (seller_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE--buynow tied to profile not the user
+    FOREIGN KEY (seller_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE message (
     id SERIAL PRIMARY KEY,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
-    message TEXT NOT NULL, --this may have to change depending on how long messages are
+    message TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -70,12 +64,12 @@ CREATE TABLE message (
 CREATE TABLE review (
     id SERIAL PRIMARY KEY,
     reviewer_id INT NOT NULL,
-    reviewee_id INT NOT NULL,
+    reviewed_id INT NOT NULL,
     rating INT NOT NULL,
     review TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (reviewer_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (reviewee_id) REFERENCES profile (id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (reviewed_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- reports table
 CREATE TABLE report (

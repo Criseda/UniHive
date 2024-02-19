@@ -28,11 +28,12 @@ router.get("/:id", async (req, res) => {
 // create a user
 router.post("/", async (req, res) => {
   try {
-    const { username, name } = req.body;
+    //no banned because it is a new user
+    const { username, name, rating, bio, avatar_path } = req.body;
     const [first_name, last_name] = name.split(" ");
     const newUser = await pool.query(
-      "INSERT INTO app_user (username, first_name, last_name) VALUES ($1, $2, $3) RETURNING *",
-      [username, first_name, last_name]
+      "INSERT INTO app_user (username, first_name, last_name, rating, bio, avatar_path) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [username, first_name, last_name, rating, bio, avatar_path]
     );
     res.json(newUser.rows[0]);
   } catch (err) {
@@ -41,6 +42,57 @@ router.post("/", async (req, res) => {
 });
 
 // update a user
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, rating, bio, avatar_path, banned } = req.body;
+
+    // Initialize an array to hold the query parameters
+    const params = [];
+
+    // Initialize an array to hold the parts of the SET clause
+    const sets = [];
+
+    // for each property in the req.body, add the property to the set clause and the value to the params array
+    if (name !== undefined) {
+      const [first_name, last_name] = name.split(" ");
+      sets.push(`first_name = $${params.length + 1}`);
+      params.push(first_name);
+      sets.push(`last_name = $${params.length + 1}`);
+      params.push(last_name);
+    }
+    if (rating !== undefined) {
+      sets.push(`rating = $${params.length + 1}`);
+      params.push(rating);
+    }
+    if (bio !== undefined) {
+      sets.push(`bio = $${params.length + 1}`);
+      params.push(bio);
+    }
+    if (avatar_path !== undefined) {
+      sets.push(`avatar_path = $${params.length + 1}`);
+      params.push(avatar_path);
+    }
+    if (banned !== undefined) {
+      sets.push(`banned = $${params.length + 1}`);
+      params.push(banned);
+    }
+
+    // add the id to the params array
+    params.push(id);
+
+    // build the query string
+    const query = `UPDATE app_user SET ${sets.join(", ")} WHERE id = $${
+      params.length
+    } RETURNING *`;
+
+    // run the query
+    const updatedUser = await pool.query(query, params);
+    res.json(updatedUser.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
 
 // delete a user
 router.delete("/:id", async (req, res) => {

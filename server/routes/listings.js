@@ -9,7 +9,7 @@ const pool = require("../db");
 router.get("/", async (req, res) => {
   try {
     const allListings = await pool.query(
-      "SELECT app_user.first_name, app_user.last_name, listing.* FROM listing INNER JOIN profile ON listing.seller_id = profilE.id INNER JOIN app_user ON profile.user_id = app_user.id"
+      "SELECT * FROM listing"
     );
     res.json(allListings.rows);
   } catch (err) {
@@ -23,7 +23,7 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const listing = await pool.query(
-      "SELECT app_user.first_name, app_user.last_name, listing.* FROM listing INNER JOIN profile ON listing.seller_id = profile.id INNER JOIN app_user ON profile.user_id = app_user.id WHERE listing.id = $1",
+      "SELECT app_user.first_name, app_user.last_name, listing.* FROM listing INNER JOIN app_user ON listing.seller_id = app_user.id WHERE listing.id = $1",
       [id]
     );
     res.json(listing.rows[0]);
@@ -35,10 +35,10 @@ router.get("/:id", async (req, res) => {
 // create a listing
 router.post("/", async (req, res) => {
   try {
-    const { seller_id, name, description, price } = req.body;
+    const { seller_id, name, description, price, image_path } = req.body;
     const newListing = await pool.query(
-      "INSERT INTO listing (seller_id, name, description, price) VALUES ($1, $2, $3, $4) RETURNING *",
-      [seller_id, name, description, price]
+      "INSERT INTO listing (seller_id, name, description, price, image_path) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [seller_id, name, description, price, image_path]
     );
     res.json(newListing.rows[0]);
   } catch (err) {
@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, description, price } = req.body;
+    const { name, description, price, image_path } = req.body;
 
     // Initialize an array to hold the query parameters
     const params = [];
@@ -70,6 +70,10 @@ router.put("/:id", async (req, res) => {
     if (price) {
       sets.push(`price = $${params.length + 1}`);
       params.push(price);
+    }
+    if (image_path) {
+      sets.push(`image_path = $${params.length + 1}`);
+      params.push(image_path);
     }
 
     // create a query string
