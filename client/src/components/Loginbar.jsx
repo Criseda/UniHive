@@ -6,6 +6,7 @@ const Loginbar = () => {
             <h1 style={{ display: 'flex', justifyContent: 'center',  marginTop: '40px',marginBottom: '40px' }}>
                 A C C O U N T
             </h1>
+            
             {/* Switch Bar */}
             <ul class="nav nav-tabs nav justify-content-center">
                 <li class="nav-item">
@@ -15,7 +16,9 @@ const Loginbar = () => {
                     <a class="nav-link" href="#Register" aria-controls="Register" data-toggle="tab" role="tab ">Register</a>
                 </li>
             </ul>
+
             {/* Input Form */}
+
             {/* Login */}
             <div className="tab-content" id="TabContent">
                 <div class="tab-pane fade show active" id="Login" aria-labelledby="Login_Tab" role="tabpanel" >
@@ -29,10 +32,11 @@ const Loginbar = () => {
                         </div>
                         {/* Submit Button */}
                         <ul class="nav justify-content-center">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="submit" class="btn btn-primary">Log in</button>
                         </ul> 
                     </form>
                 </div>
+
                 {/* Register */}
                 <div class="tab-pane fade" id="Register" aria-labelledby="Register-Tab" role="tabpanel" >
                     <form style={{marginTop: '40px'}}>
