@@ -18,3 +18,11 @@ RESTFUL API commit:
 - use Postman to send requests to the server and test the API. The server is not yet connected to the frontend
 - added skeleton for the following route: messages
 - some minimal database changes. Includes: changing some foreign key references between report and review tables. Changing the type of money attributes from integer to decimal(2.dp).
+
+## Cristian Preda @ 22nd Feb 2024
+auth_api commit:
+- Make sure to run this commands after pulling this commit on the server side: `npm i`.
+- Added two new node packages: express-session and axios
+- Added auth route to app.js
+- Added ticketGenerator.js - this will generate a random string of characters that get checked upon login
+- Added auth.js - This creates routes which allow login functionality
