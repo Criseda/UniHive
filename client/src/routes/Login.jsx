@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import Navbar from "../components/Navbar";
 import Loginbar from "../components/Loginbar";
 
@@ -8,7 +8,7 @@ const Login = () => {
       <Navbar />
       <Loginbar />
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
