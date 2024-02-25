@@ -1,7 +1,6 @@
 // auth.js
 const express = require("express");
 const router = express.Router();
-const session = require("express-session");
 const ticketGenerator = require("./ticketGenerator");
 const axios = require("axios");
 
