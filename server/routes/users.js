@@ -25,6 +25,24 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//check if a user exists (by username)
+router.get("/check/:username", async (req, res) => {
+  const { username } = req.params;
+  try {
+    const user = await pool.query("SELECT * FROM app_user WHERE username = $1", [
+      username,
+    ]);
+    if (user.rows.length > 0) {
+      res.json({ exists: true });
+    } else {
+      res.json({ exists: false });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "An error occurred" });
+  }
+});
+
 // create a user
 router.post("/", async (req, res) => {
   try {
