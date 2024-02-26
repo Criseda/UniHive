@@ -5,4 +5,8 @@ export function getItems() {
   //TODO: CREATE A BACKEND ROUTE /ITEMS THAT COMBINES LISTINGS AND AUCTIONS
 }
 
+export function getItem(id) {
+  return fetch(`${BASE_URL}/listings/${id}`).then((res) => res.json());
+}
+
 // add the rest of the functions here

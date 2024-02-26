@@ -30,7 +30,7 @@ const Navbar = () => {
         {/* Navbar content */}
         <div className="collapse navbar-collapse" id="navbarResponsive">
           {/* Left-aligned links */}
-          <ul className="navbar-nav mr-auto">
+          <ul className="navbar-nav me-auto">
             <li className="nav-item">
               <a className="nav-link" href="/home">
                 <i className="bi-heart"></i> Home
@@ -39,7 +39,7 @@ const Navbar = () => {
           </ul>
 
           {/* Right-aligned icons */}
-          <ul className="navbar-nav ml-auto">
+          <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <a className="nav-link" href="#">
                 <i className="bi-heart"></i> Saved Items
