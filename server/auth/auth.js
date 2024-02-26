@@ -58,7 +58,7 @@ router.get("/", async (req, res) => {
 	}
 });
 
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", async (req, res) => {
 	// Your dashboard code goes here
 	const { username, fullname } = req.session;
 
@@ -68,15 +68,51 @@ router.get("/dashboard", (req, res) => {
 		});
 	}
 
-	res.json({
-		message: "You are authenticated",
-		username: username,
-		fullname: fullname,
-	});
+	//do a check for if this user is in the database already or not
+	//if not, add them to the database.
+	try {
+		const response = await axios.get(
+			`http://localhost:5000/api/users/check/${username}`
+		);
+		const exists = response.data.exists;
+
+		if (exists) {
+			// User exists in the database
+			// Your code here
+			res.json({
+				message: "You exist in the database, authenticated",
+				username: username,
+			});
+		} else {
+			// User does not exist in the database
+			// Your code here
+			const response = await axios.post(`http://localhost:5000/api/users`, {
+				username: username,
+				name: fullname,
+				avatar_path: "images/default_pfp.jpg",
+			});
+			res.json({
+				message: "You have been added to the database, authenticated",
+				username: username,
+				fullname: fullname,
+			});
+		}
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({
+			message: "Error checking username in the database",
+		});
+	}
+
+	// res.json({
+	// 	message: "You are authenticated",
+	// 	username: username,
+	// 	fullname: fullname,
+	// });
 });
 
 router.get("/logout", (req, res) => {
-  req.session.destroy();
+	req.session.destroy();
 	res.redirect(AUTHENTICATION_LOGOUT_URL);
 });
 
