@@ -2,7 +2,7 @@ import React from "react";
 
 const Search = () => {
   return (
-    <form className="mt-3 mb-3">
+    <form className="container mt-3 mb-3">
       <div className="input-group d-flex justify-content-center">
         <input
           type="text"

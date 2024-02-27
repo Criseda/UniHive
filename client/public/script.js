@@ -1,4 +1,4 @@
-jQuery(document).ready(function() {
+$(document).ready(function() {
 
   $(".chat-list a").click(function() {
       $(".chatbox").addClass('showbox');

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getItems } from "../api/items";
+import { Link } from "react-router-dom";
 
 const Itemlist = () => {
   // Dummy data for demonstration purposes
-  const items = [
+  const items_dbg = [
     {
       id: 1,
       name: "Item 1",
@@ -32,31 +33,31 @@ const Itemlist = () => {
     },
     // Add more items as needed
   ];
-  // const [items, setItems] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [error, setError] = useState(null);
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   getItems()
-  //     .then((data) => {
-  //       setItems(data);
-  //     })
-  //     .catch((error) => {
-  //       setError(error);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // }, []);
+  useEffect(() => {
+    setIsLoading(true);
+    getItems()
+      .then((data) => {
+        setItems(data);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  // if (error) {
-  //   return <div>Error: {error.message}</div>;
-  // }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="container mt-4">
