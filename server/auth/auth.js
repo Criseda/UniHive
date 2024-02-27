@@ -43,6 +43,7 @@ router.get("/", async (req, res) => {
 		if (response.status === 200) {
 			req.session.username = username;
 			req.session.fullname = fullname;
+			req.session.authenticated = true;
 
 			res.redirect("/auth/dashboard");
 		} else {
@@ -60,7 +61,7 @@ router.get("/", async (req, res) => {
 
 router.get("/dashboard", async (req, res) => {
 	// Your dashboard code goes here
-	const { username, fullname } = req.session;
+	const { username, fullname, authenticated } = req.session;
 
 	if (!username || !fullname) {
 		return res.status(400).json({
@@ -82,6 +83,8 @@ router.get("/dashboard", async (req, res) => {
 			res.json({
 				message: "You exist in the database, authenticated",
 				username: username,
+				fullname: fullname,
+				authenticated: authenticated,
 			});
 		} else {
 			// User does not exist in the database
@@ -95,6 +98,7 @@ router.get("/dashboard", async (req, res) => {
 				message: "You have been added to the database, authenticated",
 				username: username,
 				fullname: fullname,
+				authenticated: authenticated,
 			});
 		}
 	} catch (error) {
@@ -103,17 +107,15 @@ router.get("/dashboard", async (req, res) => {
 			message: "Error checking username in the database",
 		});
 	}
-
-	// res.json({
-	// 	message: "You are authenticated",
-	// 	username: username,
-	// 	fullname: fullname,
-	// });
 });
 
 router.get("/logout", (req, res) => {
 	req.session.destroy();
 	res.redirect(AUTHENTICATION_LOGOUT_URL);
+});
+
+router.get("/session", (req, res) => {
+	res.json(req.session);
 });
 
 module.exports = router;
