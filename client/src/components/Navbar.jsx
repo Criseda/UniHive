@@ -41,7 +41,7 @@ const Navbar = () => {
           {/* Right-aligned icons */}
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/Saveditem">
                 <i className="bi-heart"></i> Saved Items
               </a>
             </li>
