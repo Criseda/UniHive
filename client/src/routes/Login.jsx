@@ -5,10 +5,11 @@ import Loginbar from "../components/Loginbar";
 const Login = () => {
   return (
     <div>
-      <Navbar />
+      { /* should this nav bar be here? users shouldn't be able to access site without logging in! */ }
+      { /* <Navbar /> */ }
       <Loginbar />
     </div>
   )
 }
 
-export default Login
+export default Login;

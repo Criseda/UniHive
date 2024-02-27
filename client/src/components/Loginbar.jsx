@@ -26,9 +26,7 @@ const Loginbar = () => {
                         {/* Email form */}
                         <div class="input-group mb-4">
                             <input type="text" class="form-control" placeholder="University Email" aria-label="University Email" aria-describedby="basic-addon2"/>
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="basic-addon2">@student.manchester.ac.uk</span>
-                            </div>
+                            <span class="input-group-text" id="basic-addon2">@student.manchester.ac.uk</span>
                         </div>
                         {/* Submit Button */}
                         <ul class="nav justify-content-center">
@@ -43,9 +41,7 @@ const Loginbar = () => {
                         {/* Email form */}
                         <div class="input-group mb-4">
                             <input type="text" class="form-control" placeholder="University Email" aria-label="University Email" aria-describedby="basic-addon2"/>
-                            <div class="input-group-append">
-                                <span class="input-group-text" id="basic-addon2">@student.manchester.ac.uk</span>
-                            </div>
+                            <span class="input-group-text" id="basic-addon2">@student.manchester.ac.uk</span>
                         </div>
                         {/* Submit Button */}
                         <ul class="nav justify-content-center">

@@ -9,4 +9,8 @@ export function getItem(id) {
   return fetch(`${BASE_URL}/listings/${id}`).then((res) => res.json());
 }
 
+export function getListingImages(id) {
+  return fetch(`${BASE_URL}/listing_images/listing/${id}`).then((res) => res.json());
+}
+
 // add the rest of the functions here

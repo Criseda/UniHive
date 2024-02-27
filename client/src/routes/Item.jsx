@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { getItem } from "../api/items";
+import { getItem, getListingImages } from "../api/items";
 
 const Item = () => {
   
@@ -11,12 +11,22 @@ const Item = () => {
   const [item, setItem] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [item_images, setImages] = useState([]);
 
   useEffect(() => {
     setIsLoading(true);
     getItem(id)
       .then((data) => {
         setItem(data);
+
+        getListingImages(id)
+          .then((data) => {
+            setImages(data);
+          })
+          .catch((error) => {
+            setError(error);
+          });
+
       })
       .catch((error) => {
         setError(error);
@@ -40,7 +50,9 @@ const Item = () => {
 
   // lil bit hacky
   const isAuction = item.opening_bid != null;
-  
+
+  console.log(item_images);
+
   return (
     <div>
       <Navbar />
@@ -49,19 +61,30 @@ const Item = () => {
           <div className="row g-0">
 
             <div className="col">
-              {/* old carousel code
+
+              { /* carousel of images, all container inside the listing_image table */ }
               <div id="itemimages" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
 
+                  { /* each image read from the item_images array */ }
+                  {item_images.map((image, index) => (
+                  <div class={index == 0 ? "carousel-item active" : "carousel-item"}>
+                    <img class="d-block w-100 img-fluid rounded-start" src={image.image_path} alt="Item"/>
+                  </div>
+                  ))}
+
+                  { /* debug code
                   <div class="carousel-item active">
                     <img class="d-block w-100 img-fluid rounded-start" src="/images/yay.jpg" alt="Item"/>
                   </div>
                   <div class="carousel-item">
                     <img class="d-block w-100 img-fluid rounded-start" src="/images/the_thinker.jpg" alt="Item"/>
                   </div>
+                  */ }
 
                 </div>
-
+                
+                { /* buttons for carousel */ }
                 <button class="carousel-control-prev" type="button" data-target="#itemimages" data-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="visually-hidden">Previous</span>
@@ -71,10 +94,10 @@ const Item = () => {
                   <span class="visually-hidden">Next</span>
                 </button>
               </div>
-              */}
-              <img class="d-block w-100 img-fluid rounded-start" src={item.image_path} alt="Item"/>
+
             </div>
             
+            { /* card which contains buttons, info, etc */ }
             <div className="col col-5">
               <div class="card-body">
                 <h5 className="card-title">{item.name}</h5>
