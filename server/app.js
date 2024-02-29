@@ -10,11 +10,7 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors({
-	origin: true,
-	credentials: true,
-	optionsSuccessStatus: 200
-}));
+app.use(cors());
 app.use(express.json());
 app.use(
 	session({
