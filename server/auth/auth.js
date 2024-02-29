@@ -8,7 +8,9 @@ const AUTHENTICATION_SERVICE_URL =
 	"http://studentnet.cs.manchester.ac.uk/authenticate/";
 const AUTHENTICATION_LOGOUT_URL =
 	"http://studentnet.cs.manchester.ac.uk/systemlogout.php";
-const ENCODED_DEVELOPER_URL = "http://localhost:5000/auth/";
+const BACKEND_REDIRECT_URL = "http://localhost:5000/auth/";
+const FRONTEND_REDIRECT_URL = "http://localhost:5000/auth/validate";
+const FRONTEND_URL = "http://localhost:3000/AuthHandler";
 
 router.get("/login", (req, res) => {
 	// generate a ticket
@@ -18,11 +20,53 @@ router.get("/login", (req, res) => {
 	req.session.authenticated = false;
 
 	// redirect to the authentication service
-	const authParams = `?url=${ENCODED_DEVELOPER_URL}&csticket=${csticket}&version=3&command=validate`;
+	const authParams = `?url=${BACKEND_REDIRECT_URL}&csticket=${csticket}&version=3&command=validate`;
 	const authServiceUrl = `${AUTHENTICATION_SERVICE_URL}${authParams}`;
 	res.redirect(authServiceUrl);
 });
 
+
+//this is for frontend to check if credentials are valid from there
+router.get("/validate", async (req, res) => {
+	const { csticket, username, fullname } = req.query;
+
+	if (csticket !== req.session.csticket) {
+		return res.status(403).json({
+			message: "Invalid csticket. Your session is invalid or has expired.",
+		});
+	}
+
+	const encodedUrl = encodeURIComponent(
+		`?url=${FRONTEND_REDIRECT_URL}&csticket=${req.session.csticket}&version=3&command=confirm&username=${username}&fullname=${fullname}`
+	);
+	const validateUrl = `${AUTHENTICATION_SERVICE_URL}${encodedUrl}`;
+
+	try {
+		const response = await axios.get(validateUrl);
+
+		// if the api returns a successful response, store the username and fullname in the session
+		if (response.status === 200) {
+			res.json({
+				message: "Credentials are valid",
+				valid: true
+			});
+		} else {
+			res.status(400).json({
+				message: "Invalid username or fullname",
+				valid: false
+			});
+		}
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({
+			message: "Error validating credentials",
+			valid: false
+		});
+	}
+});
+
+
+//this is for backend to check if credentials are valid from there
 router.get("/", async (req, res) => {
 	const { csticket, username, fullname } = req.query; //get params from successful authentication
 
@@ -33,7 +77,7 @@ router.get("/", async (req, res) => {
 	}
 
 	const encodedUrl = encodeURIComponent(
-		`?url=${ENCODED_DEVELOPER_URL}&csticket=${req.session.csticket}&version=3&command=confirm&username=${username}&fullname=${fullname}`
+		`?url=${BACKEND_REDIRECT_URL}&csticket=${req.session.csticket}&version=3&command=confirm&username=${username}&fullname=${fullname}`
 	);
 	const validateUrl = `${AUTHENTICATION_SERVICE_URL}${encodedUrl}`;
 
@@ -88,7 +132,7 @@ router.get("/dashboard", async (req, res) => {
 			//     authenticated: authenticated,
 			//   });
 			res.redirect(
-				`http://localhost:3000/AuthHandler?csticket=${req.session.csticket}&username=${req.session.username}&fullname=${req.session.fullname}`
+				`${FRONTEND_URL}?csticket=${req.session.csticket}&username=${req.session.username}&fullname=${req.session.fullname}`
 			);
 		} else {
 			// User does not exist in the database
@@ -105,7 +149,7 @@ router.get("/dashboard", async (req, res) => {
 			//     authenticated: authenticated,
 			//   });
 			res.redirect(
-				`http://localhost:3000/AuthHandler?csticket=${req.session.csticket}&username=${req.session.username}&fullname=${req.session.fullname}`
+				`${FRONTEND_URL}?csticket=${req.session.csticket}&username=${req.session.username}&fullname=${req.session.fullname}`
 			);
 		}
 	} catch (error) {
