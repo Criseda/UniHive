@@ -33,6 +33,7 @@ router.get("/validate", async (req, res) => {
 	if (csticket !== req.session.csticket) {
 		return res.status(403).json({
 			message: "Invalid csticket. Your session is invalid or has expired.",
+			valid: false
 		});
 	}
 
