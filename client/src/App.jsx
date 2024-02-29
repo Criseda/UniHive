@@ -5,21 +5,9 @@ import Login from "./routes/Login";
 import Item from "./routes/Item";
 import Messages from "./routes/Messages";
 import Saved_items from "./routes/Saved_items";
-import { checkAuth } from "./api/authentication";
+import AuthHandler from "./routes/AuthHandler";
 
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(null);
-
-  useEffect(() => {
-    try {
-      checkAuth().then((res) => {
-        setAuthenticated(res);
-        console.log(res);
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
 
   return (
     <Router>
@@ -30,6 +18,7 @@ const App = () => {
         <Route path="/item/:id" element={<Item />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/Saveditem" element={<Saved_items />} />
+        <Route path="/AuthHandler" element={<AuthHandler />} />
       </Routes>
     </Router>
   );
