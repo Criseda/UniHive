@@ -14,6 +14,8 @@ DROP TABLE IF EXISTS review;
 
 DROP TABLE IF EXISTS message;
 
+DROP TABLE IF EXISTS saved_items;
+
 DROP TABLE IF EXISTS listing;
 
 DROP TABLE IF EXISTS bid;
@@ -23,3 +25,6 @@ DROP TABLE IF EXISTS auction;
 DROP TABLE IF EXISTS profile;
 
 DROP TABLE IF EXISTS app_user;
+
+
+
