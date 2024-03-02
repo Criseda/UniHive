@@ -77,7 +77,20 @@ router.get("/users/:id", async (req, res) => {
 
 
 
-//
+//Get all messages send between two users
+router.get("/users/:id1/:id2", async (req, res) => {
+	try {
+	  const { id1, id2 } = req.params;
+	  
+	  // Query for messages where the sender or receiver is the specified user ID
+	  const userMessages = await pool.query("SELECT * FROM message WHERE (sender_id = $1 AND receiver_id = $2) OR (sender_id = $2 AND receiver_id = $1)", [id1, id2]);
+  
+	  res.json(userMessages.rows); // return the messages
+	} catch (err) {
+	  console.error(err.message);
+	  res.status(500).send("Internal Server Error");
+	}
+  });
 
 
 module.exports = router; // export the router
