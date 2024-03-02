@@ -4,6 +4,8 @@
 --command: db-migrate down
 --alternative command if that doesn't work: db-migrate reset
 
+DROP TABLE IF EXISTS saved_items;
+
 DROP TABLE IF EXISTS auction_image;
 
 DROP TABLE IF EXISTS listing_image;
@@ -13,8 +15,6 @@ DROP TABLE IF EXISTS report;
 DROP TABLE IF EXISTS review;
 
 DROP TABLE IF EXISTS message;
-
-DROP TABLE IF EXISTS saved_items;
 
 DROP TABLE IF EXISTS listing;
 
