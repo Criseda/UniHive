@@ -19,6 +19,7 @@
     "db-migrate-pg": "^1.5.2",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3"
   }
 }
