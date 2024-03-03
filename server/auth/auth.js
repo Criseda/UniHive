@@ -1,8 +1,10 @@
 // auth.js
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const ticketGenerator = require("./ticketGenerator");
 const axios = require("axios");
+const jwt = require("jsonwebtoken"); // used to create, sign, and verify tokens
 
 const AUTHENTICATION_SERVICE_URL =
 	"http://studentnet.cs.manchester.ac.uk/authenticate/";
@@ -25,7 +27,6 @@ router.get("/login", (req, res) => {
 	res.redirect(authServiceUrl);
 });
 
-
 //this is for frontend to check if credentials are valid from there
 router.get("/validate", async (req, res) => {
 	const { csticket, username, fullname } = req.query;
@@ -33,7 +34,7 @@ router.get("/validate", async (req, res) => {
 	if (csticket !== req.session.csticket) {
 		return res.status(403).json({
 			message: "Invalid csticket. Your session is invalid or has expired.",
-			valid: false
+			valid: false,
 		});
 	}
 
@@ -49,23 +50,22 @@ router.get("/validate", async (req, res) => {
 		if (response.status === 200) {
 			res.json({
 				message: "Credentials are valid",
-				valid: true
+				valid: true,
 			});
 		} else {
 			res.status(400).json({
 				message: "Invalid username or fullname",
-				valid: false
+				valid: false,
 			});
 		}
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({
 			message: "Error validating credentials",
-			valid: false
+			valid: false,
 		});
 	}
 });
-
 
 //this is for backend to check if credentials are valid from there
 router.get("/", async (req, res) => {
@@ -86,10 +86,18 @@ router.get("/", async (req, res) => {
 		const response = await axios.get(validateUrl);
 
 		// if the api returns a successful response, store the username and fullname in the session
+		// also create a JWT token
 		if (response.status === 200) {
 			req.session.username = username;
 			req.session.fullname = fullname;
 			req.session.authenticated = true;
+
+			console.log(process.env.JWT_SECRET, "secret");
+			const token = jwt.sign({ username, fullname }, process.env.JWT_SECRET, {
+				expiresIn: "1h",
+			});
+			res.cookie("JWT", token, { httpOnly: true });
+			console.log(token, "JWT");
 
 			res.redirect("/auth/dashboard");
 		} else {
@@ -126,15 +134,14 @@ router.get("/dashboard", async (req, res) => {
 		if (exists) {
 			// User exists in the database
 			// Your code here
-			//   res.json({
-			//     message: "You exist in the database, authenticated",
-			//     username: username,
-			//     fullname: fullname,
-			//     authenticated: authenticated,
-			//   });
-			res.redirect(
-				`${FRONTEND_URL}?csticket=${req.session.csticket}&username=${req.session.username}&fullname=${req.session.fullname}`
-			);
+			  res.json({
+			    message: "You exist in the database, authenticated",
+			    username: username,
+			    fullname: fullname,
+			  });
+			// res.redirect(
+			// 	`${FRONTEND_URL}?csticket=${req.session.csticket}&username=${req.session.username}&fullname=${req.session.fullname}`
+			// );
 		} else {
 			// User does not exist in the database
 			// Your code here
@@ -143,15 +150,14 @@ router.get("/dashboard", async (req, res) => {
 				name: fullname,
 				avatar_path: "images/default_pfp.jpg",
 			});
-			//   res.json({
-			//     message: "You have been added to the database, authenticated",
-			//     username: username,
-			//     fullname: fullname,
-			//     authenticated: authenticated,
-			//   });
-			res.redirect(
-				`${FRONTEND_URL}?csticket=${req.session.csticket}&username=${req.session.username}&fullname=${req.session.fullname}`
-			);
+			  res.json({
+			    message: "You have been added to the database, authenticated",
+			    username: username,
+			    fullname: fullname,
+			  });
+			// res.redirect(
+			// 	`${FRONTEND_URL}?csticket=${req.session.csticket}&username=${req.session.username}&fullname=${req.session.fullname}`
+			// );
 		}
 	} catch (error) {
 		console.error(error);
