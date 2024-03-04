@@ -22,7 +22,7 @@ const Loginbar = () => {
             {/* Login */}
             <div className="tab-content" id="TabContent">
                 <div class="tab-pane fade show active" id="Login" aria-labelledby="Login_Tab" role="tabpanel" >
-                    <form style={{marginTop: '40px'}}>
+                    <form action="localhost:5000/auth/login" style={{marginTop: '40px'}}>
                         {/* Email form */}
                         <div class="input-group mb-4">
                             <input type="text" class="form-control" placeholder="University Email" aria-label="University Email" aria-describedby="basic-addon2"/>
@@ -37,7 +37,7 @@ const Loginbar = () => {
 
                 {/* Register */}
                 <div class="tab-pane fade" id="Register" aria-labelledby="Register-Tab" role="tabpanel" >
-                    <form style={{marginTop: '40px'}}>
+                    <form action="localhost:5000/auth/login" style={{marginTop: '40px'}}>
                         {/* Email form */}
                         <div class="input-group mb-4">
                             <input type="text" class="form-control" placeholder="University Email" aria-label="University Email" aria-describedby="basic-addon2"/>
