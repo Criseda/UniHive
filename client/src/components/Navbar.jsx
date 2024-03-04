@@ -73,7 +73,7 @@ const Navbar = () => {
                 <a className="dropdown-item" href="#">
                   Account
                 </a>
-                <a className="dropdown-item" href="http://localhost:5000/auth/dashboard">
+                <a className="dropdown-item" href="#">
                   Logout
                 </a>
                 {/* Add more dropdown items as needed */}
