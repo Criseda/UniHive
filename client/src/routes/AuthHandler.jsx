@@ -2,18 +2,16 @@ import React, { useEffect } from "react";
 
 const AuthHandler = () => {
   useEffect(() => {
+    // Get the token cookie value
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const csticket = urlParams.get("csticket");
-    const username = urlParams.get("username");
-    const fullname = urlParams.get("fullname");
+    // Store the token in local storage
+    localStorage.setItem("token", token);
 
-    sessionStorage.setItem("csticket", csticket);
-    sessionStorage.setItem("username", username);
-    sessionStorage.setItem("fullname", fullname);
-
-    window.location.replace("http://localhost:3000/home");
-
+    window.location.href = "http://localhost:3000/";
   }, []);
 
   return (
