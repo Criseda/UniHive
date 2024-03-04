@@ -21,13 +21,13 @@ const Itemlist = () => {
   }, []);
 
   if (isLoading) {
-    return <div class="container text-center">Loading...</div>;
+    return <div className="container text-center">Loading...</div>;
   }
 
   if (error) {
     return (
       <div className="container mt-4">
-        <div class="alert alert-danger">Error: {error.message}</div>
+        <div className="alert alert-danger">Error: {error.message}</div>
       </div>
     );
   }
