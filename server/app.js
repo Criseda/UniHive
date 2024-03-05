@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 app.use(
 	session({
-		secret: "i am a secret", // change this to a random string in a .env file
+		secret: process.env.SESSION_SECRET, // change this to a random string in a .env file
 		resave: false,
 		saveUninitialized: true,
 		cookie: { secure: false },

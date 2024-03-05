@@ -1,4 +1,5 @@
 import React from "react";
+import { logoutRoute } from "../api/authentication";
 
 const Navbar = () => {
   return (
@@ -73,7 +74,14 @@ const Navbar = () => {
                 <a className="dropdown-item" href="#">
                   Account
                 </a>
-                <a className="dropdown-item" href="#">
+                <a
+                  className="dropdown-item"
+                  href={logoutRoute}
+                  onClick={() => {
+                    sessionStorage.clear();
+                    localStorage.clear();
+                  }}
+                >
                   Logout
                 </a>
                 {/* Add more dropdown items as needed */}
