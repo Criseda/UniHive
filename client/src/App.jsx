@@ -70,10 +70,10 @@ const App = () => {
 					element={<ProtectedRoute element={<Messages />} />}
 				/>
 				<Route
-					path="/Saveditem"
+					path="/saveditem"
 					element={<ProtectedRoute element={<Saved_items />} />}
 				/>
-				<Route path="/AuthHandler" element={<AuthHandler />} />{" "}
+				<Route path="/authHandler" element={<AuthHandler />} />{" "}
 			</Routes>
 		</Router>
 	);
