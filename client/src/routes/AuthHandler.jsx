@@ -4,7 +4,7 @@ const AuthHandler = () => {
   useEffect(() => {
     // Get the token cookie value
     const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
 
