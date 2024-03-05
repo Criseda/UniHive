@@ -47,7 +47,7 @@ const Itemlist = () => {
     <div className="container mt-4">
       <div className="row">
         {data.map((item) => {
-          const key = (item.price ? "listing" : "auction") + "_" +item.id;
+          const key = (item.price ? "listing" : "auction") + "id" +item.id;
           return (
             <div
               key={key}
