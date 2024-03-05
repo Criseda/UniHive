@@ -5,6 +5,7 @@ import Login from "./routes/Login";
 import Item from "./routes/Item";
 import Messages from "./routes/Messages";
 import Saved_items from "./routes/Saved_items";
+import Profile from "./routes/Profilepage";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/item/:id" element={<Item />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/Saveditem" element={<Saved_items />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

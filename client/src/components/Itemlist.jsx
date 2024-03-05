@@ -49,7 +49,7 @@ const Itemlist = () => {
       .finally(() => {
         setIsLoading(false);
         // for debugging change to true to display debug elements
-        if (false) {
+        if (true) {
           setItems(items_dbg);
           setError(false);
         }
