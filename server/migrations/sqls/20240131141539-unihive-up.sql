@@ -93,12 +93,23 @@ CREATE TABLE auction_image (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE saved_items (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    auction_id INT, --can take auction id
-    listing_id INT, --or listing id
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (auction_id) REFERENCES auction (id) ON DELETE CASCADE ON UPDATE CASCADE
+
+
+CREATE TABLE saved_auctions (
+	id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL,
+	auction_id INT, --can take auction id
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (auction_id) REFERENCES auction (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+
+CREATE TABLE saved_listings (
+	id SERIAL PRIMARY KEY,
+	user_id INT NOT NULL,
+	listing_id INT, --can take listing id
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (listing_id) REFERENCES listing (id) ON DELETE CASCADE ON UPDATE CASCADE
+);	
