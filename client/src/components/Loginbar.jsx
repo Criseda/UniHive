@@ -1,4 +1,5 @@
 import React from "react";
+import { loginRoute } from "../api/authentication";
 
 const Loginbar = () => {
   return (
@@ -67,7 +68,7 @@ const Loginbar = () => {
             {/* Submit Button */}
             <ul className="nav justify-content-center">
               <a
-                href="http://localhost:5000/auth/login"
+                href={loginRoute}
                 className="btn btn-primary"
               >
                 Log in
@@ -100,7 +101,7 @@ const Loginbar = () => {
             {/* Submit Button */}
             <ul className="nav justify-content-center">
               <a
-                href="http://localhost:5000/auth/login"
+                href={loginRoute}
                 className="btn btn-primary"
               >
                 Log in
