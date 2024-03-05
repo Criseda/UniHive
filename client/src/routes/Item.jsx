@@ -12,8 +12,7 @@ import {
 const Item = () => {
   // get params from the url, assign to itemType and itemId
   let { id } = useParams();
-  console.log(id);
-  const params = id.split("_");
+  const params = id.split("id");
   const itemType = params[0];
   const itemId = params[1];
 
@@ -26,13 +25,13 @@ const Item = () => {
     setIsLoading(true);
 
     const getItem =
-      itemType === "item"
+      itemType === "listing"
         ? getListing
         : itemType === "auction"
         ? getAuction
         : null;
     const getImages =
-      itemType === "item"
+      itemType === "listing"
         ? getListingImages
         : itemType === "auction"
         ? getAuctionImages
@@ -65,7 +64,7 @@ const Item = () => {
   }, [itemType, itemId]);
 
   if (isLoading) {
-    return <div className="container text-center">Loading...</div>;
+    return null; // makes it less jarring when the page loads
   }
 
   if (error) {
@@ -79,7 +78,7 @@ const Item = () => {
   // lil bit hacky
   const isAuction = item.opening_bid != null;
 
-  console.log(item_images);
+//   console.log(item_images);
 
   return (
     <div>
