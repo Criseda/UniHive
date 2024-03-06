@@ -26,7 +26,7 @@ const ProtectedRoute = ({ element }) => {
 				// Make GET request to check authentication
 				const token = localStorage.getItem("token");
 				if (token) {
-					const response = await fetch("http://localhost:5000/auth/checkAuth", {
+					const response = await fetch(`http://${process.env.REACT_APP_IP_ADDRESS || "localhost"}:5000/auth/checkAuth`, {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

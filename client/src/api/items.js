@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api/";
+const BASE_URL = `http://${process.env.REACT_APP_IP_ADDRESS || "localhost"}:5000/api/`;
 
 //named wrong, not gonna change for now to prevent conflicts
 export function getItems() {
