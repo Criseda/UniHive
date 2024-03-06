@@ -29,6 +29,34 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// get all bids for a specific auction
+router.get("/auction/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const auctionBids = await pool.query(
+      "SELECT app_user.first_name, app_user.last_name, bid.* FROM bid INNER JOIN app_user ON bid.bidder_id = app_user.id WHERE auction_id = $1",
+      [id]
+    );
+    res.json(auctionBids.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// get the highest bid for a specific auction
+router.get("/auction/highest/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const highestBid = await pool.query(
+      "SELECT * FROM bid WHERE auction_id = $1 ORDER BY amount DESC LIMIT 1",
+      [id]
+    );
+    res.json(highestBid.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // create a bid
 router.post("/", async (req, res) => {
   try {
