@@ -9,7 +9,7 @@ import Home from "./routes/Home";
 import Login from "./routes/Login";
 import Item from "./routes/Item";
 import Messages from "./routes/Messages";
-import Saved_items from "./routes/Saved_items";
+import SavedItems from "./routes/SavedItems";
 import AuthHandler from "./routes/AuthHandler";
 
 const ProtectedRoute = ({ element }) => {
@@ -71,7 +71,7 @@ const App = () => {
 				/>
 				<Route
 					path="/saveditem"
-					element={<ProtectedRoute element={<Saved_items />} />}
+					element={<ProtectedRoute element={<SavedItems />} />}
 				/>
 				<Route path="/authHandler" element={<AuthHandler />} />{" "}
 			</Routes>
