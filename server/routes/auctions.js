@@ -32,12 +32,25 @@ router.get("/:id", async (req, res) => {
 // create an auction
 router.post("/", async (req, res) => {
   try {
-    const { seller_id, name, description, opening_bid, closing_date, image_path } =
-      req.body;
+    const {
+      seller_id,
+      name,
+      description,
+      opening_bid,
+      closing_date,
+      image_path,
+    } = req.body;
     const newAuction = await pool.query(
-      "INSERT INTO auction (seller_id, name, description, opening_bid, closing_date, image_path) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [seller_id, name, description, opening_bid, closing_date, image_path]
+      "INSERT INTO auction (seller_id, name, description, closing_date, image_path) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [seller_id, name, description, closing_date, image_path]
     );
+
+    //Create an starting bid for the auction
+    const auctionStartingBid = await pool.query(
+      "INSERT INTO bid (bidder_id, auction_id, amount) VALUES ($1, $2, $3) RETURNING *",
+      [seller_id, newAuction.rows[0].id, opening_bid]
+    );
+
     res.json(newAuction.rows[0]);
   } catch (err) {
     console.error(err.message);
