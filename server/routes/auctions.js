@@ -4,10 +4,16 @@ const pool = require("../db");
 
 // define routes for auctions here
 
-// get all auctions
+// get all auctions, and their highest bid
 router.get("/", async (req, res) => {
   try {
-    const allAuctions = await pool.query("SELECT * FROM auction");
+    const allAuctions = await pool.query(`
+      SELECT auction.*, MAX(bid.amount) AS highest_bid
+      FROM auction
+      INNER JOIN bid ON auction.id = bid.auction_id
+      GROUP BY auction.id
+    `);
+
     res.json(allAuctions.rows);
   } catch (err) {
     console.error(err.message);
@@ -16,11 +22,17 @@ router.get("/", async (req, res) => {
 
 // get an auction
 // two inner joins to be able to return the first name and the last name of the seller
+// and the highest bid for the auction
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const auction = await pool.query(
-      "SELECT app_user.first_name, app_user.last_name, auction.* FROM auction INNER JOIN app_user ON auction.seller_id = app_user.id WHERE auction.id = $1",
+      `SELECT app_user.first_name, app_user.last_name, auction.*, MAX(bid.amount) AS highest_bid
+       FROM auction 
+       INNER JOIN app_user ON auction.seller_id = app_user.id 
+       INNER JOIN bid ON auction.id = bid.auction_id
+       WHERE auction.id = $1
+       GROUP BY auction.id, app_user.first_name, app_user.last_name`,
       [id]
     );
     res.json(auction.rows[0]);
