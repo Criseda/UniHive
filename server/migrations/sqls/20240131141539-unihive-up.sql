@@ -19,7 +19,8 @@ CREATE TABLE auction (
     seller_id INT NOT NULL, --profile of the seller
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    opening_bid NUMERIC(12,2) NOT NULL,
+    -- opening_bid will be replaced by a post request to create a bid
+    -- opening_bid NUMERIC(12,2) NOT NULL,
     closing_date TIMESTAMP NOT NULL,
     image_path VARCHAR(255) NOT NULL, --url to image
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -4,14 +4,14 @@ const AuthHandler = () => {
   useEffect(() => {
     // Get the token cookie value
     const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
 
     // Store the token in local storage
     localStorage.setItem("token", token);
 
-    window.location.href = "http://localhost:3000/";
+    window.location.href = `http://${process.env.REACT_APP_IP_ADDRESS || "localhost"}:3000/`;
   }, []);
 
   return (

@@ -1,6 +1,7 @@
 // this is the entry point for the server
 // this file is run by node
 // run prettier with 2 space formatting on this file
+require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const routes = require("./routes");

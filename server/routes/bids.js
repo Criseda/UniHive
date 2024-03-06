@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
 
 // get a bid
 // inner join with app_user to get the bidder's name
+//not sure if this route is needed / used
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -24,6 +25,34 @@ router.get("/:id", async (req, res) => {
       [id]
     );
     res.json(bid.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// get all bids for a specific auction
+router.get("/auction/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const auctionBids = await pool.query(
+      "SELECT app_user.first_name, app_user.last_name, bid.* FROM bid INNER JOIN app_user ON bid.bidder_id = app_user.id WHERE auction_id = $1",
+      [id]
+    );
+    res.json(auctionBids.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// get the number of bids for a specific auction
+router.get("/auction/:id/count", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const auctionBidsCount = await pool.query(
+      "SELECT COUNT(*) FROM bid WHERE auction_id = $1",
+      [id]
+    );
+    res.json(auctionBidsCount.rows[0]);
   } catch (err) {
     console.error(err.message);
   }
