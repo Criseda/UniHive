@@ -26,3 +26,15 @@ auth_api commit:
 - Added auth route to app.js
 - Added ticketGenerator.js - this will generate a random string of characters that get checked upon login
 - Added auth.js - This creates routes which allow login functionality
+
+## Cristian Preda @ 6th Mar 2024
+Item_refine commit:
+- Make sure to run these commands after pulling this commit on the server side: `db-migrate down` & `db-migrate up`
+- Unfortunately, this commit changes the database again (sigh)
+- Removed the opening_bid field from the auctions table, it is not needed anymore. I changed the philosophy of how the bids interact with auctions in the backend
+- Don't worry, when you do Postman POST request for /auctions, you still use opening_bid in the body
+- Everytime a new auction is made, a bid is created where bidder_id = seller_id and amount = opening_bid
+- I changed the GET routes to cleverly respond with the highest bidder, referenced by highest_bid
+- Last but not least, I made an option to use environment variables if you want to specify your PC's local network address when starting the server
+- This is if u want to test the app on a phone, for example
+- just be sure to add it in the /server/.env file: `IP_ADDRESS:xxx.xxx.xxx.xxx`

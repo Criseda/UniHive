@@ -25,3 +25,14 @@ SESSION_SECRET=super_secret_SESSION_key
 # Laurentiu Cristian Preda @ 5th Mar 2024 (itemjsx_middleware):
 - please run `npm install` on /client
 - Made the component use react-bootstrap with the Carousel component
+
+# Laurentiu Cristian Preda @ 6th Mar 2024 (itemjsx_middleware):
+- refactored Itemlist. The item list only used to pull listings, now it pulls all items (listings and auctions), sorted by newest created
+- due to this change, the params given to /item needed to be changed. they are now represented by itemType + itemID. e.g auctionid1, listingid3, auctionid4, etc...
+- Added conditional rendering to Item.jsx to render auctions and listings differently.
+- Moved a lot of HTML out of Item.jsx, and spread it out into components (ItemDetails, AuctionCountdown, AuctionBidCount)
+- These components can be used into other routes which have to render items, e.g SavedItems.
+- Some bugfixes, fixing a double slash error within url redirects, fixing grammar on some routes, along with other stuff
+- Added option to use a .env file if you want to run the application on your local network
+- Just make a .env file inside /client, with `REACT_APP_IP_ADDRESS:xxx.xxx.xxx.xxx` within it.
+- This is if you want to check how the application works on other devices that are connected to the network e.g phones.
