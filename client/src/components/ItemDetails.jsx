@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Carousel } from "react-bootstrap";
+import Countdown from "./AuctionCountdown";
+import { Carousel, Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import {
   getListing,
@@ -102,7 +103,7 @@ const ItemDetails = () => {
               <h5 className="card-title">{item.name}</h5>
               {isAuction ? (
                 <p className="card-text fs-4">
-                  £{item.opening_bid} <br />
+                  £{item.highest_bid} <br />
                   <small className="text-muted fs-6">or Best Offer</small>
                 </p>
               ) : (
@@ -113,44 +114,59 @@ const ItemDetails = () => {
               )}
               <p className="card-text">
                 <small className="text-muted">
-                  created on{" "}
-                  {new Date(item.created_at).toLocaleDateString("en-us", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
-                  })}
+                  {isAuction ? (
+                    <Countdown
+                      closingDate={item.closing_date}
+                      isAuction={isAuction}
+                    />
+                  ) : (
+                    `Ends in ${new Date(item.created_at).toLocaleDateString(
+                      "en-us",
+                      {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                      }
+                    )}`
+                  )}
                 </small>
               </p>
               <p className="card-text">{item.description}</p>
-              {isAuction && (
-                <div className="input-group">
-                  <span className="input-group-text">£</span>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Bid"
-                  />
-                  <Link to="#" className="btn btn-primary">
-                    Submit Bid
-                  </Link>
-                  <Link to="#" className="btn btn-danger">
-                    Report Listing
-                  </Link>
+              <div className="input-group d-flex flex-column justify-content-between mt-auto">
+                <div>
+                  <Button variant="primary" className="mb-2 d-block w-100">
+                    <Link to="#" className="text-decoration-none text-white">
+                      {isAuction ? "Submit Bid" : "Make Offer"}
+                    </Link>
+                  </Button>
+                  <Button
+                    variant="outline-primary"
+                    className="mb-2 d-block w-100 text-primary"
+                    style={{ backgroundColor: "white" }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f2f2f2")
+                    } // light gray
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "white")
+                    }
+                  >
+                    <Link to="#" className="text-decoration-none text-primary">
+                      {"\u2661"}{" "}
+                      {isAuction ? "Watch this auction" : "Watch this listing"}
+                    </Link>
+                  </Button>
                 </div>
-              )}
-              {!isAuction && (
-                <div className="input-group">
-                  <Link to="#" className="btn btn-primary">
-                    Message Seller
-                  </Link>
-                  <Link to="#" className="btn btn-danger">
-                    Report Listing
-                  </Link>
+                <div className="align-self-end">
+                  <Button variant="danger" className="btn-sm">
+                    <Link to="#" className="text-decoration-none text-white">
+                      {isAuction ? "Report Auction" : "Report Listing"}
+                    </Link>
+                  </Button>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
