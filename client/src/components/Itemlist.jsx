@@ -63,8 +63,7 @@ const Itemlist = () => {
                 <div className="card-body">
                   <h5 className="card-title">{item.name}</h5>
                   <p className="card-text">
-                    {item.price ? "price: " : "opening bid: "}£
-                    {item.price || item.opening_bid}
+                    £{item.price || item.highest_bid}
                   </p>{" "}
                   {/* use price for items and opening_bid for auctions */}
                 </div>
