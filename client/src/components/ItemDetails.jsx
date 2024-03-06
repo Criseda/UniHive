@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Countdown from "./AuctionCountdown";
+import AuctionBidCount from "./AuctionBidCount";
 import { Carousel, Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import {
@@ -87,9 +88,10 @@ const ItemDetails = () => {
                 (image, index) => (
                   <Carousel.Item key={index}>
                     <img
-                      className="d-block w-100 img-fluid rounded-start"
+                      className="d-block w-100 img-fluid rounded-start rounded-end"
                       src={image.image_path}
                       alt="Item"
+                      style={{ objectFit: "contain" , maxHeight: "400px", minHeight: "400px"}}
                     />
                   </Carousel.Item>
                 )
@@ -115,10 +117,22 @@ const ItemDetails = () => {
               <p className="card-text">
                 <small className="text-muted">
                   {isAuction ? (
-                    <Countdown
-                      closingDate={item.closing_date}
-                      isAuction={isAuction}
-                    />
+                    <>
+                      <Link
+                        to="#"
+                        style={{ textDecoration: "underline", color: "black" }}
+                        // className="text-decoration-none"
+                        onMouseEnter={(e) => (e.target.style.color = "grey")}
+                        onMouseLeave={(e) => (e.target.style.color = "black")}
+                      >
+                        <AuctionBidCount auctionId={itemId} />
+                      </Link>
+                      <span className="mx-2">&bull;</span>
+                      <Countdown
+                        closingDate={item.closing_date}
+                        isAuction={isAuction}
+                      />
+                    </>
                   ) : (
                     `Ends in ${new Date(item.created_at).toLocaleDateString(
                       "en-us",
