@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:5000/api/';
+const BASE_URL = "http://localhost:5000/api/";
 
 //named wrong, not gonna change for now to prevent conflicts
 export function getItems() {
@@ -38,6 +38,11 @@ export async function getAuction(id) {
 
 export async function getListing(id) {
   const res = await fetch(`${BASE_URL}/listings/${id}`);
+  return await res.json();
+}
+
+export async function getAuctionBids(auctionId) {
+  const res = await fetch(`${BASE_URL}/bids/auction/${auctionId}`);
   return await res.json();
 }
 
