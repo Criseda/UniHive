@@ -134,7 +134,7 @@ const ItemDetails = () => {
                       />
                     </>
                   ) : (
-                    `Ends in ${new Date(item.created_at).toLocaleDateString(
+                    `Listed on ${new Date(item.created_at).toLocaleDateString(
                       "en-us",
                       {
                         weekday: "long",
