@@ -46,4 +46,9 @@ export async function getAuctionBids(auctionId) {
   return await res.json();
 }
 
+export async function getAuctionBidCount(auctionId) {
+  const res = await fetch(`${BASE_URL}/bids/auction/${auctionId}/count`);
+  return await res.json();
+}
+
 // add the rest of the functions here
