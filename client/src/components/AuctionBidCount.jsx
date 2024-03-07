@@ -28,7 +28,11 @@ const AuctionBidCount = ({ auctionId }) => {
     return <div>Error: {error.message}</div>;
   }
 
-  return <>{bidCount} bids</>;
+  if (bidCount == 2) {
+    return <>{bidCount - 1} bid</>
+  }
+
+  return <>{bidCount - 1} bids</>;
 };
 
 export default AuctionBidCount;
