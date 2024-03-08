@@ -18,6 +18,41 @@ router.get("/user/:id", async (req, res) => {
         console.error(error.message);
     }
 });
+
+//Get saved_auctions from listing table depending on user id
+router.get("/auction/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const savedAuctions = await pool.query("SELECT * FROM saved_auctions WHERE user_id = $1", [id]);
+        const auctionIds = savedAuctions.rows.map(savedAuction => savedAuction.auction_id);
+        //const auctions = await pool.query("SELECT * FROM auction WHERE id = ANY($1)", [auctionIds]);
+        const auctionDetails = await pool.query(`
+            SELECT auction.*, MAX(bid.amount) AS highest_bid
+            FROM auction
+            INNER JOIN bid ON auction.id = bid.auction_id
+            WHERE auction.id = ANY($1)
+            GROUP BY auction.id
+        `, [auctionIds]);
+        res.json(auctionDetails.rows); //return saved auctions with auction details
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+
+//Get saved_listing from listing table depending on user id
+router.get("/listing/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const savedListings = await pool.query("SELECT * FROM saved_listings WHERE user_id = $1", [id]);
+        const listingIds = savedListings.rows.map(savedListing => savedListing.listing_id);
+        const listings = await pool.query("SELECT * FROM listing WHERE id = ANY($1)", [listingIds]);
+        res.json(listings.rows); //return saved items with listing details
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 //create a saved_listing
 router.post("/listing", async (req, res) => {
     try {
@@ -81,7 +116,7 @@ router.delete("/user/:id", async (req, res) => {
 });
 
 
-//Get all saved_items
+//Get all saved_items (dont think this will be used)
 router.get("/", async (req, res) => {
     try {
         const savedItems = await pool.query(`
