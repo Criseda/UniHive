@@ -25,12 +25,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//check if a user exists (by username)
-router.get("/check/:username", async (req, res) => {
-  const { username } = req.params;
+//check if a user exists (by id)
+router.get("/check/:id", async (req, res) => {
+  const { id } = req.params;
   try {
-    const user = await pool.query("SELECT * FROM app_user WHERE username = $1", [
-      username,
+    const user = await pool.query("SELECT * FROM app_user WHERE id = $1", [
+      id,
     ]);
     if (user.rows.length > 0) {
       res.json({ exists: true });
@@ -47,11 +47,11 @@ router.get("/check/:username", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     //no banned because it is a new user
-    const { username, name, rating, bio, avatar_path } = req.body;
+    const { id, name, rating, bio, avatar_path } = req.body;
     const [first_name, last_name] = name.split(" ");
     const newUser = await pool.query(
-      "INSERT INTO app_user (username, first_name, last_name, rating, bio, avatar_path) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [username, first_name, last_name, rating, bio, avatar_path]
+      "INSERT INTO app_user (id, first_name, last_name, rating, bio, avatar_path) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [id, first_name, last_name, rating, bio, avatar_path]
     );
     res.json(newUser.rows[0]);
   } catch (err) {
