@@ -20,7 +20,7 @@ router.get("/user/:id", async (req, res) => {
 });
 
 //Get saved_auctions from listing table depending on user id
-router.get("/auction/:id", async (req, res) => {
+router.get("/auction/user/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const savedAuctions = await pool.query("SELECT * FROM saved_auctions WHERE user_id = $1", [id]);
@@ -41,7 +41,7 @@ router.get("/auction/:id", async (req, res) => {
 
 
 //Get saved_listing from listing table depending on user id
-router.get("/listing/:id", async (req, res) => {
+router.get("/listing/user/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const savedListings = await pool.query("SELECT * FROM saved_listings WHERE user_id = $1", [id]);
