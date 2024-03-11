@@ -2,6 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
+const { cookieJWTAuth } = require("../middleware/cookieJWTAuth");
 
 //define routes for saved items here
 
@@ -54,9 +55,11 @@ router.get("/listing/user/:user_id", async (req, res) => {
 });
 
 //create a saved_listing
-router.post("/listing", async (req, res) => {
+router.post("/listing/:id", cookieJWTAuth,  async (req, res) => {
     try {
-        const { user_id, listing_id } = req.body; //get data from the request body
+        const { id } = req.params; //get id from the url
+        const listing_id = id; //store it as another constant
+        const user_id = req.username; //get username from the response of cookieJWTAuth middleware
         const newSavedListing = await pool.query(
             "INSERT INTO saved_listings (user_id, listing_id) VALUES($1, $2) RETURNING *",
             [user_id, listing_id]
@@ -68,9 +71,11 @@ router.post("/listing", async (req, res) => {
 });
 
 //create a saved_auction
-router.post("/auction", async (req, res) => {
+router.post("/auction/:id", cookieJWTAuth, async (req, res) => {
     try {
-        const { user_id, auction_id } = req.body; //get data from the request body
+        const { id } = req.params;
+        const auction_id = id; //get auction_id from the url and store it as another constant
+        const user_id = req.username; //get username from the response of cookieJWTAuth middleware
         const newSavedAuction = await pool.query(
             "INSERT INTO saved_auctions (user_id, auction_id) VALUES($1, $2) RETURNING *",
             [user_id, auction_id]
