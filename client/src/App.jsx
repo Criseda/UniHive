@@ -11,6 +11,7 @@ import Item from "./routes/Item";
 import Messages from "./routes/Messages";
 import SavedItems from "./routes/SavedItems";
 import AuthHandler from "./routes/AuthHandler";
+import Profile from "./routes/Profilepage";
 
 const ProtectedRoute = ({ element }) => {
 	const [authenticated, setAuthenticated] = useState(null);
@@ -72,6 +73,10 @@ const App = () => {
 				<Route
 					path="/saveditem"
 					element={<ProtectedRoute element={<SavedItems />} />}
+				/>
+				<Route
+					path="/profile"
+					element={<ProtectedRoute element={<Profile />} />}
 				/>
 				<Route path="/authHandler" element={<AuthHandler />} />{" "}
 			</Routes>
