@@ -15,7 +15,7 @@ CREATE TABLE app_user (
 
 CREATE TABLE auction (
     id SERIAL PRIMARY KEY,
-    seller_id INT NOT NULL, --profile of the seller
+    seller_id CHAR(6) NOT NULL, --profile of the seller
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     -- opening_bid will be replaced by a post request to create a bid
@@ -28,7 +28,7 @@ CREATE TABLE auction (
 
 CREATE TABLE bid (
     id SERIAL PRIMARY KEY,
-    bidder_id INT NOT NULL,
+    bidder_id CHAR(6) NOT NULL,
     auction_id INT NOT NULL,
     amount NUMERIC(12,2) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -38,7 +38,7 @@ CREATE TABLE bid (
 
 CREATE TABLE listing (
     id SERIAL PRIMARY KEY,
-    seller_id INT NOT NULL,
+    seller_id CHAR(6) NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     price NUMERIC(12,2) NOT NULL,
@@ -49,8 +49,8 @@ CREATE TABLE listing (
 
 CREATE TABLE message (
     id SERIAL PRIMARY KEY,
-    sender_id INT NOT NULL,
-    receiver_id INT NOT NULL,
+    sender_id CHAR(6) NOT NULL,
+    receiver_id CHAR(6) NOT NULL,
     message TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -60,8 +60,8 @@ CREATE TABLE message (
 -- reviews table
 CREATE TABLE review (
     id SERIAL PRIMARY KEY,
-    reviewer_id INT NOT NULL,
-    reviewed_id INT NOT NULL,
+    reviewer_id CHAR(6) NOT NULL,
+    reviewed_id CHAR(6) NOT NULL,
     rating INT NOT NULL,
     review TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -71,8 +71,8 @@ CREATE TABLE review (
 -- reports table
 CREATE TABLE report (
     id SERIAL PRIMARY KEY,
-    reporter_id INT NOT NULL,
-    reported_id INT NOT NULL,
+    reporter_id CHAR(6) NOT NULL,
+    reported_id CHAR(6) NOT NULL,
     reason TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (reporter_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -97,7 +97,7 @@ CREATE TABLE auction_image (
 
 CREATE TABLE saved_auctions (
 	id SERIAL PRIMARY KEY,
-	user_id INT NOT NULL,
+	user_id CHAR(6) NOT NULL,
 	auction_id INT NOT NULL , --can take auction id
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -107,7 +107,7 @@ CREATE TABLE saved_auctions (
 
 CREATE TABLE saved_listings (
 	id SERIAL PRIMARY KEY,
-	user_id INT NOT NULL,
+	user_id CHAR(6) NOT NULL,
 	listing_id INT NOT NULL , --can take listing id
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY (user_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
