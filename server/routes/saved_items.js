@@ -8,11 +8,11 @@ const pool = require("../db");
 
 //Get all saved_listings and saved_auctions depending on user id
 
-router.get("/user/:id", async (req, res) => {
+router.get("/user/:user_id", async (req, res) => {
     try {
-        const { id } = req.params;
-        const savedListings = await pool.query("SELECT * FROM saved_listings WHERE user_id = $1", [id]);
-        const savedAuctions = await pool.query("SELECT * FROM saved_auctions WHERE user_id = $1", [id]);
+        const { user_id } = req.params;
+        const savedListings = await pool.query("SELECT * FROM saved_listings WHERE user_id = $1", [user_id]);
+        const savedAuctions = await pool.query("SELECT * FROM saved_auctions WHERE user_id = $1", [user_id]);
         res.json({savedListings: savedListings.rows, savedAuctions: savedAuctions.rows}); //return saved items
     } catch (error) {
         console.error(error.message);
@@ -20,10 +20,10 @@ router.get("/user/:id", async (req, res) => {
 });
 
 //Get saved_auctions from listing table depending on user id
-router.get("/auction/user/:id", async (req, res) => {
+router.get("/auction/user/:user_id", async (req, res) => {
     try {
-        const { id } = req.params;
-        const savedAuctions = await pool.query("SELECT * FROM saved_auctions WHERE user_id = $1", [id]);
+        const { user_id } = req.params;
+        const savedAuctions = await pool.query("SELECT * FROM saved_auctions WHERE user_id = $1", [user_id]);
         const auctionIds = savedAuctions.rows.map(savedAuction => savedAuction.auction_id);
         //const auctions = await pool.query("SELECT * FROM auction WHERE id = ANY($1)", [auctionIds]);
         const auctionDetails = await pool.query(`
@@ -41,10 +41,10 @@ router.get("/auction/user/:id", async (req, res) => {
 
 
 //Get saved_listing from listing table depending on user id
-router.get("/listing/user/:id", async (req, res) => {
+router.get("/listing/user/:user_id", async (req, res) => {
     try {
-        const { id } = req.params;
-        const savedListings = await pool.query("SELECT * FROM saved_listings WHERE user_id = $1", [id]);
+        const { user_id } = req.params;
+        const savedListings = await pool.query("SELECT * FROM saved_listings WHERE user_id = $1", [user_id]);
         const listingIds = savedListings.rows.map(savedListing => savedListing.listing_id);
         const listings = await pool.query("SELECT * FROM listing WHERE id = ANY($1)", [listingIds]);
         res.json(listings.rows); //return saved items with listing details
@@ -104,11 +104,11 @@ router.delete("/listing/:id", async (req, res) => {
 });
 
 //Delete all saved_items depending on user id
-router.delete("/user/:id", async (req, res) => {
+router.delete("/user/:user_id", async (req, res) => {
     try {
-        const { id } = req.params;
-        const deleteSavedListings = await pool.query("DELETE FROM saved_listings WHERE user_id = $1", [id]);
-        const deleteSavedAuctions = await pool.query("DELETE FROM saved_auctions WHERE user_id = $1", [id]);
+        const { user_id } = req.params;
+        const deleteSavedListings = await pool.query("DELETE FROM saved_listings WHERE user_id = $1", [user_id]);
+        const deleteSavedAuctions = await pool.query("DELETE FROM saved_auctions WHERE user_id = $1", [user_id]);
         res.json("All saved items were deleted"); //return message
     } catch (error) {
         console.error(error.message);
