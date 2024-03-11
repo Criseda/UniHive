@@ -2,6 +2,8 @@ const BASE_URL = `http://${
   process.env.REACT_APP_IP_ADDRESS || "localhost"
 }:5000/api/`;
 
+//GET requests
+
 export async function getListings() {
   const res = await fetch(`${BASE_URL}/listings/`);
   return await res.json();
@@ -42,8 +44,6 @@ export async function getAuctionBidCount(auctionId) {
   return await res.json();
 }
 
-// add the rest of the functions here
-
 export async function getSavedAuction(userId) {
   const res = await fetch(`${BASE_URL}/saved_items/auction/${userId}`)
   return await res.json();
@@ -51,5 +51,41 @@ export async function getSavedAuction(userId) {
 
 export async function getSavedListing(userId){
   const res = await fetch(`${BASE_URL}/saved_items/listing/${userId}`);
+  return await res.json();
+}
+
+//POST requests
+
+export async function postSavedListing(listingID) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/saved_items/listing/${listingID}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ 
+      token: token,
+     }),
+  });
+  return await res.json();
+}
+
+export async function postSavedAuction(auctionID) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/saved_items/auction/${auctionID}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ 
+      token: token,
+     }),
+  });
   return await res.json();
 }
