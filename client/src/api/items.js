@@ -45,7 +45,7 @@ export async function getAuctionBidCount(auctionId) {
 // add the rest of the functions here
 
 export async function getSavedAuction(userId) {
-  const res = await fetch(`${BASE_URL}/saved_items/auction/${userId}/`)
+  const res = await fetch(`${BASE_URL}/saved_items/auction/${userId}`)
   return await res.json();
 }
 
