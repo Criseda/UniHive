@@ -87,7 +87,7 @@ router.get("/dashboard", async (req, res) => {
       // User does not exist in the database
       // Your code here
       const response = await axios.post(`http://${process.env.IP_ADDRESS || "localhost"}:5000/api/users`, {
-        username: username,
+        id: username,
         name: fullname,
         avatar_path: "images/default_pfp.jpg",
       });

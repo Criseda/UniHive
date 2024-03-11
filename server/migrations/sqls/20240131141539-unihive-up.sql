@@ -3,8 +3,7 @@
 --command: db-migrate up
 
 CREATE TABLE app_user (
-    id SERIAL PRIMARY KEY,
-    username CHAR(6) NOT NULL UNIQUE, --unique username given by API, fixed 6 characters
+    id CHAR(6) NOT NULL PRIMARY KEY, --unique username given by API, fixed 6 characters
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     rating INT, --rating of the user (calculated by averaging all reviews, init null)
