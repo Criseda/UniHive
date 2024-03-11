@@ -44,48 +44,82 @@ export async function getAuctionBidCount(auctionId) {
   return await res.json();
 }
 
-export async function getSavedAuction(userId) {
-  const res = await fetch(`${BASE_URL}/saved_items/auction/${userId}`)
+export async function getSavedAuctions(userId) {
+  const res = await fetch(`${BASE_URL}/saved_items/auction/${userId}`);
   return await res.json();
 }
 
-export async function getSavedListing(userId){
+export async function getSavedListings(userId) {
   const res = await fetch(`${BASE_URL}/saved_items/listing/${userId}`);
   return await res.json();
 }
 
-//POST requests
+//JWT Requests
 
-export async function postSavedListing(listingID) {
+export async function getSavedListing(listingID) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
   }
-  const res = await fetch(`${BASE_URL}/saved_items/listing/${listingID}`, {
+  const res = await fetch(`${BASE_URL}/saved_items/get/listing/${listingID}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ 
+    body: JSON.stringify({
       token: token,
-     }),
+    }),
   });
   return await res.json();
 }
 
-export async function postSavedAuction(auctionID) {
+export async function postSavedListing(id) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
   }
-  const res = await fetch(`${BASE_URL}/saved_items/auction/${auctionID}`, {
+  const res = await fetch(`${BASE_URL}/saved_items/listing/${id}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ 
+    body: JSON.stringify({
       token: token,
-     }),
+    }),
+  });
+  return await res.json();
+}
+
+export async function getSavedAuction(auctionID) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/saved_items/get/auction/${auctionID}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}
+
+export async function postSavedAuction(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/saved_items/auction/${id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
   });
   return await res.json();
 }
