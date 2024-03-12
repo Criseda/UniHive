@@ -8,11 +8,11 @@ const SavedItemList = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const id = 1; // replace with the user id from the context
+  
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([getSavedListings(id), getSavedAuctions(id)])
+    Promise.all([getSavedListings(), getSavedAuctions()])
       .then(([listings, auctions]) => {
         const mergedItems = [...listings, ...auctions];
         mergedItems.sort(
@@ -28,9 +28,7 @@ const SavedItemList = () => {
       });
   }, []);
 
-  const handleCardClick = (key) => {
-    navigate(`/item/${key}`);
-  };
+  
   if (isLoading) {
     return <div className="container text-center">Loading...</div>;
   }
