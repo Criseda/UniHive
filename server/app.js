@@ -8,6 +8,8 @@ const authRoutes = require("./auth/auth.js");
 
 const cors = require("cors");
 
+const path = require("path");
+
 const app = express();
 
 app.use(cors({
@@ -29,6 +31,12 @@ app.use(
 // use the routes in the routes file
 app.use("/api", routes);
 app.use("/auth", authRoutes);
+
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.use('*', (req, res) => {
+	res.sendFile(path.join(__dirname, "../client/build/index.html")); // should be 404
+});
 
 app.listen(5000, () => {
 	console.log("server is listening on port 5000");

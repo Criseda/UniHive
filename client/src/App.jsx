@@ -5,21 +5,51 @@ import Login from "./routes/Login";
 import Item from "./routes/Item";
 import Messages from "./routes/Messages";
 import Saved_items from "./routes/Saved_items";
-import { checkAuth } from "./api/authentication";
+import { checkAuth, authLogin } from "./api/authentication";
 
 const App = () => {
-  const [authenticated, setAuthenticated] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    try {
-      checkAuth().then((res) => {
-        setAuthenticated(res);
-        console.log(res);
-      });
-    } catch (error) {
-      console.error(error);
+    if (!loggedIn) {
+      setIsLoading(true);
+      try {
+        checkAuth().then((res) => {
+          setLoggedIn(res.authenticated);
+          if (!res.authenticated) {
+            authLogin();
+          }
+          console.log(res);
+        });
+      } catch (error) {
+        setError(error);
+        console.error(error);
+      }
+      setIsLoading(false);
     }
   }, []);
+
+  if (isLoading) {
+    return <div className="container text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="container mt-4">
+        <div className="alert alert-danger">Error: {error.message}</div>
+      </div>
+    );
+  }
+
+  if (!loggedIn) {
+    return (
+      <div className="container mt-4">
+        <div className="alert alert-danger">You must login</div>
+      </div>
+    );
+  }
 
   return (
     <Router>

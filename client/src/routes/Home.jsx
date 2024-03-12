@@ -4,6 +4,7 @@ import Search from "../components/Search";
 import Itemlist from "../components/Itemlist";
 
 const Home = () => {
+  
   return (
     <div>
       <Navbar />

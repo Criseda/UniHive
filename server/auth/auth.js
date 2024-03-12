@@ -14,6 +14,13 @@ router.get("/login", (req, res) => {
   // generate a ticket
   const csticket = ticketGenerator();
   // store the ticket in the session
+  
+  console.log("redirecting to logon!\n");
+
+  if (req.session.authenticated) {
+    console.log("ur logged in already??\n");
+  }
+
   req.session.csticket = csticket;
   req.session.authenticated = false;
 
@@ -21,11 +28,17 @@ router.get("/login", (req, res) => {
   const authParams = `?url=${ENCODED_DEVELOPER_URL}&csticket=${csticket}&version=3&command=validate`;
   const authServiceUrl = `${AUTHENTICATION_SERVICE_URL}${authParams}`;
   res.redirect(authServiceUrl);
+  /*
+  req.session.csticket = csticket;
+  req.session.authenticated = false;
+  res.json({
+    csticket: csticket,
+  });*/
 });
 
 router.get("/", async (req, res) => {
   const { csticket, username, fullname } = req.query; //get params from successful authentication
-
+  
   if (csticket !== req.session.csticket) {
     return res.status(403).json({
       message: "Invalid csticket. Your session is invalid or has expired.",
@@ -45,6 +58,8 @@ router.get("/", async (req, res) => {
       req.session.username = username;
       req.session.fullname = fullname;
       req.session.authenticated = true;
+
+      console.log("u logged in: ", req.session);
 
       res.redirect("/auth/dashboard");
     } else {
@@ -78,19 +93,19 @@ router.get("/dashboard", async (req, res) => {
     );
     const exists = response.data.exists;
 
+    console.log("/dashboard: ", req.session);
+
     if (exists) {
       // User exists in the database
-      // Your code here
       //   res.json({
       //     message: "You exist in the database, authenticated",
       //     username: username,
       //     fullname: fullname,
       //     authenticated: authenticated,
       //   });
-      res.redirect("http://localhost:3000/");
+      res.redirect("http://localhost:5000/home");
     } else {
       // User does not exist in the database
-      // Your code here
       const response = await axios.post(`http://localhost:5000/api/users`, {
         username: username,
         name: fullname,
@@ -102,7 +117,7 @@ router.get("/dashboard", async (req, res) => {
       //     fullname: fullname,
       //     authenticated: authenticated,
       //   });
-      res.redirect("http://localhost:3000/");
+      res.redirect("http://localhost:5000/home");
     }
   } catch (error) {
     console.error(error);
@@ -113,11 +128,13 @@ router.get("/dashboard", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
+  console.log("/logout: ", req.session);
   req.session.destroy();
   res.redirect(AUTHENTICATION_LOGOUT_URL);
 });
 
 router.get("/session", (req, res) => {
+  console.log("/session: ", req.session);
   res.json({
     username: req.session.username,
     fullname: req.session.fullname,

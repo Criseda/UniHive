@@ -1,4 +1,5 @@
 import React from "react";
+import { authLogout } from "../api/authentication";
 
 const Navbar = () => {
   return (
@@ -70,13 +71,13 @@ const Navbar = () => {
                 More
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" role="button">
                   Account
                 </a>
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" role="button" onClick={()=>{authLogout()}}>
                   Logout
                 </a>
-                {/* Add more dropdown items as needed */}
+                {/* Add more dropdown items as needed onClick={authLogout()} */ }
               </div>
             </li>
           </ul>

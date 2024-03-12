@@ -1,22 +1,22 @@
-const BASE_URL = 'http://localhost:5000/auth/';
+const BASE_URL = '/auth';
 
-export function Login(){
-  return fetch(`${BASE_URL}/login`).then((res) => res.json());
+const AUTHENTICATION_SERVICE_URL =
+  "http://studentnet.cs.manchester.ac.uk/authenticate/";
+const AUTHENTICATION_LOGOUT_URL =
+  "http://studentnet.cs.manchester.ac.uk/systemlogout.php";
+const ENCODED_DEVELOPER_URL = "http://localhost:5000/auth/";
+
+export function authLogin(){
+  window.location.href = `${BASE_URL}/login`;
+  //return fetch(`${BASE_URL}/login`).then((res) => res.json())
 }
 
-export function Logout(){
-  return fetch(`${BASE_URL}/logout`).then((res) => res.json());
+export function authLogout(){
+  window.location.href = `${BASE_URL}/logout`;
+  //return fetch(`${BASE_URL}/logout`).then((res) => res.json());
 }
 
 export function checkAuth(){
-  return fetch(`${BASE_URL}/session`)
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.authenticated) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+  return fetch(`${BASE_URL}/session`).then((res) => res.json());
 }
 
