@@ -8,6 +8,7 @@ const { cookieJWTAuth } = require("../middleware/cookieJWTAuth");
 
 //Get all saved_listings and saved_auctions depending on user id
 
+/* 
 router.get("/user/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
@@ -26,12 +27,13 @@ router.get("/user/:user_id", async (req, res) => {
   } catch (error) {
     console.error(error.message);
   }
-});
+});*/
 
-//Get saved_auctions from listing table depending on user id
-router.get("/auction/user/:user_id", async (req, res) => {
+//Get saved_auctions from auctions table depending on user id
+router.post("/get/auctions/user/", cookieJWTAuth, async (req, res) => {
   try {
-    const { user_id } = req.params;
+    
+    const user_id = req.username;
     const savedAuctions = await pool.query(
       "SELECT * FROM saved_auctions WHERE user_id = $1",
       [user_id]
@@ -56,10 +58,11 @@ router.get("/auction/user/:user_id", async (req, res) => {
   }
 });
 
-//Get saved_listing from listing table depending on user id
-router.get("/listing/user/:user_id", async (req, res) => {
+//Get saved_listings from listing table depending on user id
+router.post("/get/listings/user/", cookieJWTAuth, async (req, res) => {
   try {
-    const { user_id } = req.params;
+    
+    const user_id = req.username;
     const savedListings = await pool.query(
       "SELECT * FROM saved_listings WHERE user_id = $1",
       [user_id]
@@ -77,15 +80,14 @@ router.get("/listing/user/:user_id", async (req, res) => {
   }
 });
 
+//Cris functions!
 //Get saved_listing from listing table depending on listing id
 router.post("/get/listing/:listing_id", cookieJWTAuth, async (req, res) => {
   try {
-    const { listing_id } = req.params;
-    const id = listing_id;
-    const user_id = req.username;
-    console.log(user_id);
-    console.log(id);
-    const savedListings = await pool.query(
+    const { listing_id } = req.params; //get listing_id from the url
+    const id = listing_id; //store it as another constant
+    const user_id = req.username; //get username from the response of cookieJWTAuth middleware
+    const savedListings = await pool.query( 
       "SELECT * FROM saved_listings WHERE listing_id = $1 AND user_id = $2",
       [id, user_id]
     );
@@ -197,18 +199,6 @@ router.delete("/user/:user_id", async (req, res) => {
   }
 });
 
-//Get all saved_items (dont think this will be used)
-router.get("/", async (req, res) => {
-  try {
-    const savedItems = await pool.query(`
-            SELECT saved_listings.*, saved_auctions.*
-            FROM saved_listings
-            INNER JOIN saved_auctions ON saved_listings.user_id = saved_auctions.user_id
-        `);
-    res.json(savedItems.rows); //return saved items
-  } catch (error) {
-    console.error(error.message);
-  }
-});
+
 
 module.exports = router;
