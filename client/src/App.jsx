@@ -13,6 +13,7 @@ import SavedItems from "./routes/SavedItems";
 import AuthHandler from "./routes/AuthHandler";
 import Profile from "./routes/Profilepage";
 
+// ProtectedRoute is a component that will check if a user is authenticated
 const ProtectedRoute = ({ element }) => {
 	const [authenticated, setAuthenticated] = useState(null);
 
@@ -52,7 +53,7 @@ const ProtectedRoute = ({ element }) => {
 		return null;
 	}
 
-	return authenticated ? element : <Navigate to="/login" />;
+	return authenticated ? element : <Navigate to="/login" />; // if authenticated, render the element, else redirect to login
 };
 
 const App = () => {

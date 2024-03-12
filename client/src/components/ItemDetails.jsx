@@ -8,6 +8,10 @@ import {
   getAuction,
   getListingImages,
   getAuctionImages,
+  getSavedListing,
+  getSavedAuction,
+  postSavedListing,
+  postSavedAuction,
 } from "../api/items";
 
 const ItemDetails = () => {
@@ -19,6 +23,8 @@ const ItemDetails = () => {
 
   const [item, setItem] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isItemSaved, setItemSaved] = useState(null);
   const [error, setError] = useState(null);
   const [item_images, setImages] = useState([]);
   const isAuction = itemType === "auction";
@@ -48,14 +54,10 @@ const ItemDetails = () => {
     getItem(itemId)
       .then((data) => {
         setItem(data);
-
-        getImages(itemId)
-          .then((data) => {
-            setImages(data);
-          })
-          .catch((error) => {
-            setError(error);
-          });
+        return getImages(itemId); // Return the promise from getImages
+      })
+      .then((data) => {
+        setImages(data);
       })
       .catch((error) => {
         setError(error);
@@ -64,6 +66,41 @@ const ItemDetails = () => {
         setIsLoading(false);
       });
   }, [itemType, itemId]);
+
+  useEffect(() => {
+    const getSavedItem =
+      itemType === "listing"
+        ? getSavedListing
+        : itemType === "auction"
+        ? getSavedAuction
+        : null;
+
+    getSavedItem(itemId)
+      .then((data) => {
+        if (Array.isArray(data) && data.length === 0) {
+          setItemSaved(false);
+        } else {
+          setItemSaved(true);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [itemId]);
+
+  const handleSave = async (itemId) => {
+    setIsSaving(true);
+    if (!localStorage.getItem("token")) {
+      alert("Please log in to save this item.");
+      return;
+    }
+    await (itemType === "listing"
+      ? postSavedListing(itemId)
+      : postSavedAuction(itemId));
+    setIsSaving(false);
+    alert("Item saved!");
+    setItemSaved(true);
+  };
 
   if (isLoading) {
     return null; // makes it less jarring when the page loads
@@ -91,37 +128,34 @@ const ItemDetails = () => {
                       className="d-block w-100 img-fluid rounded-start rounded-end"
                       src={image.image_path}
                       alt="Item"
-                      style={{ objectFit: "contain" , maxHeight: "400px", minHeight: "400px"}}
+                      style={{
+                        objectFit: "contain",
+                        maxHeight: "400px",
+                        minHeight: "400px",
+                      }}
                     />
                   </Carousel.Item>
                 )
               )}
             </Carousel>
           </div>
-
-          {/* card which contains buttons, info, etc */}
           <div className="col col-5">
             <div className="card-body">
               <h5 className="card-title">{item.name}</h5>
-              {isAuction ? (
-                <p className="card-text fs-4">
-                  £{item.highest_bid} <br />
-                  <small className="text-muted fs-6">or Best Offer</small>
-                </p>
-              ) : (
-                <p className="card-text fs-4">
-                  £{item.price} <br />
-                  <small className="text-muted fs-6">or Best Offer</small>
-                </p>
-              )}
-              <p className="card-text">
+              <p className="card-text fs-4">
+                £{isAuction ? item.highest_bid : item.price} <br />
+                <small className="text-muted fs-6">or Best Offer</small>
+              </p>
+              <div className="card-text">
                 <small className="text-muted">
                   {isAuction ? (
                     <>
                       <Link
                         to="#"
-                        style={{ textDecoration: "underline", color: "black" }}
-                        // className="text-decoration-none"
+                        style={{
+                          textDecoration: "underline",
+                          color: "black",
+                        }}
                         onMouseEnter={(e) => (e.target.style.color = "grey")}
                         onMouseLeave={(e) => (e.target.style.color = "black")}
                       >
@@ -147,7 +181,7 @@ const ItemDetails = () => {
                     )}`
                   )}
                 </small>
-              </p>
+              </div>
               <p className="card-text">{item.description}</p>
               <div className="input-group d-flex flex-column justify-content-between mt-auto">
                 <div>
@@ -166,10 +200,18 @@ const ItemDetails = () => {
                     onMouseLeave={(e) =>
                       (e.target.style.backgroundColor = "white")
                     }
+                    onClick={() => handleSave(itemId)}
+                    disabled={isSaving || isItemSaved}
                   >
                     <Link to="#" className="text-decoration-none text-primary">
                       {"\u2661"}{" "}
-                      {isAuction ? "Watch this auction" : "Watch this listing"}
+                      {isAuction
+                        ? isItemSaved
+                          ? "Auction Saved!"
+                          : "Save this auction"
+                        : isItemSaved
+                        ? "Listing Saved!"
+                        : "Save this listing"}
                     </Link>
                   </Button>
                 </div>

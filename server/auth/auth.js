@@ -28,7 +28,7 @@ router.get("/login", (req, res) => {
 });
 
 //this is for backend to check if credentials are valid from there
-router.get("/", async (req, res) => {
+router.get("/", async (req, res) => { // /?username={}&&fullname={},csticket*()
   const { csticket, username, fullname } = req.query; //get params from successful authentication
 
   if (csticket !== req.session.csticket) {
@@ -36,12 +36,12 @@ router.get("/", async (req, res) => {
       message: "Invalid csticket. Your session is invalid or has expired.",
     });
   }
-
+//encode the url and send it to the authentication service (to check if the user is valid or not)
   const encodedUrl = encodeURIComponent(
     `?url=${BACKEND_REDIRECT_URL}&csticket=${req.session.csticket}&version=3&command=confirm&username=${username}&fullname=${fullname}`
   );
   const validateUrl = `${AUTHENTICATION_SERVICE_URL}${encodedUrl}`;
-
+// if the api returns a successful response, store the username and fullname in the session
   try {
     const response = await axios.get(validateUrl);
 
@@ -87,7 +87,7 @@ router.get("/dashboard", async (req, res) => {
       // User does not exist in the database
       // Your code here
       const response = await axios.post(`http://${process.env.IP_ADDRESS || "localhost"}:5000/api/users`, {
-        username: username,
+        id: username,
         name: fullname,
         avatar_path: "images/default_pfp.jpg",
       });
