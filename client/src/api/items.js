@@ -43,21 +43,47 @@ export async function getAuctionBidCount(auctionId) {
   const res = await fetch(`${BASE_URL}/bids/auction/${auctionId}/count`);
   return await res.json();
 }
+//JWT Requests to get all savedauctions and saved listings
 
-export async function getSavedAuctions(userId) {
-  const res = await fetch(`${BASE_URL}/saved_items/auction/${userId}`);
+export async function getSavedAuctions() {
+  const token = localStorage.getItem("token");
+  if(!token) {
+    return null;
+  }
+  const res = await fetch (`${BASE_URL}/saved_items/get/auctions/user/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
   return await res.json();
 }
 
-export async function getSavedListings(userId) {
-  const res = await fetch(`${BASE_URL}/saved_items/listing/${userId}`);
+export async function getSavedListings() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/saved_items/get/listings/user/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
   return await res.json();
+  
 }
 
 //JWT Requests
 
 export async function getSavedListing(listingID) {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token"); //
   if (!token) {
     return null;
   }
