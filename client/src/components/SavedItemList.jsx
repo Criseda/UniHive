@@ -34,10 +34,14 @@ const SavedItemList = () => {
 const handleRemove = (item) => {
   if('price' in item){
     deleteSavedListing(item.id)
-      .then(() => window.location.reload());
+      .then(() => {
+        window.alert('Listing has been deleted')
+        window.location.reload()});
+
   } else if('highest_bid' in item) {
     deleteSavedAuction(item.id)
       .then(() => {
+        window.alert('Auction has been deleted')
         window.location.reload();
       });
   }
