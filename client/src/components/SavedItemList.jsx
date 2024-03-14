@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { getSavedAuctions } from "../api/items";
 import { getSavedListings } from "../api/items";
 import { useNavigate } from "react-router-dom";
+import {deleteSavedListing} from "../api/items";
+import {deleteSavedAuction} from "../api/items";
 
 const SavedItemList = () => {
   const [items, setItems] = useState([]);
@@ -27,6 +29,22 @@ const SavedItemList = () => {
         setIsLoading(false);
       });
   }, []);
+
+//Removes the item from the saved items list (unfinished)
+const handleRemove = (item) => {
+  if('price' in item){
+    deleteSavedListing(item.id)
+      .then(() => window.location.reload());
+  } else if('highest_bid' in item) {
+    deleteSavedAuction(item.id)
+      .then(() => {
+        window.location.reload();
+      });
+  }
+  else {
+    console.log("Error: Item not found");
+  }
+};
 
   
   if (isLoading) {
@@ -55,6 +73,10 @@ const SavedItemList = () => {
             <button type="button" class="btn btn-outline-success">
               Talk with Seller
             </button>
+            <button type ="button" class = "btn btn-outline-danger" onClick = {() => handleRemove(item)}>
+              Remove saved Item
+            </button>
+
           </div>
         </div>
       ))}
