@@ -45,6 +45,7 @@ export async function getAuctionBidCount(auctionId) {
 }
 //JWT Requests to get all savedauctions and saved listings
 
+//get all saved auctions
 export async function getSavedAuctions() {
   const token = localStorage.getItem("token");
   if(!token) {
@@ -61,7 +62,7 @@ export async function getSavedAuctions() {
   });
   return await res.json();
 }
-
+//get all saved listings
 export async function getSavedListings() {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -79,6 +80,44 @@ export async function getSavedListings() {
   return await res.json();
   
 }
+
+//Delete saved listing
+export async function deleteSavedListing(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/saved_items/delete/listings/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}
+
+//Delete saved auctions
+export async function deleteSavedAuction(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/saved_items/delete/auctions/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}
+
+
 
 //JWT Requests
 
