@@ -6,30 +6,7 @@ const { cookieJWTAuth } = require("../middleware/cookieJWTAuth");
 
 //define routes for saved items here
 
-//Get all saved_listings and saved_auctions depending on user id
-
-/* 
-router.get("/user/:user_id", async (req, res) => {
-  try {
-    const { user_id } = req.params;
-    const savedListings = await pool.query(
-      "SELECT * FROM saved_listings WHERE user_id = $1",
-      [user_id]
-    );
-    const savedAuctions = await pool.query(
-      "SELECT * FROM saved_auctions WHERE user_id = $1",
-      [user_id]
-    );
-    res.json({
-      savedListings: savedListings.rows,
-      savedAuctions: savedAuctions.rows,
-    }); //return saved items
-  } catch (error) {
-    console.error(error.message);
-  }
-});*/
-
-//Get saved_auctions from auctions table depending on user id
+//Get saved_auctions from auctions table depending on user id (to render saved items)
 router.post("/get/auctions/user/", cookieJWTAuth, async (req, res) => {
   try {
     
@@ -58,7 +35,7 @@ router.post("/get/auctions/user/", cookieJWTAuth, async (req, res) => {
   }
 });
 
-//Get saved_listings from listing table depending on user id
+//Get saved_listings from listing table depending on user id (to render saved items)
 router.post("/get/listings/user/", cookieJWTAuth, async (req, res) => {
   try {
     
@@ -80,7 +57,7 @@ router.post("/get/listings/user/", cookieJWTAuth, async (req, res) => {
   }
 });
 
-//Cris functions!
+
 //Get saved_listing from listing table depending on listing id
 router.post("/get/listing/:listing_id", cookieJWTAuth, async (req, res) => {
   try {
@@ -97,6 +74,7 @@ router.post("/get/listing/:listing_id", cookieJWTAuth, async (req, res) => {
     console.error(error.message);
   }
 });
+
 
 //POST create a saved_listing
 router.post("/listing/:id", cookieJWTAuth, async (req, res) => {
@@ -135,6 +113,39 @@ router.post("/get/auction/:auction_id", cookieJWTAuth, async (req, res) => {
   }
 });
 
+
+//Delete a saved_listing
+router.delete("/delete/listings/:id", cookieJWTAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user_id = req.username;
+    const deleteSavedListing = await pool.query(
+      "DELETE FROM saved_listings WHERE listing_id = $1 AND user_id = $2",
+      [id, user_id]
+    );
+    res.json("Saved listing was deleted"); //return message
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+//delete a saved_auction
+router.delete("/delete/auctions/:id", cookieJWTAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user_id = req.username;
+    const deleteSavedAuction = await pool.query(
+      "DELETE FROM saved_auctions WHERE auction_id = $1 AND user_id = $2",
+      [id, user_id]
+    );
+    res.json("Saved auction was deleted"); //return message
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+
+
 //POST create a saved_auction
 router.post("/auction/:id", cookieJWTAuth, async (req, res) => {
   try {
@@ -153,6 +164,31 @@ router.post("/auction/:id", cookieJWTAuth, async (req, res) => {
   }
 });
 
+//routes for debugging purpouses 
+
+//get all saved listings 
+router.get("/listings", async (req, res) => {
+  try {
+    const allSavedListings = await pool.query("SELECT * FROM saved_listings");
+    res.json(allSavedListings.rows);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+//get all saved auctions
+router.get("/auctions", async (req, res) => {
+  try {
+    const allSavedAuctions = await pool.query("SELECT * FROM saved_auctions");
+    res.json(allSavedAuctions.rows);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+
+
+/* 
 //Delete a saved_auction
 router.delete("/auction/:id", async (req, res) => {
   try {
@@ -168,7 +204,7 @@ router.delete("/auction/:id", async (req, res) => {
 });
 
 //Delete a saved_listing
-router.delete("/listing/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deleteSavedListing = await pool.query(
@@ -180,6 +216,12 @@ router.delete("/listing/:id", async (req, res) => {
     console.error(error.message);
   }
 });
+
+
+
+
+
+
 
 //Delete all saved_items depending on user id
 router.delete("/user/:user_id", async (req, res) => {
@@ -199,6 +241,6 @@ router.delete("/user/:user_id", async (req, res) => {
   }
 });
 
-
+*/
 
 module.exports = router;
