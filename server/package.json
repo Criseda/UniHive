@@ -4,7 +4,11 @@
   "description": "first year group project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app",
+    "drop-db": "db-migrate down -m ./migrations/unihive-db/",
+    "create-db": "db-migrate up -m ./migrations/unihive-db/",
+    "insert-data": "node ./migrations/unihive-data/insert-data.js"
   },
   "repository": {
     "type": "git",
