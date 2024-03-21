@@ -37,10 +37,10 @@ npm install
 START the servers:
 ```
 cd server
-nodemon index
+npm start
 cd ..
 cd client
-nodemon index
+npm start
 ```
 If there are any errors whatsapp me, there shouldn't be.
 
@@ -66,14 +66,21 @@ CREATE DATABASE unihive;
 ```
 You should now see a new database 'unihive', with the owner being 'unihive', as opposed to postgres
 
-Now it's time to create the tables in the database. open a terminal and run the following commands:
+## COMMANDS TO RUN AFTER SETTING UP THE DATABASE
+Now it's time to create the tables in the database. open a terminal and run the following command:
 ```
 cd server
-db-migrate up
+npm run create-db
 ```
-This will create the tables in the database. To delete the tables (if need be at any point), run the following command:
+To insert dummy data into the database, run the following command:
 ```
-db-migrate down
+cd server
+npm run insert-data
+```
+To delete the tables (if need be at any point), run the following command:
+```
+cd server
+npm run drop-db
 ```
 ## Historic changes
 
