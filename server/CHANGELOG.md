@@ -38,3 +38,12 @@ Item_refine commit:
 - Last but not least, I made an option to use environment variables if you want to specify your PC's local network address when starting the server
 - This is if u want to test the app on a phone, for example
 - just be sure to add it in the /server/.env file: `IP_ADDRESS:xxx.xxx.xxx.xxx`
+
+## Cristian Preda @ 21st Mar 2024
+Develop general commit:
+- Made running and developing for backend easier.
+- `npm start` will now run the old command `nodemon app`. now you can npm start both client and server with the same command.
+- `npm run drop-db` will now run the old command `db-migrate down`
+- `npm run create-db` will now run the old command `db-migrate up`
+- NEW COMMAND: `npm run insert-data` will now populate the database with a few users, and those users have some auctions and listing created for them.
+- this new command is built from path: `/migrations/unihive-data`. Read the code from there to see how it works and/or add your own placeholder data!.
