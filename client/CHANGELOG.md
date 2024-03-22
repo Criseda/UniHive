@@ -36,3 +36,7 @@ SESSION_SECRET=super_secret_SESSION_key
 - Added option to use a .env file if you want to run the application on your local network
 - Just make a .env file inside /client, with `REACT_APP_IP_ADDRESS:xxx.xxx.xxx.xxx` within it.
 - This is if you want to check how the application works on other devices that are connected to the network e.g phones.
+
+# Cristian Preda @ 22nd Mar 2024
+## Develop quality of life commit 2:
+- Added `.env.example` file for `/client` and `/server`. Paste the contents into a `.env` file in the same directory as the example and that will initialise the environment variables for the application

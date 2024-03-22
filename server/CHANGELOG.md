@@ -40,10 +40,14 @@ Item_refine commit:
 - just be sure to add it in the /server/.env file: `IP_ADDRESS:xxx.xxx.xxx.xxx`
 
 ## Cristian Preda @ 21st Mar 2024
-Develop general commit:
+Develop quality of life commit 1:
 - Made running and developing for backend easier.
 - `npm start` will now run the old command `nodemon app`. now you can npm start both client and server with the same command.
 - `npm run drop-db` will now run the old command `db-migrate down`
 - `npm run create-db` will now run the old command `db-migrate up`
 - NEW COMMAND: `npm run insert-data` will now populate the database with a few users, and those users have some auctions and listing created for them.
 - this new command is built from path: `/migrations/unihive-data`. Read the code from there to see how it works and/or add your own placeholder data!.
+
+## Cristian Preda @ 22nd Mar 2024
+Develop quality of life commit 2:
+- Added `.env.example` file for `/client` and `/server`. Paste the contents into a `.env` file in the same directory as the example and that will initialise the environment variables for the application

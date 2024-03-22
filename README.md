@@ -82,6 +82,10 @@ To delete the tables (if need be at any point), run the following command:
 cd server
 npm run drop-db
 ```
+
+## SET UP ENVIRONMENT VARIABLES
+Now that the database is set up and created on the local machine, let's set up the environment variables.
+Check `.env.example` file in both client and server. Copy what is in `.env.example`, then in the same directory create a `.env` file. Paste the example variables into the `.env`. You can leave the SESSION and the JWT variables the example variables while testing. But in production build we will need to provide the app cryptographically random keys for those variables.
 ## Historic changes
 
 v0.1.0 - Initial commit
