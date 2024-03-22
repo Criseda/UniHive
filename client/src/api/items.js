@@ -1,5 +1,5 @@
 const BASE_URL = `http://${
-  process.env.REACT_APP_IP_ADDRESS || "localhost"
+  process.env.REACT_APP_SERVER_HOST || "localhost"
 }:5000/api/`;
 
 //GET requests
