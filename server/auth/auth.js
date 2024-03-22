@@ -11,8 +11,8 @@ const AUTHENTICATION_SERVICE_URL =
   "http://studentnet.cs.manchester.ac.uk/authenticate/";
 const AUTHENTICATION_LOGOUT_URL =
   "http://studentnet.cs.manchester.ac.uk/systemlogout.php";
-const BACKEND_REDIRECT_URL = `http://${process.env.IP_ADDRESS || "localhost"}:5000/auth/`;
-const FRONTEND_URL = `http://${process.env.IP_ADDRESS || "localhost"}:3000/AuthHandler`;
+const BACKEND_REDIRECT_URL = `http://${process.env.SERVER_HOST || "localhost"}:5000/auth/`;
+const FRONTEND_URL = `http://${process.env.CLIENT_HOST || "localhost"}:3000/AuthHandler`;
 
 router.get("/login", (req, res) => {
   // generate a ticket
@@ -79,14 +79,14 @@ router.get("/dashboard", async (req, res) => {
   //if not, add them to the database.
   try {
     const response = await axios.get(
-      `http://${process.env.IP_ADDRESS || "localhost"}:5000/api/users/check/${username}`
+      `http://${process.env.SERVER_HOST || "localhost"}:5000/api/users/check/${username}`
     );
     const exists = response.data.exists;
 
     if (!exists) {
       // User does not exist in the database
       // Your code here
-      const response = await axios.post(`http://${process.env.IP_ADDRESS || "localhost"}:5000/api/users`, {
+      const response = await axios.post(`http://${process.env.SERVER_HOST || "localhost"}:5000/api/users`, {
         id: username,
         name: fullname,
         avatar_path: "images/default_pfp.jpg",
