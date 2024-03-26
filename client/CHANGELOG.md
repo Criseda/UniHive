@@ -47,11 +47,15 @@ SESSION_SECRET=super_secret_SESSION_key
 - The modal will allow the user to submit their own bid on the auction.
 - Leverages AuctionBidIncrement.js which calculates the step which you can bid on auctions (logic is the same as eBay's)
 
-## notes for me later:
-- send post req to backend. Also add the auction to the saved item list if havent done already.
-- implement a little notification thing? to signal when the auction ended, if you have won it or not. (would probably need a new page altogether, or maybe another modal, a notification box or something like that.)
-
 ## Other changes:
 - Greatly simplified ItemDetails.jsx code. It became very cluttered with the image carousel and all the button implementations.
 - I have abstracted a lot of components that used to be in ItemDetails into their own separate components for ease of readability and debugging
 - New components: SaveItemButton, ItemInfo, AuctionBidIncrement
+
+## 26th Mar 2024:
+- Added POST request to `api/items.js` backend call route.
+- Made a method which refreshes the item page when the bid has been submitted.
+  
+## TODO:
+- Also add the auction to the saved item list, if the user has bidded on it.
+- implement a little notification thing? to signal when the auction ended, if you have won it or not. (would probably need a new page altogether, or maybe another modal, a notification box or something like that.)
