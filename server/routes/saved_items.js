@@ -68,7 +68,6 @@ router.post("/get/listing/:listing_id", cookieJWTAuth, async (req, res) => {
       "SELECT * FROM saved_listings WHERE listing_id = $1 AND user_id = $2",
       [id, user_id]
     );
-    console.log(savedListings.rows);
     res.json(savedListings.rows); //return saved items with listing details
   } catch (error) {
     console.error(error.message);
@@ -82,8 +81,6 @@ router.post("/listing/:id", cookieJWTAuth, async (req, res) => {
     const { id } = req.params;
     const listing_id = id; //store it as another constant
     const user_id = req.username; //get username from the response of cookieJWTAuth middleware
-    console.log(user_id);
-    console.log(id);
     const newSavedListing = await pool.query(
       "INSERT INTO saved_listings (user_id, listing_id) VALUES($1, $2) RETURNING *",
       [user_id, listing_id]
@@ -100,13 +97,10 @@ router.post("/get/auction/:auction_id", cookieJWTAuth, async (req, res) => {
     const { auction_id } = req.params;
     const id = auction_id;
     const user_id = req.username;
-    console.log(user_id);
-    console.log(id);
     const savedAuctions = await pool.query(
       "SELECT * FROM saved_auctions WHERE auction_id = $1 AND user_id = $2",
       [id, user_id]
     );
-    console.log(savedAuctions.rows);
     res.json(savedAuctions.rows); //return saved auctions with auction details
   } catch (error) {
     console.error(error.message);
@@ -152,8 +146,6 @@ router.post("/auction/:id", cookieJWTAuth, async (req, res) => {
     const { id } = req.params;
     const auction_id = id; //get auction_id from the url and store it as another constant
     const user_id = req.username; //get username from the response of cookieJWTAuth middleware
-    console.log(user_id);
-    console.log(auction_id);
     const newSavedAuction = await pool.query(
       "INSERT INTO saved_auctions (user_id, auction_id) VALUES($1, $2) RETURNING *",
       [user_id, auction_id]
@@ -185,62 +177,5 @@ router.get("/auctions", async (req, res) => {
     console.error(error.message);
   }
 });
-
-
-
-/* 
-//Delete a saved_auction
-router.delete("/auction/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deleteSavedAuction = await pool.query(
-      "DELETE FROM saved_auctions WHERE id = $1",
-      [id]
-    );
-    res.json("Saved auction was deleted"); //return message
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-//Delete a saved_listing
-router.delete("/delete/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deleteSavedListing = await pool.query(
-      "DELETE FROM saved_listings WHERE id = $1",
-      [id]
-    );
-    res.json("Saved listing was deleted"); //return message
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-
-
-
-
-
-
-//Delete all saved_items depending on user id
-router.delete("/user/:user_id", async (req, res) => {
-  try {
-    const { user_id } = req.params;
-    const deleteSavedListings = await pool.query(
-      "DELETE FROM saved_listings WHERE user_id = $1",
-      [user_id]
-    );
-    const deleteSavedAuctions = await pool.query(
-      "DELETE FROM saved_auctions WHERE user_id = $1",
-      [user_id]
-    );
-    res.json("All saved items were deleted"); //return message
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-*/
 
 module.exports = router;

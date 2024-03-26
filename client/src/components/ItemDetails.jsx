@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Countdown from "./AuctionCountdown";
-import AuctionBidCount from "./AuctionBidCount";
-import { Carousel, Button } from "react-bootstrap";
+import ImageCarousel from "./ImageCarousel.jsx";
+import ItemInfo from "./ItemInfo.jsx";
+import AuctionModal from "./AuctionModal.jsx";
+import SaveItemButton from "./SaveItemButton.jsx";
+import calculateBidIncrement from "./AuctionBidIncrement.js";
+import { Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import {
   getListing,
   getAuction,
   getListingImages,
   getAuctionImages,
-  getSavedListing,
-  getSavedAuction,
-  postSavedListing,
-  postSavedAuction,
+  postAuctionBid,
 } from "../api/items";
 
 const ItemDetails = () => {
@@ -23,10 +23,12 @@ const ItemDetails = () => {
 
   const [item, setItem] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-  const [isItemSaved, setItemSaved] = useState(null);
   const [error, setError] = useState(null);
   const [item_images, setImages] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [userBid, setUserBid] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const isAuction = itemType === "auction";
 
   useEffect(() => {
@@ -54,6 +56,11 @@ const ItemDetails = () => {
     getItem(itemId)
       .then((data) => {
         setItem(data);
+        setUserBid(
+          (
+            Number(data.highest_bid) + calculateBidIncrement(data.highest_bid)
+          ).toFixed(2)
+        );
         return getImages(itemId); // Return the promise from getImages
       })
       .then((data) => {
@@ -65,41 +72,28 @@ const ItemDetails = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [itemType, itemId]);
+  }, [itemType, itemId, refreshKey]);
 
-  useEffect(() => {
-    const getSavedItem =
-      itemType === "listing"
-        ? getSavedListing
-        : itemType === "auction"
-        ? getSavedAuction
-        : null;
+  const refreshPage = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
 
-    getSavedItem(itemId)
-      .then((data) => {
-        if (Array.isArray(data) && data.length === 0) {
-          setItemSaved(false);
-        } else {
-          setItemSaved(true);
-        }
+  const handleBidSubmit = (e) => {
+    e.preventDefault();
+    // Handle the bid submission here
+    
+    postAuctionBid(itemId, userBid)
+      .then((response) => {
+        // Handle the response here
+        console.log("Bid submitted successfully", response);
+        refreshPage();
+        setShowModal(false);
       })
       .catch((error) => {
-        console.error(error);
+        // Handle the error here
+        console.error("Error submitting bid:", error);
+        setShowModal(false);
       });
-  }, [itemId]);
-
-  const handleSave = async (itemId) => {
-    setIsSaving(true);
-    if (!localStorage.getItem("token")) {
-      alert("Please log in to save this item.");
-      return;
-    }
-    await (itemType === "listing"
-      ? postSavedListing(itemId)
-      : postSavedAuction(itemId));
-    setIsSaving(false);
-    alert("Item saved!");
-    setItemSaved(true);
   };
 
   if (isLoading) {
@@ -119,101 +113,36 @@ const ItemDetails = () => {
       <div className="card">
         <div className="row g-0">
           <div className="col">
-            {/* carousel of images, all container inside the listing_image table */}
-            <Carousel>
-              {[{ image_path: item.image_path }, ...item_images].map(
-                (image, index) => (
-                  <Carousel.Item key={index}>
-                    <img
-                      className="d-block w-100 img-fluid rounded-start rounded-end"
-                      src={image.image_path}
-                      alt="Item"
-                      style={{
-                        objectFit: "contain",
-                        maxHeight: "400px",
-                        minHeight: "400px",
-                      }}
-                    />
-                  </Carousel.Item>
-                )
-              )}
-            </Carousel>
+            <ImageCarousel
+              images={[{ image_path: item.image_path }, ...item_images]}
+            />
           </div>
           <div className="col col-5">
             <div className="card-body">
-              <h5 className="card-title">{item.name}</h5>
-              <p className="card-text fs-4">
-                £{isAuction ? item.highest_bid : item.price} <br />
-                <small className="text-muted fs-6">or Best Offer</small>
-              </p>
-              <div className="card-text">
-                <small className="text-muted">
-                  {isAuction ? (
-                    <>
-                      <Link
-                        to="#"
-                        style={{
-                          textDecoration: "underline",
-                          color: "black",
-                        }}
-                        onMouseEnter={(e) => (e.target.style.color = "grey")}
-                        onMouseLeave={(e) => (e.target.style.color = "black")}
-                      >
-                        <AuctionBidCount auctionId={itemId} />
-                      </Link>
-                      <span className="mx-2">&bull;</span>
-                      <Countdown
-                        closingDate={item.closing_date}
-                        isAuction={isAuction}
-                      />
-                    </>
-                  ) : (
-                    `Listed on ${new Date(item.created_at).toLocaleDateString(
-                      "en-us",
-                      {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
-                      }
-                    )}`
-                  )}
-                </small>
-              </div>
-              <p className="card-text">{item.description}</p>
+              <ItemInfo item={item} isAuction={isAuction} itemId={itemId} />
               <div className="input-group d-flex flex-column justify-content-between mt-auto">
                 <div>
-                  <Button variant="primary" className="mb-2 d-block w-100">
+                  <Button
+                    variant="primary"
+                    className="mb-2 d-block w-100"
+                    onClick={() => {
+                      if (isAuction) setShowModal(true);
+                    }}
+                  >
                     <Link to="#" className="text-decoration-none text-white">
                       {isAuction ? "Submit Bid" : "Make Offer"}
                     </Link>
                   </Button>
-                  <Button
-                    variant="outline-primary"
-                    className="mb-2 d-block w-100 text-primary"
-                    style={{ backgroundColor: "white" }}
-                    onMouseEnter={(e) =>
-                      (e.target.style.backgroundColor = "#f2f2f2")
-                    } // light gray
-                    onMouseLeave={(e) =>
-                      (e.target.style.backgroundColor = "white")
-                    }
-                    onClick={() => handleSave(itemId)}
-                    disabled={isSaving || isItemSaved}
-                  >
-                    <Link to="#" className="text-decoration-none text-primary">
-                      {"\u2661"}{" "}
-                      {isAuction
-                        ? isItemSaved
-                          ? "Auction Saved!"
-                          : "Save this auction"
-                        : isItemSaved
-                        ? "Listing Saved!"
-                        : "Save this listing"}
-                    </Link>
-                  </Button>
+                  <AuctionModal
+                    showModal={showModal}
+                    handleClose={() => setShowModal(false)}
+                    handleBidSubmit={handleBidSubmit}
+                    item={item}
+                    userBid={userBid}
+                    setUserBid={setUserBid}
+                    calculateBidIncrement={calculateBidIncrement}
+                  />
+                  <SaveItemButton itemId={itemId} itemType={itemType} />
                 </div>
                 <div className="align-self-end">
                   <Button variant="danger" className="btn-sm">

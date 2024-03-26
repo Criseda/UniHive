@@ -51,3 +51,8 @@ Develop quality of life commit 1:
 ## Cristian Preda @ 22nd Mar 2024
 Develop quality of life commit 2:
 - Added `.env.example` file for `/client` and `/server`. Paste the contents into a `.env` file in the same directory as the example and that will initialise the environment variables for the application
+
+## Cristian Preda @ 26th Mar 2024
+auction-modal commit:
+- `routes/bids.js`: Added another POST request in the bids route. This POST request will post a bid depending on which user is logged in (with the use of JWT).
+- `routes/saved_items.js`: Removed commented code that is not in use anymore

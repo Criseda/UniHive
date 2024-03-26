@@ -188,3 +188,23 @@ export async function postSavedAuction(id) {
   });
   return await res.json();
 }
+
+// Auction POST requests
+
+export async function postAuctionBid(auctionId, bidAmount) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/bids/auction/${auctionId}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+      amount: bidAmount,
+    }),
+  });
+  return await res.json();
+}
