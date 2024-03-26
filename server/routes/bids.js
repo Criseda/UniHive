@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
+const { cookieJWTAuth } = require("../middleware/cookieJWTAuth");
 
 // define routes for bids(on listings) here
 
@@ -65,6 +66,22 @@ router.post("/", async (req, res) => {
     const newBid = await pool.query(
       "INSERT INTO bid (bidder_id, auction_id, amount) VALUES ($1, $2, $3) RETURNING *",
       [bidder_id, auction_id, amount]
+    );
+    res.json(newBid.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// create a bid for a specific auction, with the id in the url and the bidder_id from JWT
+router.post("/auction/:id", cookieJWTAuth, async (req, res) => {
+  const { id } = req.params;
+  const bidder_id = req.username;
+  const amount = req.body.amount;
+  try {
+    const newBid = await pool.query(
+      "INSERT INTO bid (bidder_id, auction_id, amount) VALUES ($1, $2, $3) RETURNING *",
+      [bidder_id, id, amount]
     );
     res.json(newBid.rows[0]);
   } catch (err) {
