@@ -11,6 +11,7 @@ import {
   getAuction,
   getListingImages,
   getAuctionImages,
+  postAuctionBid,
 } from "../api/items";
 
 const ItemDetails = () => {
@@ -26,6 +27,7 @@ const ItemDetails = () => {
   const [item_images, setImages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [userBid, setUserBid] = useState(0);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const isAuction = itemType === "auction";
 
@@ -70,15 +72,28 @@ const ItemDetails = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [itemType, itemId]);
+  }, [itemType, itemId, refreshKey]);
+
+  const refreshPage = () => {
+    setRefreshKey((prevKey) => prevKey + 1);
+  };
 
   const handleBidSubmit = (e) => {
     e.preventDefault();
     // Handle the bid submission here
-    console.log("Bid submitted:", userBid);
-    console.log("Item ID:", itemId);
-    console.log("Highest bid before this:", item.highest_bid);
-    setShowModal(false);
+    
+    postAuctionBid(itemId, userBid)
+      .then((response) => {
+        // Handle the response here
+        console.log("Bid submitted successfully", response);
+        refreshPage();
+        setShowModal(false);
+      })
+      .catch((error) => {
+        // Handle the error here
+        console.error("Error submitting bid:", error);
+        setShowModal(false);
+      });
   };
 
   if (isLoading) {
