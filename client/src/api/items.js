@@ -117,7 +117,45 @@ export async function deleteSavedAuction(id) {
   return await res.json();
 }
 
+//messages requests
 
+//This will take in user2 (the person to message) and feed in this information to the backend
+export async function createMessageRoom(user2){
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}messages/room`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+      user2_id: user2,
+    }),
+  });
+};
+
+
+export async function getMessageRoomByUser(id){
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}messages/room/user/${id}`);
+  return await res.json();
+}
+
+export async function getMessageRoom(id){
+  const res = await fetch(`${BASE_URL}messages/room/${id}`);
+  return await res.json();
+}
+
+export async function getAllMessageRooms(){
+  const res = await fetch(`${BASE_URL}messages/room`);
+  return await res.json();
+}
 
 //JWT Requests
 
