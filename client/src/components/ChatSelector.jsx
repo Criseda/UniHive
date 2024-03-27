@@ -2,6 +2,7 @@ import React from "react";
 
 const ChatSelector = () => {
   return (
+    <button>
     <a href="#" className="d-flex align-items-center">
       <div className="flex-shrink-0">
         <img
@@ -16,6 +17,7 @@ const ChatSelector = () => {
         <p>Item name</p>
       </div>
     </a>
+    </button>
   );
 };
 
