@@ -4,6 +4,8 @@
 --command: db-migrate down
 --alternative command if that doesn't work: db-migrate reset
 
+DROP TABLE IF EXISTS messageRoom;
+
 DROP TABLE IF EXISTS saved_auctions;
 
 DROP TABLE IF EXISTS saved_listings;

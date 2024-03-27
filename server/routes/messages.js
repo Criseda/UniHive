@@ -1,6 +1,72 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
+const { cookieJWTAuth } = require("../middleware/cookieJWTAuth");
+
+//Room routes 
+
+//create a messageRoom 
+router.post("/room", cookieJWTAuth, async (req, res) => {
+  try { 
+    console.log("create a messageRoom")
+    const user_id = req.username;
+    const { user2_id } = req.body;
+    const newMessageRoom = await pool.query("INSERT INTO messageRoom (user1, user2) VALUES($1, $2) RETURNING *", [user_id, user2_id]);
+    console.log(newMessageRoom.rows[0]);
+    res.json(newMessageRoom.rows[0]);
+    
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+
+//get all messageRooms
+router.get("/room", async (req, res) => {
+  try {
+  const allMessageRooms = await pool.query("SELECT * FROM messageRoom");
+  res.json(allMessageRooms.rows);
+  } catch (err) {
+  console.error(err.message);
+  }
+}); 
+
+//get a specific messageRoom id by user id ; 
+router.get("/room/:id", async (req, res) => {
+  try {
+  const { id } = req.params;
+  const messageRoom = await pool.query("SELECT * FROM messageRoom WHERE id = $1", [id]);
+  res.json(messageRoom.rows[0]);
+  } catch (err) {
+  console.error(err.message);
+  }
+});
+
+
+//Delete a messageRoom by id
+router.delete("/room/:id", async (req, res) => {
+  try {
+  const { id } = req.params;
+  const deleteMessageRoom = await pool.query("DELETE FROM messageRoom WHERE id = $1", [id]);
+  res.json("MessageRoom was deleted!");
+  } catch (err) {
+  console.error(err.message);
+  }
+});
+
+//get messageroom by user id
+router.get("/room/user/:id", async (req, res) => {
+  try {
+  const { id } = req.params;
+  const messageRoom = await pool.query("SELECT * FROM messageRoom WHERE user1_id = $1 OR user2_id = $1", [id]);
+  res.json(messageRoom.rows);
+  } catch (err) {
+  console.error(err.message);
+  }
+});
+
+
+
 
 // define routes for messages here
 
