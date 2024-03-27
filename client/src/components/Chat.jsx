@@ -1,7 +1,37 @@
 import React from "react";
+import { useEffect, useState} from "react";
 import ChatSelector from "./ChatSelector";
+import io from "socket.io-client";
+const socket = io("http://localhost:5000");
 
-const chat = () => {
+
+const Chat = () => { 
+  const [message, setMessage] = useState("");
+  const [messageReceived, setMessageReceived] = useState("");
+  const [room, setRoom] = useState("");
+
+  const sendMessage = () => {
+   socket.emit("send_message", {message});  
+    };
+
+  const joinRoom = () => {
+    if (room !== ""){
+      socket.emit("join_room", room);
+    };
+  };
+
+  //will always watch for recieve message event and alert the message
+  useEffect(() => {
+    socket.on("recieve_message", (data) => {
+      setMessageReceived(data.message);
+  }, [socket]);
+
+  });
+  
+//Need to implement room concept but use user icons to change room number.
+//Need to implement the ability to generate a unique room number everytime a user is created. 
+
+
   return (
     <section className="message-area">
       <div className="container">
@@ -27,7 +57,7 @@ const chat = () => {
                             src="https://mehedihtml.com/chatbox/assets/img/add.svg"
                             alt="add"
                           />
-                        </a>
+                        </a> 
                       </div>
                       <ul className="nav nav-tabs" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
@@ -73,6 +103,8 @@ const chat = () => {
                             {/* chat-list */}
                             <div className="chat-list">
                               <ChatSelector />
+                              <ChatSelector />
+                                                           
                             </div>
                             {/* chat-list */}
                           </div>
@@ -84,7 +116,9 @@ const chat = () => {
                           >
                             {/* chat-list */}
                             <div className="chat-list">
+    {/*Implement logic to stack chats on top of eachother */} 
                               <ChatSelector />
+                              <ChatSelector/> 
                             </div>
                             {/* chat-list */}
                           </div>
@@ -97,6 +131,7 @@ const chat = () => {
               </div>
               {/* chatlist */}
               {/* chatbox */}
+             
               <div className="chatbox">
                 <div className="modal-dialog-scrollable">
                   <div className="modal-content">
@@ -104,7 +139,7 @@ const chat = () => {
                       <div className="row">
                         <div className="col-8">
                           <div className="d-flex align-items-center">
-                            <span className="chat-icon">
+                             <span className="chat-icon">
                               <img
                                 className="img-fluid"
                                 src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg"
@@ -116,14 +151,15 @@ const chat = () => {
                                 className="img-fluid"
                                 src="https://mehedihtml.com/chatbox/assets/img/user.png"
                                 alt="user img"
-                              />
-                            </div>
+                              /> 
+                            </div> 
                             <div className="flex-grow-1 ms-3">
-                              <h3>Person Name</h3>
-                              <p>Item name</p>
-                            </div>
+                              <h3>person name</h3>
+                              <p>Item name</p> 
+                            </div>  
                           </div>
-                        </div>
+                        </div> 
+                        
                         <div className="col-4">
                           <ul className="moreoption">
                             <li className="navbar nav-item dropdown">
@@ -201,7 +237,7 @@ const chat = () => {
                             <span className="time">10:36 am</span>
                           </li>
                           <li className="repaly">
-                            <p>yes... on it</p>
+                            <p>{messageReceived}</p>
                             <span className="time">junt now</span>
                           </li>
                         </ul>
@@ -214,8 +250,9 @@ const chat = () => {
                           className="form-control"
                           aria-label="message…"
                           placeholder="Write message…"
+                          onChange={(event) => {setMessage(event.target.value)}}
                         />
-                        <button type="button">
+                        <button type="button" onClick={sendMessage}>
                           <i className="fa fa-paper-plane" aria-hidden="true" />{" "}
                           Send
                         </button>
@@ -253,6 +290,6 @@ const chat = () => {
       </div>
     </section>
   );
-};
+}
 
-export default chat;
+export default Chat;
