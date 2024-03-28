@@ -211,7 +211,7 @@ const Chat = () => {
                             <p> Hey, Are you there? </p>
                             <span className="time">10:16 am</span>
                           </li>
-                          <li className="repaly">
+                          <li className="reply">
                             <p>yes!</p>
                             <span className="time">10:20 am</span>
                           </li>
@@ -223,7 +223,7 @@ const Chat = () => {
                             <p> Hey, Are you there? </p>
                             <span className="time">10:32 am</span>
                           </li>
-                          <li className="repaly">
+                          <li className="reply">
                             <p>How are you?</p>
                             <span className="time">10:35 am</span>
                           </li>
@@ -232,13 +232,13 @@ const Chat = () => {
                               <h6>Today</h6>
                             </div>
                           </li>
-                          <li className="repaly">
+                          <li className="reply">
                             <p> yes, tell me</p>
                             <span className="time">10:36 am</span>
                           </li>
-                          <li className="repaly">
+                          <li className="reply">
                             <p>{messageReceived}</p>
-                            <span className="time">junt now</span>
+                            <span className="time">Just Now</span>
                           </li>
                         </ul>
                       </div>
