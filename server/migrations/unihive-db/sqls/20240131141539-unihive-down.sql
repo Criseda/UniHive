@@ -4,31 +4,31 @@
 --command: db-migrate down
 --alternative command if that doesn't work: db-migrate reset
 
-DROP TABLE IF EXISTS messageRoom;
+DROP TABLE IF EXISTS messageRoom CASCADE;
 
-DROP TABLE IF EXISTS saved_auctions;
+DROP TABLE IF EXISTS saved_auctions CASCADE;
 
-DROP TABLE IF EXISTS saved_listings;
+DROP TABLE IF EXISTS saved_listings CASCADE;
 
-DROP TABLE IF EXISTS bid;
+DROP TABLE IF EXISTS bid CASCADE;
 
-DROP TABLE IF EXISTS auction_image;
+DROP TABLE IF EXISTS auction_image CASCADE;
 
-DROP TABLE IF EXISTS listing_image;
+DROP TABLE IF EXISTS listing_image CASCADE;
 
-DROP TABLE IF EXISTS report;
+DROP TABLE IF EXISTS report CASCADE;
 
-DROP TABLE IF EXISTS review;
+DROP TABLE IF EXISTS review CASCADE;
 
-DROP TABLE IF EXISTS message;
+DROP TABLE IF EXISTS message CASCADE;
 
-DROP TABLE IF EXISTS listing;
+DROP TABLE IF EXISTS listing CASCADE;
 
-DROP TABLE IF EXISTS profile;
+DROP TABLE IF EXISTS profile CASCADE;
 
-DROP TABLE IF EXISTS auction;
+DROP TABLE IF EXISTS auction CASCADE;
 
-DROP TABLE IF EXISTS app_user;
+DROP TABLE IF EXISTS app_user CASCADE;
 
 
 
