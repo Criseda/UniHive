@@ -48,10 +48,10 @@ export async function getAuctionBidCount(auctionId) {
 //get all saved auctions
 export async function getSavedAuctions() {
   const token = localStorage.getItem("token");
-  if(!token) {
+  if (!token) {
     return null;
   }
-  const res = await fetch (`${BASE_URL}/saved_items/get/auctions/user/`, {
+  const res = await fetch(`${BASE_URL}/saved_items/get/auctions/user/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -78,7 +78,6 @@ export async function getSavedListings() {
     }),
   });
   return await res.json();
-  
 }
 
 //Delete saved listing
@@ -120,12 +119,12 @@ export async function deleteSavedAuction(id) {
 //messages requests
 
 //This will take in user2 (the person to message) and feed in this information to the backend
-export async function createMessageRoom(user2){
+export async function createMessageRoom(user2) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
   }
-  const res = await fetch(`${BASE_URL}messages/room`, {
+  const res = await fetch(`${BASE_URL}/messages/room`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -135,25 +134,24 @@ export async function createMessageRoom(user2){
       user2_id: user2,
     }),
   });
-};
+}
 
-
-export async function getMessageRoomByUser(id){
+export async function getMessageRoomByUser(id) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
   }
-  const res = await fetch(`${BASE_URL}messages/room/user/${id}`);
+  const res = await fetch(`${BASE_URL}/messages/room/user/${id}`);
   return await res.json();
 }
 
-export async function getMessageRoom(id){
-  const res = await fetch(`${BASE_URL}messages/room/${id}`);
+export async function getMessageRoom(id) {
+  const res = await fetch(`${BASE_URL}/messages/room/${id}`);
   return await res.json();
 }
 
-export async function getAllMessageRooms(){
-  const res = await fetch(`${BASE_URL}messages/room`);
+export async function getAllMessageRooms() {
+  const res = await fetch(`${BASE_URL}/messages/room`);
   return await res.json();
 }
 
