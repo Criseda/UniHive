@@ -9,9 +9,9 @@ const { cookieJWTAuth } = require("../middleware/cookieJWTAuth");
 router.post("/room", cookieJWTAuth, async (req, res) => {
   try { 
     console.log("create a messageRoom")
-    const user_id = req.username;
-    const { user2_id } = req.body;
-    const newMessageRoom = await pool.query("INSERT INTO messageRoom (user1, user2) VALUES($1, $2) RETURNING *", [user_id, user2_id]);
+    const user1_id = req.username;
+    const user2_id = req.body.user2_id;
+    const newMessageRoom = await pool.query("INSERT INTO messageRoom (user1, user2) VALUES($1, $2) RETURNING *", [user1_id, user2_id]);
     console.log(newMessageRoom.rows[0]);
     res.json(newMessageRoom.rows[0]);
     
@@ -58,7 +58,7 @@ router.delete("/room/:id", async (req, res) => {
 router.get("/room/user/:id", async (req, res) => {
   try {
   const { id } = req.params;
-  const messageRoom = await pool.query("SELECT * FROM messageRoom WHERE user1_id = $1 OR user2_id = $1", [id]);
+  const messageRoom = await pool.query("SELECT * FROM messageRoom WHERE user1 = $1 OR user2 = $1", [id]);
   res.json(messageRoom.rows);
   } catch (err) {
   console.error(err.message);
