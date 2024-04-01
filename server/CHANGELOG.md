@@ -51,3 +51,11 @@ Develop quality of life commit 1:
 ## Cristian Preda @ 22nd Mar 2024
 Develop quality of life commit 2:
 - Added `.env.example` file for `/client` and `/server`. Paste the contents into a `.env` file in the same directory as the example and that will initialise the environment variables for the application
+
+## Cristian Preda @ 1st April 2024
+### messages_chat_selector commit:
+users.js:
+- Added new route: `/me` to return the logged in user.
+messages.js:
+- Reformatted with Prettier (this one was messy)
+- Changed POST route `/room`. Now it creates a room if it doesn't exist, or returns the room if it does. This means it can be used as a 2 in 1 route for when you wanna get a single chat between the logged in user and user2 (what is passed in through the body).
