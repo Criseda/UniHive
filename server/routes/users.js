@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const pool = require("../db");
+const { cookieJWTAuth } = require("../middleware/cookieJWTAuth");
 
 // define routes for users
 
@@ -19,6 +20,19 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const user = await pool.query("SELECT * FROM app_user WHERE id = $1", [id]);
+    res.json(user.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// get logged in user
+router.post("/me", cookieJWTAuth, async (req, res) => {
+  try {
+    const user = await pool.query(
+      "SELECT * FROM app_user WHERE id = $1",
+      [req.username]
+    );
     res.json(user.rows[0]);
   } catch (err) {
     console.error(err.message);

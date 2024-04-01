@@ -3,8 +3,6 @@ import Countdown from "./AuctionCountdown";
 import AuctionBidCount from "./AuctionBidCount";
 import { Carousel, Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
-import {createMessageRoom} from "../api/items";
-import {getMessageRoomByUser} from "../api/items";
 import io from "socket.io-client";
 
 import {
@@ -16,10 +14,10 @@ import {
   getSavedAuction,
   postSavedListing,
   postSavedAuction,
+  createMessageRoom,
 } from "../api/items";
 
 const socket = io("http://localhost:5000");
-
 
 const ItemDetails = () => {
   // get params from the url, assign to itemType and itemId
@@ -122,22 +120,24 @@ const ItemDetails = () => {
   }
 
   const joinRoom = (id) => {
-   socket.emit("joinRoom", id);  
+    socket.emit("joinRoom", id);
   };
 
-  //This creates the message box 
-  const createMessage = async () => { 
+  //This creates the message room between the user and the seller
+  const createMessage = async () => {
     const sellerId = item.seller_id;
-    console.log(sellerId);
-    createMessageRoom(sellerId); //This will add the room to the database
-    const roomId = await getMessageRoomByUser(sellerId);    
-    joinRoom(roomId); //This will join the user to the room      
-    
+    try {
+      const response = await createMessageRoom(sellerId); //This will add the room to the database
+      const roomId = response.id; // Extract the room ID from the response
+      joinRoom(roomId); // Join the room with the given ID
+    } catch (error) {
+      console.error("Failed to create and join room:", error);
+    }
   };
 
   //function to submit a bid
   const submitBid = () => {
-    console.log("submit bid");  
+    console.log("submit bid");
   };
 
   return (
@@ -211,22 +211,33 @@ const ItemDetails = () => {
               <p className="card-text">{item.description}</p>
               <div className="input-group d-flex flex-column justify-content-between mt-auto">
                 <div>
-    {/*Changed this conditional so that we can distinguish functions for auctions and listings*/}
-    {/*submitBid needs a page so messages is used as place hoder*/}
-                {isAuction ? (
-                     <Link to={isLoading ? "#" :"/messages"}className="text-decoration-none text-primary" onClick={submitBid}>
-                   <Button variant="primary" className="mb-2 d-block w-100" >
-                    {isLoading ? "loading..." : "Submit Bid"}
-                   </Button>
-                  </Link>
-                                 ) : (
-                  <Link to={isLoading ? "#" : "/messages"} className="text-decoration-none text-primary" onClick={createMessage}>
-                    <Button variant="primary" className="mb-2 d-block w-100" disabled={isLoading}>
-                      {isLoading ? "Loading..." : "Make Offer"} 
-                    </Button>
-                   </Link>
-                  
-                )} 
+                  {/*Changed this conditional so that we can distinguish functions for auctions and listings*/}
+                  {/*submitBid needs a page so messages is used as place hoder*/}
+                  {isAuction ? (
+                    <Link
+                      to={isLoading ? "#" : "/messages"}
+                      className="text-decoration-none text-primary"
+                      onClick={submitBid}
+                    >
+                      <Button variant="primary" className="mb-2 d-block w-100">
+                        {isLoading ? "loading..." : "Submit Bid"}
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Link
+                      to={isLoading ? "#" : "/messages"}
+                      className="text-decoration-none text-primary"
+                      onClick={createMessage}
+                    >
+                      <Button
+                        variant="primary"
+                        className="mb-2 d-block w-100"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Loading..." : "Make Offer"}
+                      </Button>
+                    </Link>
+                  )}
                   <Button
                     variant="outline-primary"
                     className="mb-2 d-block w-100 text-primary"
@@ -254,7 +265,10 @@ const ItemDetails = () => {
                 </div>
                 <div className="align-self-end">
                   <Button variant="danger" className="btn-sm">
-                    <Link to="#" className="text-decoroom: ration-none text-white">
+                    <Link
+                      to="#"
+                      className="text-decoroom: ration-none text-white"
+                    >
                       {isAuction ? "Report Auction" : "Report Listing"}
                     </Link>
                   </Button>

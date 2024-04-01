@@ -1,6 +1,6 @@
 const BASE_URL = `http://${
   process.env.REACT_APP_SERVER_HOST || "localhost"
-}:5000/api/`;
+}:5000/api`;
 
 //GET requests
 
@@ -118,7 +118,10 @@ export async function deleteSavedAuction(id) {
 
 //messages requests
 
-//This will take in user2 (the person to message) and feed in this information to the backend
+// This will take in user2 (the person to message) and feed in this information to the backend
+// this will not only create a room if one does not exist.
+// if one does exist, it will return it as usual, so it can be used as a get request as well
+// can be used as a 2 in 1 function
 export async function createMessageRoom(user2) {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -134,14 +137,23 @@ export async function createMessageRoom(user2) {
       user2_id: user2,
     }),
   });
+  return await res.json();
 }
 
-export async function getMessageRoomByUser(id) {
+export async function getMessageRoomsOfUser() {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
   }
-  const res = await fetch(`${BASE_URL}/messages/room/user/${id}`);
+  const res = await fetch(`${BASE_URL}/messages/room/user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
   return await res.json();
 }
 
@@ -222,5 +234,31 @@ export async function postSavedAuction(id) {
       token: token,
     }),
   });
+  return await res.json();
+}
+
+// app_user requests
+// get logged in user
+
+export async function getLoggedInUser() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/users/me`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}
+
+// get specific user
+export async function getUser(id) {
+  const res = await fetch(`${BASE_URL}/users/${id}`);
   return await res.json();
 }

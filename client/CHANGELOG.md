@@ -40,3 +40,17 @@ SESSION_SECRET=super_secret_SESSION_key
 # Cristian Preda @ 22nd Mar 2024
 ## Develop quality of life commit 2:
 - Added `.env.example` file for `/client` and `/server`. Paste the contents into a `.env` file in the same directory as the example and that will initialise the environment variables for the application
+
+# Cristian Preda @ 1st April 2024
+## messages_chat_selector commit:
+### items.js:
+- added some user routes in `items.js` to get the logged in user or a specifc user
+- renamed `getMessageRoomByUser` to `getMessageRoomsOfUser`. Changed the `/messages/room/user/:id` route to `/messages/room/user/` to get all message rooms the logged user is in
+- Changed `createMessageRoom(id)` route to work as a 2 in 1 route. If the room doesn't exist, it creates it. If it does, it returns the room. This is to avoid creating duplicate rooms.
+### components changed:
+- `Chat.jsx` has been reformatted with Prettier. Closed tab for messages now marked redundant.
+- `ChatSelector.jsx` has been completely overhauled. All the dummy data has been removed. There is now a `useEffect` hook that fetches all the message rooms the logged in user is in. The rooms are then displayed in the chat selector.
+- `ChatSelector.jsx` now uses React-Bootstrap's `ListGroup` and `ListGroup.Item` components to display the rooms. I attempted to keep the design as close as possible to what the original had.
+- `ItemDetails.jsx` has been reformatted with Prettier and fixed, as I changed the route function names (mentioned above).
+### style.css:
+- Added some CSS to prevent the name or message from overflowing the chat selector. This is done by adding `overflow: hidden` and `text-overflow: ellipsis` to the `ListGroup.Item` class.
