@@ -6,13 +6,22 @@ import SaveItemButton from "./SaveItemButton.jsx";
 import calculateBidIncrement from "./AuctionBidIncrement.js";
 import { Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
+import io from "socket.io-client";
+
 import {
   getListing,
   getAuction,
   getListingImages,
   getAuctionImages,
+  getSavedListing,
+  getSavedAuction,
+  postSavedListing,
+  postSavedAuction,
   postAuctionBid,
+  createMessageRoom,
 } from "../api/items";
+
+const socket = io("http://localhost:5000");
 
 const ItemDetails = () => {
   // get params from the url, assign to itemType and itemId
@@ -108,6 +117,27 @@ const ItemDetails = () => {
     );
   }
 
+  const joinRoom = (id) => {
+    socket.emit("joinRoom", id);
+  };
+
+  //This creates the message room between the user and the seller
+  const createMessage = async () => {
+    const sellerId = item.seller_id;
+    try {
+      const response = await createMessageRoom(sellerId); //This will add the room to the database
+      const roomId = response.id; // Extract the room ID from the response
+      joinRoom(roomId); // Join the room with the given ID
+    } catch (error) {
+      console.error("Failed to create and join room:", error);
+    }
+  };
+
+  //function to submit a bid
+  const submitBid = () => {
+    console.log("submit bid");
+  };
+
   return (
     <div className="container mt-4">
       <div className="card">
@@ -122,17 +152,32 @@ const ItemDetails = () => {
               <ItemInfo item={item} isAuction={isAuction} itemId={itemId} />
               <div className="input-group d-flex flex-column justify-content-between mt-auto">
                 <div>
-                  <Button
-                    variant="primary"
-                    className="mb-2 d-block w-100"
-                    onClick={() => {
-                      if (isAuction) setShowModal(true);
-                    }}
-                  >
-                    <Link to="#" className="text-decoration-none text-white">
-                      {isAuction ? "Submit Bid" : "Make Offer"}
+                  {/*Changed this conditional so that we can distinguish functions for auctions and listings*/}
+                  {isAuction ? (
+                    <Link
+                      to={isLoading ? "#" : "/messages"}
+                      className="text-decoration-none text-primary"
+                      onClick={setShowModal(true)}
+                    >
+                      <Button variant="primary" className="mb-2 d-block w-100">
+                        {isLoading ? "loading..." : "Submit Bid"}
+                      </Button>
                     </Link>
-                  </Button>
+                  ) : (
+                    <Link
+                    to={isLoading ? "#" : "/messages"}
+                    className="text-decoration-none text-primary"
+                    onClick={createMessage}
+                    >
+                      <Button
+                        variant="primary"
+                        className="mb-2 d-block w-100"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Loading..." : "Make Offer"}
+                      </Button>
+                    </Link>
+                  )}
                   <AuctionModal
                     showModal={showModal}
                     handleClose={() => setShowModal(false)}
@@ -142,11 +187,39 @@ const ItemDetails = () => {
                     setUserBid={setUserBid}
                     calculateBidIncrement={calculateBidIncrement}
                   />
+
                   <SaveItemButton itemId={itemId} itemType={itemType} />
+                  <Button
+                    variant="outline-primary"
+                    className="mb-2 d-block w-100 text-primary"
+                    style={{ backgroundColor: "white" }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f2f2f2")
+                    } // light gray
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "white")
+                    }
+                    onClick={() => handleSave(itemId)}
+                    disabled={isSaving || isItemSaved}
+                  >
+                    <Link to="#" className="text-decoration-none text-primary">
+                      {"\u2661"}{" "}
+                      {isAuction
+                        ? isItemSaved
+                          ? "Auction Saved!"
+                          : "Save this auction"
+                        : isItemSaved
+                        ? "Listing Saved!"
+                        : "Save this listing"}
+                    </Link>
+                  </Button>
                 </div>
                 <div className="align-self-end">
                   <Button variant="danger" className="btn-sm">
-                    <Link to="#" className="text-decoration-none text-white">
+                    <Link
+                      to="#"
+                      className="text-decoroom: ration-none text-white"
+                    >
                       {isAuction ? "Report Auction" : "Report Listing"}
                     </Link>
                   </Button>

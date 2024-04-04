@@ -56,3 +56,11 @@ Develop quality of life commit 2:
 auction-modal commit:
 - `routes/bids.js`: Added another POST request in the bids route. This POST request will post a bid depending on which user is logged in (with the use of JWT).
 - `routes/saved_items.js`: Removed commented code that is not in use anymore
+
+## Cristian Preda @ 1st April 2024
+### messages_chat_selector commit:
+users.js:
+- Added new route: `/me` to return the logged in user.
+messages.js:
+- Reformatted with Prettier (this one was messy)
+- Changed POST route `/room`. Now it creates a room if it doesn't exist, or returns the room if it does. This means it can be used as a 2 in 1 route for when you wanna get a single chat between the logged in user and user2 (what is passed in through the body).

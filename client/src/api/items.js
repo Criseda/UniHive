@@ -1,6 +1,6 @@
 const BASE_URL = `http://${
   process.env.REACT_APP_SERVER_HOST || "localhost"
-}:5000/api/`;
+}:5000/api`;
 
 //GET requests
 
@@ -48,10 +48,10 @@ export async function getAuctionBidCount(auctionId) {
 //get all saved auctions
 export async function getSavedAuctions() {
   const token = localStorage.getItem("token");
-  if(!token) {
+  if (!token) {
     return null;
   }
-  const res = await fetch (`${BASE_URL}/saved_items/get/auctions/user/`, {
+  const res = await fetch(`${BASE_URL}/saved_items/get/auctions/user/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -78,7 +78,6 @@ export async function getSavedListings() {
     }),
   });
   return await res.json();
-  
 }
 
 //Delete saved listing
@@ -117,7 +116,56 @@ export async function deleteSavedAuction(id) {
   return await res.json();
 }
 
+//messages requests
 
+// This will take in user2 (the person to message) and feed in this information to the backend
+// this will not only create a room if one does not exist.
+// if one does exist, it will return it as usual, so it can be used as a get request as well
+// can be used as a 2 in 1 function
+export async function createMessageRoom(user2) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/messages/room`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+      user2_id: user2,
+    }),
+  });
+  return await res.json();
+}
+
+export async function getMessageRoomsOfUser() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/messages/room/user`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}
+
+export async function getMessageRoom(id) {
+  const res = await fetch(`${BASE_URL}/messages/room/${id}`);
+  return await res.json();
+}
+
+export async function getAllMessageRooms() {
+  const res = await fetch(`${BASE_URL}/messages/room`);
+  return await res.json();
+}
 
 //JWT Requests
 
@@ -206,5 +254,31 @@ export async function postAuctionBid(auctionId, bidAmount) {
       amount: bidAmount,
     }),
   });
+  return await res.json();
+}
+
+// app_user requests
+// get logged in user
+
+export async function getLoggedInUser() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/users/me`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}
+
+// get specific user
+export async function getUser(id) {
+  const res = await fetch(`${BASE_URL}/users/${id}`);
   return await res.json();
 }

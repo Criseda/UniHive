@@ -55,7 +55,25 @@ SESSION_SECRET=super_secret_SESSION_key
 ## 26th Mar 2024:
 - Added POST request to `api/items.js` backend call route.
 - Made a method which refreshes the item page when the bid has been submitted.
-  
+
+## 26th Mar 2024:
+- Added POST request to `api/items.js` backend call route.
+- Made a method which refreshes the item page when the bid has been submitted.
+
+# Cristian Preda @ 1st April 2024
+## messages_chat_selector commit:
+### items.js:
+- added some user routes in `items.js` to get the logged in user or a specifc user
+- renamed `getMessageRoomByUser` to `getMessageRoomsOfUser`. Changed the `/messages/room/user/:id` route to `/messages/room/user/` to get all message rooms the logged user is in
+- Changed `createMessageRoom(id)` route to work as a 2 in 1 route. If the room doesn't exist, it creates it. If it does, it returns the room. This is to avoid creating duplicate rooms.
+### components changed:
+- `Chat.jsx` has been reformatted with Prettier. Closed tab for messages now marked redundant.
+- `ChatSelector.jsx` has been completely overhauled. All the dummy data has been removed. There is now a `useEffect` hook that fetches all the message rooms the logged in user is in. The rooms are then displayed in the chat selector.
+- `ChatSelector.jsx` now uses React-Bootstrap's `ListGroup` and `ListGroup.Item` components to display the rooms. I attempted to keep the design as close as possible to what the original had.
+- `ItemDetails.jsx` has been reformatted with Prettier and fixed, as I changed the route function names (mentioned above).
+### style.css:
+- Added some CSS to prevent the name or message from overflowing the chat selector. This is done by adding `overflow: hidden` and `text-overflow: ellipsis` to the `ListGroup.Item` class.
+
 ## TODO:
 - Also add the auction to the saved item list, if the user has bidded on it.
 - implement a little notification thing? to signal when the auction ended, if you have won it or not. (would probably need a new page altogether, or maybe another modal, a notification box or something like that.)

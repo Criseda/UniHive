@@ -196,6 +196,24 @@ a {
 message-area
 ******************************** */
 
+.card-content {
+  width: 100%;
+  overflow: hidden;
+}
+
+.title {
+  font-size: 1rem; /* Adjust as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .message-area {
     height: 100vh;
     overflow: hidden;
@@ -458,14 +476,14 @@ a.add img {
     font-weight: 500;
 }
 
-.msg-body ul li.repaly {
+.msg-body ul li.reply {
     display: block;
     width: 100%;
     text-align: right;
     position: relative;
 }
 
-.msg-body ul li.repaly:before {
+.msg-body ul li.reply:before {
     display: block;
     clear: both;
     content: '';
@@ -482,7 +500,7 @@ a.add img {
     transform: rotate(37deg);
 }
 
-.msg-body ul li.repaly p {
+.msg-body ul li.reply p {
     color: #fff;
     font-size: 14px;
     line-height: 1.5;
@@ -496,7 +514,7 @@ a.add img {
     margin-bottom: 0;
 }
 
-.msg-body ul li.repaly p b {
+.msg-body ul li.reply p b {
     display: block;
     color: #061061;
     font-size: 14px;
@@ -504,7 +522,7 @@ a.add img {
     font-weight: 500;
 }
 
-.msg-body ul li.repaly:after {
+.msg-body ul li.reply:after {
     display: block;
     content: '';
     clear: both;
@@ -518,7 +536,7 @@ a.add img {
     font-weight: 400;
 }
 
-li.repaly .time {
+li.reply .time {
     margin-right: 20px;
 }
 
@@ -755,7 +773,7 @@ button:focus {
         border-top-right-radius: 6px;
         border-bottom-right-radius: 6px;
     }
-    .msg-body ul li.repaly p {
+    .msg-body ul li.reply p {
         font-size: 13px;
         padding: 8px;
         border-top-left-radius: 6px;
