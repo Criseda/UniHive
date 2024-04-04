@@ -84,6 +84,10 @@ const App = () => {
           path="/profile"
           element={<ProtectedRoute element={<Profile />} />}
         />
+        <Route
+          path="/profile/:id"
+          element={<ProtectedRoute element={<Profile />} />}
+        />
         <Route path="/authHandler" element={<AuthHandler />} />{" "}
       </Routes>
     </Router>
