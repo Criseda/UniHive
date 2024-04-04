@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getSavedAuctions } from "../api/items";
 import { getSavedListings } from "../api/items";
-import { useNavigate } from "react-router-dom";
 import {deleteSavedListing} from "../api/items";
 import {deleteSavedAuction} from "../api/items";
 
@@ -9,7 +8,6 @@ const SavedItemList = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
   
 
   useEffect(() => {
@@ -74,10 +72,10 @@ const handleRemove = (item) => {
               <p className="card-text">£{item.price || item.highest_bid}</p>
             </div>
 
-            <button type="button" class="btn btn-outline-success">
+            <button type="button" className="btn btn-outline-success">
               Talk with Seller
             </button>
-            <button type ="button" class = "btn btn-outline-danger" onClick = {() => handleRemove(item)}>
+            <button type ="button" className= "btn btn-outline-danger" onClick = {() => handleRemove(item)}>
               Remove saved Item
             </button>
 

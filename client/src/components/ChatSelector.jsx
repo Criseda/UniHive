@@ -39,7 +39,7 @@ const ChatSelector = () => {
     };
 
     fetchUser(); // Call the function when the component mounts
-  }, []);
+  }, [currentUser]);
 
   if (isLoading) {
     return <p>Loading...</p>; // Or render a spinner
