@@ -1,82 +1,55 @@
 import React from "react";
-
+import { Button, Modal, Image, Container, Row } from 'react-bootstrap';
 import Stars from "./Star";
 
 const Profilebar = () => {
+  const [modalShow, setModalShow] = React.useState(false);
+
   return (
-    <div className="container d-flex">
-      <button
-        type="button"
-        className="btn btn-white rounded-circle w-25 p-0 max-width: 100%"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-      >
-        <img
-          src="/images/logo.jpg"
-          className="img-thumbnail rounded-circle border-0 p-0"
-          alt="avator"
-        />
-      </button>
+    <Container className="d-flex">
+      <Button variant="white" className="rounded-circle w-25 p-0" onClick={() => setModalShow(true)}>
+        <Image src="/images/logo.jpg" roundedCircle className="img-thumbnail border-0 p-0" alt="avatar" />
+      </Button>
 
-      <div
-        className="modal fade border-0"
-        id="exampleModal"
-        tabIndex="-1"
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
         aria-labelledby="seting_avatar"
-        aria-hidden="true"
       >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header border-0">
-              <h5 className="modal-title text-center" id="seting_avatar">
-                Set up your avatar
-              </h5>
-              <button
-                type="button"
-                className="close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body border-0">
-              <img src="/images/logo.jpg" alt="photo" />
+        <Modal.Header closeButton>
+          <Modal.Title id="seting_avatar">
+            Set up your avatar
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Image src="/images/logo.jpg" alt="photo" />
+          <input type="file" className="form-control" id="customFile" />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setModalShow(false)}>
+            Close
+          </Button>
+          <Button variant="primary">
+            Save changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
-              <input type="file" className="form-control" id="customFile" />
-            </div>
-            <div className="modal-footer border-0">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" className="btn btn-primary">
-                Save changes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row justify-content-center flex-grow-1">
-        <div className="row text-center mt-2">
+      <Row className="justify-content-center flex-grow-1">
+        <Row className="text-center mt-2">
           <p>User Name</p>
-        </div>
+        </Row>
 
-        <div className="row text-center mt-3">
+        <Row className="text-center mt-3">
           <p>Email address</p>
-        </div>
+        </Row>
 
-        <div className="row mt-3">
+        <Row className="mt-3">
           <Stars starnumber={2.5} />
-        </div>
-      </div>
-    </div>
+        </Row>
+      </Row>
+    </Container>
   );
-  // change starnumber to change the number of stars, the prop here is a string
 };
 
 export default Profilebar;
