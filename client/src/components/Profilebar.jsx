@@ -1,14 +1,23 @@
-import React from "react";
-import { Button, Modal, Image, Container, Row } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Button, Modal, Image, Container, Row, Col } from "react-bootstrap";
 import Stars from "./Star";
 
 const Profilebar = () => {
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
   return (
-    <Container className="d-flex">
-      <Button variant="white" className="rounded-circle w-25 p-0" onClick={() => setModalShow(true)}>
-        <Image src="/images/logo.jpg" roundedCircle className="img-thumbnail border-0 p-0" alt="avatar" />
+    <Container className="d-flex pt-4">
+      <Button
+        variant="white"
+        className="rounded-circle w-25 p-2"
+        onClick={() => setModalShow(true)}
+      >
+        <Image
+          src="/images/logo.jpg"
+          roundedCircle
+          className="img-thumbnail border-0 p-0"
+          alt="avatar"
+        />
       </Button>
 
       <Modal
@@ -17,9 +26,7 @@ const Profilebar = () => {
         aria-labelledby="seting_avatar"
       >
         <Modal.Header closeButton>
-          <Modal.Title id="seting_avatar">
-            Set up your avatar
-          </Modal.Title>
+          <Modal.Title id="seting_avatar">Set up your avatar</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Image src="/images/logo.jpg" alt="photo" />
@@ -29,25 +36,16 @@ const Profilebar = () => {
           <Button variant="secondary" onClick={() => setModalShow(false)}>
             Close
           </Button>
-          <Button variant="primary">
-            Save changes
-          </Button>
+          <Button variant="primary">Save changes</Button>
         </Modal.Footer>
       </Modal>
 
-      <Row className="justify-content-center flex-grow-1">
-        <Row className="text-center mt-2">
-          <p>User Name</p>
-        </Row>
-
-        <Row className="text-center mt-3">
-          <p>Email address</p>
-        </Row>
-
-        <Row className="mt-3">
-          <Stars starnumber={2.5} />
-        </Row>
-      </Row>
+      <Col className="d-flex flex-column align-items-start p-2 text-break text-wrap">
+        <h1>User Name</h1>
+        <Stars starnumber={2.5}/>
+        <h3 className="pt-4">Description:</h3>
+        <p>I lfjah asdf ioromem lopsum eteclakdsfnjafsnldjkkljansdflkjansdflkajsndflkjasndflkajsndflkajsdfnlkjasndflkajsndflkajsndf</p>
+      </Col>
     </Container>
   );
 };
