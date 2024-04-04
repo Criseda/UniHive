@@ -1,52 +1,58 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { Button, Modal, Image, Container, Row, Col } from "react-bootstrap";
+import Stars from "./Star";
+import {useParams} from "react-router-dom";
 
 const Profilebar = () => {
-    return (
+  const [modalShow, setModalShow] = useState(false);
+  let { id } = useParams();
 
-        <div className="container">
+  return (
+    <Container className="d-flex pt-4">
+      <Button
+        variant="white"
+        className="rounded-circle w-25 p-2"
+        onClick={() => setModalShow(true)}
+      >
+        <Image
+          src="/images/logo.jpg"
+          roundedCircle
+          className="img-thumbnail border-0 p-0"
+          alt="avatar"
+        />
+      </Button>
 
-            <div  className="row justify-content-center mt-3">
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        aria-labelledby="seting_avatar"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="seting_avatar">Set up your avatar</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Image src="/images/logo.jpg" alt="photo" />
+          <input type="file" className="form-control" id="customFile" />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setModalShow(false)}>
+            Close
+          </Button>
+          <Button variant="primary">Save changes</Button>
+        </Modal.Footer>
+      </Modal>
 
-            
-                <button type="button" class="btn btn-white wd-25" data-toggle="modal" data-target="#exampleModal">
-                    <img src="/images/logo.jpg" class="img-thumbnail rounded-circle" alt="photo"/>
-                </button>
+      <Col className="d-flex flex-column align-items-start p-2 text-break text-wrap">
+        <h2>Person's name here: {id}</h2>
+        <Stars starnumber={2.5} />
+        <h3 className="pt-4">Description:</h3>
+        <p>
+          I lfjah asdf ioromem lopsum
+          eteclakdsfnjafsnldjkkljansdflkjansdflkajsndflkjasndflkajsndflkajsdfnlkjasndflkajsndflkajsndf
+        </p>
+      </Col>
+    </Container>
+  );
+};
 
-
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        <div class="modal-body">
-                            <h1>hhhhhhh</h1>
-                        </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
- 
-
-            <div className="row text-center mt-2">
-                <p>User Name</p>
-            </div>
-
-            <div className="row text-center mt-3">
-                <p>Email address</p>
-            </div>
-            <p className="mt-3">Post items</p>
-        </div>
-    );
-  };
-  
-  export default Profilebar;
+export default Profilebar;
