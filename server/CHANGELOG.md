@@ -75,7 +75,7 @@ auction-modal commit:
 
 ## Cristian Preda @ 1st April 2024
 
-### messages_chat_selector commit:
+### messages_chat_selector commit
 
 users.js:
 
