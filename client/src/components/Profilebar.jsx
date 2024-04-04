@@ -1,14 +1,17 @@
 import React from "react";
 
+import Stars from "../components/Fivestar"
+
 
 const Profilebar = () => {
     return (
+        
 
-        <div className="container">
+        <div className="container d-flex">
 
-            <div  className="row justify-content-center mt-3">
-                <button type="button" className="btn btn-white rounded-circle w-25 p-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img src="/images/logo.jpg" className="img-thumbnail rounded-circle border-0 p-0" alt="photo"/>
+            
+                <button type="button" className="btn btn-white rounded-circle w-25 p-0 max-width: 100%" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <img src="/images/logo.jpg" className="img-thumbnail rounded-circle border-0 p-0" alt="avator"/>
                 </button>
 
 
@@ -35,19 +38,28 @@ const Profilebar = () => {
                     </div>
                 </div>
 
-            </div>
  
+            <div className="row justify-content-center flex-grow-1">
 
-            <div className="row text-center mt-2">
-                <p>User Name</p>
-            </div>
+                <div className="row text-center mt-2">
+                    <p>User Name</p>
+                </div>
 
-            <div className="row text-center mt-3">
-                <p>Email address</p>
+                <div className="row text-center mt-3">
+                    <p>Email address</p>
+                </div>
+
+                <div className="row mt-3">
+                    <Stars starnumber="3" />
+                </div>
+
             </div>
-            <p className="mt-3">Post items</p>
+            
+
+
         </div>
     );
+    // change starnumber to change the number of stars, the prop here is a string
   };
   
   export default Profilebar;

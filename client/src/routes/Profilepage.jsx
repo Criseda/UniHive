@@ -8,6 +8,7 @@ const Profilepage = () => {
       <div>
         <Navbar />
         <Prfilebar />
+        <p className="mt-3 text-center">Post items</p>
         <Itemlist />
       </div>
     );
