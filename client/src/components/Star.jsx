@@ -49,7 +49,7 @@ function Stars({ starnumber }) {
     }
   }
 
-  return <div className="d-flex justify-content-start">{stars}</div>;
+  return <div className="d-flex justify-content-start pt-2">{stars}</div>;
 }
 
 export default Stars;
