@@ -12,6 +12,8 @@ import Messages from "./routes/Messages";
 import SavedItems from "./routes/SavedItems";
 import AuthHandler from "./routes/AuthHandler";
 import Profile from "./routes/Profilepage";
+import About from "./routes/About";
+import CurrentBids from "./routes/CurrentBids";
 
 // ProtectedRoute is a component that will check if a user is authenticated
 const ProtectedRoute = ({ element }) => {
@@ -83,6 +85,11 @@ const App = () => {
         <Route
           path="/profile"
           element={<ProtectedRoute element={<Profile />} />}
+        />
+        <Route path="/about" element={<ProtectedRoute element={<About />} />} />
+        <Route
+          path="/currentbids"
+          element={<ProtectedRoute element={<CurrentBids />} />}
         />
         <Route path="/authHandler" element={<AuthHandler />} />{" "}
       </Routes>

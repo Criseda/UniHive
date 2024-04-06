@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getListings } from "../api/items";
 import { getAuctions } from "../api/items";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { getItems } from "../api/items";
+import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 const Itemlist = () => {
   const [data, setData] = useState([]); // store both items and auctions
@@ -44,35 +47,38 @@ const Itemlist = () => {
   }
 
   return (
-    <div className="container mt-4">
-      <div className="row">
+    <Container className="mt-4">
+      <Row>
         {data.map((item) => {
-          const key = (item.price ? "listing" : "auction") + "id" +item.id;
+          const key = (item.price ? "listing" : "auction") + "id" + item.id;
           return (
-            <div
-              key={key}
-              className="col-md-4 mb-4"
+            <Col
               onClick={() => handleCardClick(key)}
+              key={item.id}
+              md={4}
+              className="mb-4"
             >
-              <div className="card">
-                <img
+              <Card>
+                <Card.Img
                   src={item.image_path}
-                  className="card-img-top"
                   alt={item.name}
+                  style={{ width: "100%", maxHeight: "275px" }}
                 />
-                <div className="card-body">
-                  <h5 className="card-title">{item.name}</h5>
-                  <p className="card-text">
+                <Card.Body>
+                  <Card.Title className="mb-0">
                     £{item.price || item.highest_bid}
-                  </p>{" "}
-                  {/* use price for items and opening_bid for auctions */}
-                </div>
-              </div>
-            </div>
+                  </Card.Title>
+                  <Card.Text className="mt-1">{item.name}</Card.Text>
+                  <Button variant="outline-success" className="mt-auto w-100">
+                    View Listing
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
           );
         })}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 

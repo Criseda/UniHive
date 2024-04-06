@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { getSavedAuctions } from "../api/items";
-import { getSavedListings } from "../api/items";
-import {deleteSavedListing} from "../api/items";
-import {deleteSavedAuction} from "../api/items";
+import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { getSavedAuctions, getSavedListings } from "../api/items";
+import { deleteSavedListing, deleteSavedAuction } from "../api/items";
 
 const SavedItemList = () => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -28,61 +28,80 @@ const SavedItemList = () => {
       });
   }, []);
 
-//Removes the item from the saved items list (unfinished)
-const handleRemove = (item) => {
-  if('price' in item){
-    deleteSavedListing(item.id)
-      .then(() => {
-        window.alert('Listing has been deleted')
-        window.location.reload()});
-
-  } else if('highest_bid' in item) {
-    deleteSavedAuction(item.id)
-      .then(() => {
-        window.alert('Auction has been deleted')
+  //Removes the item from the saved items list (unfinished)
+  const handleRemove = (item) => {
+    if ("price" in item) {
+      deleteSavedListing(item.id).then(() => {
+        window.alert("Listing no longer saved");
         window.location.reload();
       });
-  }
-  else {
-    console.log("Error: Item not found");
-  }
-};
+    } else if ("highest_bid" in item) {
+      deleteSavedAuction(item.id).then(() => {
+        window.alert("Listing no longer saved");
+        window.location.reload();
+      });
+    } else {
+      console.log("Error: Item not found");
+    }
+  };
 
-  
   if (isLoading) {
-    return <div className="container text-center">Loading...</div>;
+    return <Container className="text-center">Loading...</Container>;
   }
 
   if (error) {
     return (
-      <div className="container mt-4">
-        <div className="alert alert-danger">Error: {error.message}</div>
-      </div>
+      <Container className="mt-4">
+        <Row>
+          <Col>
+            <div className="alert alert-danger">Error: {error.message}</div>
+          </Col>
+        </Row>
+      </Container>
     );
   }
 
+  const handleCardClick = (key) => {
+    navigate(`/item/${key}`);
+  };
+
   return (
-    <div className="row" style={{ width: "50vw", marginLeft: "30vw" }}>
-      {items.map((item) => (
-        <div key={item.id} className="col-md-10 mt-4">
-          <div className="card">
-            <img src={item.image_path} alt={item.name} />
-            <div className="card-body col-md-5">
-              <h5 className="card-title">{item.name}</h5>
-              <p className="card-text">£{item.price || item.highest_bid}</p>
-            </div>
-
-            <button type="button" className="btn btn-outline-success">
-              Talk with Seller
-            </button>
-            <button type ="button" className= "btn btn-outline-danger" onClick = {() => handleRemove(item)}>
-              Remove saved Item
-            </button>
-
-          </div>
-        </div>
-      ))}
-    </div>
+    <Container className="mt-4">
+      <Row xs={1} md={2}>
+        {items.map((item) => {
+          const key = (item.price ? "listing" : "auction") + "id" + item.id;
+          return (
+            <Col key={item.id} className="mt-4">
+              <Card>
+                <Card.Img
+                  variant="top"
+                  src={item.image_path}
+                  alt={item.name}
+                  style={{ maxHeight: "500px" }}
+                />
+                <Card.Body>
+                  <Card.Title>£{item.price || item.highest_bid}</Card.Title>
+                  <Card.Text>{item.name}</Card.Text>
+                  <Button
+                    variant="outline-success w-100 mb-1"
+                    onClick={() => handleCardClick(key)}
+                    key={item.id}
+                  >
+                    View Listing
+                  </Button>
+                  <Button
+                    variant="outline-danger w-100"
+                    onClick={() => handleRemove(item)}
+                  >
+                    Remove saved Item
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+          );
+        })}
+      </Row>
+    </Container>
   );
 };
 
