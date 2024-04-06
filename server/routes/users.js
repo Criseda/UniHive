@@ -20,7 +20,11 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const user = await pool.query("SELECT * FROM app_user WHERE id = $1", [id]);
-    res.json(user.rows[0]);
+    if (user.rows.length === 0) {
+      res.status(404).json({ message: `No user found with id "${id}" in the database` });
+    } else {
+      res.json(user.rows[0]);
+    }
   } catch (err) {
     console.error(err.message);
   }
