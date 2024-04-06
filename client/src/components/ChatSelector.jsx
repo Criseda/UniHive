@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Image, ListGroup } from "react-bootstrap";
 import { getMessageRoomsOfUser, getLoggedInUser, getUser } from "../api/items";
 
-const ChatSelector = () => {
+
+const ChatSelector = ({onItemClick}) => {
   const [isLoading, setIsLoading] = useState(true); // State to hold the loading status
   const [rooms, setRooms] = useState([]); // State to hold the rooms
   const [currentUser, setCurrentUser] = useState(null); // State to hold the logged in user
@@ -22,7 +23,7 @@ const ChatSelector = () => {
             // Fetch the other users
             const otherUsers = await Promise.all(
               response.map((room) =>
-                getUser(room.user1 === currentUser ? room.user1 : room.user2)
+                getUser(room.user1 === currentUser ? room.user1 : room.user2)// Fetch the other user
               )
             );
             setOtherUsers(otherUsers); // Update the state with the fetched users
@@ -44,6 +45,11 @@ const ChatSelector = () => {
   if (isLoading) {
     return <p>Loading...</p>; // Or render a spinner
   }
+//Function to render in all messagesWITHOUT USING PROPS (YET TO FINISH)
+  
+ const handleButtonClick = (roomId) => {
+    onItemClick(roomId);
+  };
 
   return (
     <ListGroup>
@@ -52,6 +58,7 @@ const ChatSelector = () => {
           action
           className="d-flex align-items-center"
           key={room.id}
+          onClick={() => handleButtonClick(room.id)}
         >
           {otherUsers[index] && (
             <Image
