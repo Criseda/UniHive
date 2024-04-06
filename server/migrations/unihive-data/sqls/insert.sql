@@ -3,13 +3,15 @@
 -- INSERTING USERS INTO THE DATABASE
 INSERT INTO app_user (id, first_name, last_name, rating, bio, avatar_path, banned)
 VALUES 
-('user01', 'John', 'Doe', NULL, 'I love hiking and reading.', '/images/default_pfp.jpg', FALSE),
-('user02', 'Alice', 'Smith', NULL, 'Passionate about cooking and traveling.', '/images/default_pfp.jpg', FALSE),
-('user03', 'Michael', 'Johnson', NULL, 'Tech enthusiast and avid gamer.', '/images/default_pfp.jpg', FALSE),
-('user04', 'Emily', 'Brown', NULL, 'Artist and nature lover.', '/images/default_pfp.jpg', FALSE),
-('user05', 'David', 'Wilson', NULL, 'Musician and sports fan.', '/images/default_pfp.jpg', FALSE),
+('user01', 'John', 'Doe', 2.5, 'I love hiking and reading.', '/images/default_pfp.jpg', FALSE),
+('user02', 'Alice', 'Smith', 3, 'Passionate about cooking and traveling.', '/images/default_pfp.jpg', FALSE),
+('user03', 'Michael', 'Johnson', 4.5, 'Tech enthusiast and avid gamer.', '/images/default_pfp.jpg', FALSE),
+('user04', 'Emily', 'Brown', 5, 'Artist and nature lover.', '/images/default_pfp.jpg', FALSE),
+('user05', 'David', 'Wilson', 2, 'Musician and sports fan.', '/images/default_pfp.jpg', FALSE),
+-- insert evil Joe
+('user06', 'Joe', 'Mama', 0, 'I am evil', '/images/default_pfp.jpg', TRUE),
 -- insert cris
-('5c64d3', 'Laurentiu-Cristian', 'Preda', NULL, 'eats and breathes backend', '/images/default_pfp.jpg', FALSE);
+('5c64d3', 'Laurentiu-Cristian', 'Preda', NULL, 'Lol kent minion lol', '/images/default_pfp.jpg', FALSE);
 
 
 
