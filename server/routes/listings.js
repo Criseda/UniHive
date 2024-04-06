@@ -17,6 +17,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+// get all listings for a specific user
+router.get("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const allListings = await pool.query(
+      "SELECT * FROM listing WHERE seller_id = $1",
+      [id]
+    );
+    res.json(allListings.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // get a listing
 // two inner joins to be able to return the first name and the last name of the seller
 router.get("/:id", async (req, res) => {
