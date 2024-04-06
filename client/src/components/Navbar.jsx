@@ -1,97 +1,66 @@
 import React from "react";
+import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import Logo from "../images/alt_logo.png";
 import { logoutRoute } from "../api/authentication";
 
-const Navbar = () => {
+const MyNavbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div className="container">
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Container>
         {/* Logo on the left */}
-        <a className="navbar-brand" href="/about">
+        <Navbar.Brand href="/about">
           <img
-            src="/images/alt_logo.png"
+            src={Logo}
             alt="UniHive Logo"
             height="50"
             className="d-inline-block align-top"
           />
-        </a>
+        </Navbar.Brand>
 
         {/* Navbar toggle button for small screens */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarResponsive"
-          aria-controls="navbarResponsive"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+        <Navbar.Toggle aria-controls="navbarResponsive" />
 
         {/* Navbar content */}
-        <div className="collapse navbar-collapse" id="navbarResponsive">
+        <Navbar.Collapse id="navbarResponsive">
           {/* Left-aligned links */}
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/home">
-                <i className="bi bi-heart"></i> Home
-              </a>
-            </li>
-          </ul>
+          <Nav className="me-auto">
+            <Nav.Link href="/home">
+              <i className="bi bi-house"></i> Home
+            </Nav.Link>
+          </Nav>
 
           {/* Right-aligned icons */}
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/SavedItem">
-                <i className="bi bi-heart"></i> Saved Items
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/messages">
-                <i className="bi bi-envelope"></i> Messages
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                <i className="bi bi-cash"></i> Current Bids
-              </a>
-            </li>
+          <Nav className="ms-auto">
+            <Nav.Link href="/SavedItem">
+              <i className="bi bi-heart"></i> Saved Items
+            </Nav.Link>
+            <Nav.Link href="/messages">
+              <i className="bi bi-envelope"></i> Messages
+            </Nav.Link>
+            <Nav.Link href="/CurrentBids">
+              <i className="bi bi-cash"></i> Current Bids
+            </Nav.Link>
 
             {/* Dropdown for additional menu items if needed */}
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
+            <NavDropdown title="More" id="navbarDropdown">
+              <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
+              <NavDropdown.Item
+                href={logoutRoute}
+                onClick={() => {
+                  sessionStorage.clear();
+                  localStorage.clear();
+                }}
               >
-                More
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#">
-                  Account
-                </a>
-                <a
-                  className="dropdown-item"
-                  href={logoutRoute}
-                  onClick={() => {
-                    sessionStorage.clear();
-                    localStorage.clear();
-                  }}
-                >
-                  Logout
-                </a>
-                {/* Add more dropdown items as needed */}
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+                Logout
+              </NavDropdown.Item>
+              {/* Add more dropdown items as needed */}
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 };
 
-export default Navbar;
+export default MyNavbar;
