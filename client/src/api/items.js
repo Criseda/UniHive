@@ -280,5 +280,11 @@ export async function getLoggedInUser() {
 // get specific user
 export async function getUser(id) {
   const res = await fetch(`${BASE_URL}/users/${id}`);
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.message);
+  }
+
   return await res.json();
 }
