@@ -167,6 +167,27 @@ export async function getAllMessageRooms() {
   return await res.json();
 }
 
+
+
+
+
+export async function getMessagesOfRoom(id) {
+  try {
+    const res = await fetch(`${BASE_URL}/messages/room/messages/${id}`);
+    console.log(res); //debugging
+    const messages =  await res.json();
+    //sort messages by id in descending order 
+    console.log(messages); //debugging
+    messages.sort((a, b) => (b.id - a.id));
+    return messages;
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    return[];
+  }
+
+}
+
+
 //JWT Requests
 
 export async function getSavedListing(listingID) {
