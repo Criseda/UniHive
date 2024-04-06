@@ -81,10 +81,6 @@ const App = () => {
           element={<ProtectedRoute element={<SavedItems />} />}
         />
         <Route
-          path="/profile"
-          element={<ProtectedRoute element={<Profile />} />}
-        />
-        <Route
           path="/profile/:id"
           element={<ProtectedRoute element={<Profile />} />}
         />
