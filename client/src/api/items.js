@@ -9,7 +9,7 @@ export async function getListings() {
   return await res.json();
 }
 
-export async function getListings(user_id) {
+export async function getListingsByUser(user_id) {
   const res = await fetch(`${BASE_URL}/listings/user/${user_id}`);
   return await res.json();
 }
@@ -29,7 +29,7 @@ export async function getAuctions() {
   return await res.json();
 }
 
-export async function getAuctions(user_id) {
+export async function getAuctionsByUser(user_id) {
   const res = await fetch(`${BASE_URL}/auctions/user/${user_id}`);
   return await res.json();
 }
