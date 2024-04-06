@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar as faStarFull,
@@ -28,7 +28,10 @@ function Stars({ starnumber }) {
           style={{ color: "#FFD43B" }}
         />
       );
-    } else if (i === Math.floor(starnumber) && !Number.isInteger(starnumber)) {
+    } else if (
+      i === Math.floor(starnumber) &&
+      Number(starnumber) !== Math.floor(starnumber)
+    ) {
       stars.push(
         <FontAwesomeIcon
           icon={faStarHalf}
