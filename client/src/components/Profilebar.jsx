@@ -43,6 +43,10 @@ const Profilebar = () => {
     return <div>Loading...</div>;
   }
 
+  if (banned) {
+    return <Alert variant="danger">This user has been banned.</Alert>;
+  }
+
   if (error) {
     return <Alert variant="danger">{error.toString()}</Alert>;
   }
@@ -86,9 +90,7 @@ const Profilebar = () => {
         <h2>{name}</h2>
         <Stars starnumber={rating} />
         <h3 className="pt-4">Bio:</h3>
-        <p>
-          {bio ? bio : "This user has not set up a bio yet."}
-        </p>
+        <p>{bio ? bio : "This user has not set up a bio yet."}</p>
       </Col>
     </Container>
   );
