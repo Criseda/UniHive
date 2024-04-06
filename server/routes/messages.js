@@ -90,6 +90,23 @@ router.post("/room/user", cookieJWTAuth, async (req, res) => {
 
 // define routes for messages here
 
+
+//get messages of a room [THIS ROUTE IS RETURNING AN EMPTY ARRAY]
+router.get("/room/messages/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const messages = await pool.query(
+      "SELECT * FROM message WHERE room_id = $1",
+      [id]
+    );
+    
+    console.log(messages.rows);
+    res.json(messages.rows);
+} catch (err) {
+    console.error(err.message);
+  }
+});
+
 // get all messages
 router.get("/", async (req, res) => {
   try {
@@ -114,6 +131,21 @@ router.get("/:id", async (req, res) => {
 });
 
 //send a new message (add message to the database)
+
+router.post("/", async (req, res) => {
+  try {
+    const { sender_id, receiver_id, room_id, message } = req.body; // Include room_id in the destructuring
+    const newMessage = await pool.query(
+      "INSERT INTO message (sender_id, receiver_id, room_id, message) VALUES($1, $2, $3, $4) RETURNING *",
+      [sender_id, receiver_id, room_id, message] // Include room_id in the query parameters
+    );
+    res.json(newMessage.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: "Internal Server Error" }); // Return an error response
+  }
+});
+/*
 router.post("/", async (req, res) => {
   try {
     const { sender_id, receiver_id, message } = req.body;
@@ -126,6 +158,7 @@ router.post("/", async (req, res) => {
     console.error(err.message);
   }
 });
+*/
 
 //Delete a message by id
 router.delete("/:id", async (req, res) => {
