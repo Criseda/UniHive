@@ -2,7 +2,7 @@ const BASE_URL = `http://${
   process.env.REACT_APP_SERVER_HOST || "localhost"
 }:5000/api`;
 
-//GET requests
+//GET item requests
 
 export async function getListings() {
   const res = await fetch(`${BASE_URL}/listings/`);
@@ -296,5 +296,13 @@ export async function getUser(id) {
     throw new Error(errorData.message);
   }
 
+  return await res.json();
+}
+
+// GET reviews requests
+
+// get the number of reviews for a user
+export async function getReviewCount(user_id) {
+  const res = await fetch(`${BASE_URL}/reviews/count/${user_id}`);
   return await res.json();
 }
