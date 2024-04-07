@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Alert } from "react-bootstrap";
 import { logoutRoute } from "../api/authentication";
+import { getLoggedInUser } from "../api/items";
 
 const Navbar = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getLoggedInUser()
+      .then((data) => {
+        setUser(data.id);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  });
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <Alert variant="danger">{error}</Alert>;
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
         {/* Logo on the left */}
-        <a className="navbar-brand" href="/about">
+        <a className="navbar-brand" href="/home">
           <img
             src="/images/alt_logo.png"
             alt="UniHive Logo"
@@ -71,12 +98,17 @@ const Navbar = () => {
                 More
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href={`/profile/${user}`}>
                   Account
+                </a>{" "}
+                <a className="dropdown-item" href="/about">
+                  About
                 </a>
                 <a
                   className="dropdown-item"
                   href={logoutRoute}
+                  target="_blank"
+                  rel="noreferrer noopener"
                   onClick={() => {
                     sessionStorage.clear();
                     localStorage.clear();
