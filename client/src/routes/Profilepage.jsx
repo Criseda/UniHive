@@ -1,15 +1,17 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Itemlist from "../components/Itemlist";
 import Profilebar from "../components/Profilebar"
 
 const Profilepage = () => {
+    let { id } = useParams();
+
     return (
       <div>
         <Navbar />
-        <Profilebar />
-        <h4 className="pt-3 text-center h4 font-weight-bold">Posted items</h4>
-        <Itemlist />
+        <Profilebar user_id={id}/>
+        <Itemlist user_id={id}/>
       </div>
     );
   };
