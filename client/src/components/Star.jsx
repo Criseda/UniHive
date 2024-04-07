@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarEmpty } from "@fortawesome/free-regular-svg-icons";
 
-function Stars({ starnumber }) {
+function Stars({ starnumber, size, mobileSize }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ function Stars({ starnumber }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const starSize = windowWidth < 768 ? "lg" : "2x"; // dynamically change star size based on window width
+  const starSize = windowWidth < 768 ? mobileSize : size; // dynamically change star size based on window width
 
   const stars = [];
   for (let i = 0; i < 5; i++) {
@@ -52,7 +52,7 @@ function Stars({ starnumber }) {
     }
   }
 
-  return <div className="d-flex justify-content-start pt-2">{stars}</div>;
+  return <div className="d-flex justify-content-start">{stars}</div>;
 }
 
 export default Stars;
