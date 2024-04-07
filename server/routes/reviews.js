@@ -27,6 +27,17 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// get number of reviews that a certain user has
+router.get("/count/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const reviewCount = await pool.query("SELECT COUNT(*) FROM review WHERE reviewed_id = $1", [id]);
+        res.json(reviewCount.rows[0]);
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 // create a review
 router.post("/", async (req, res) => {
     try {
