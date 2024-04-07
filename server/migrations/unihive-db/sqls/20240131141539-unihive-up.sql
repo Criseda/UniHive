@@ -70,7 +70,7 @@ CREATE TABLE review (
     id SERIAL PRIMARY KEY,
     reviewer_id CHAR(6) NOT NULL,
     reviewed_id CHAR(6) NOT NULL,
-    rating INT NOT NULL,
+    rating DECIMAL(2,1) NOT NULL,
     review TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (reviewer_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
