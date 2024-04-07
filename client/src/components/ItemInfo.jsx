@@ -1,16 +1,20 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import AuctionBidCount from "./AuctionBidCount";
 import Countdown from "./AuctionCountdown";
+import ProfileCard from "./ProfileCard";
 
 const ItemInfo = ({ item, isAuction, itemId }) => {
   return (
     <>
       <h5 className="card-title">{item.name}</h5>
-      <p className="card-text fs-4">
-        £{isAuction ? item.highest_bid : item.price} <br />
-        <small className="text-muted fs-6">or Best Offer</small>
-      </p>
+      <div className="card-text">
+        <ProfileCard seller_id={item.seller_id}/>
+      </div>
+      <div className="card-text">
+        <p className="m-0 fs-3">£{isAuction ? item.highest_bid : item.price}</p>
+        <p className="text-muted fs-6 mt-0 mb-2">or Best Offer</p>
+      </div>
       <div className="card-text">
         <small className="text-muted">
           {isAuction ? (
