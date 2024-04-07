@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getListings } from "../api/items";
 import { getAuctions } from "../api/items";
+import { getListingsByUser } from "../api/items";
+import { getAuctionsByUser } from "../api/items";
 
-const Itemlist = () => {
+const Itemlist = ({ user_id }) => {
   const [data, setData] = useState([]); // store both items and auctions
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,7 +13,9 @@ const Itemlist = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    Promise.all([getListings(), getAuctions()]) // fetch both items and auctions
+    const fetchListings = user_id ? getListingsByUser(user_id) : getListings();
+    const fetchAuctions = user_id ? getAuctionsByUser(user_id) : getAuctions();
+    Promise.all([fetchListings, fetchAuctions]) // fetch both items and auctions
       .then(([items, auctions]) => {
         const mergedData = [...items, ...auctions]; // merge items and auctions
         mergedData.sort(
@@ -43,11 +47,19 @@ const Itemlist = () => {
     );
   }
 
+  if(data.length === 0) {
+    return (
+      <div className="container">
+        <div className="text-center text-muted">No items posted yet...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mt-4">
       <div className="row">
         {data.map((item) => {
-          const key = (item.price ? "listing" : "auction") + "id" +item.id;
+          const key = (item.price ? "listing" : "auction") + "id" + item.id;
           return (
             <div
               key={key}
