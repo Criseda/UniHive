@@ -1,0 +1,14 @@
+body {
+  background-color: white;
+}
+
+.white-text > h1 {
+  color: white;
+}
+.white-text > p {
+  color: rgb(228, 221, 221);
+}
+
+.text-area {
+  background-color: rgb(245, 245, 245);
+}

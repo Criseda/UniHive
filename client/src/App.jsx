@@ -14,6 +14,10 @@ import AuthHandler from "./routes/AuthHandler";
 import Profile from "./routes/Profilepage";
 import About from "./routes/About";
 import CurrentBids from "./routes/CurrentBids";
+import Privacy from "./routes/PrivacyPolicy";
+import Ethics from "./routes/CodeOfEthics";
+import Layout from "./Layout";
+import CreateListing from "./routes/CreateListing";
 
 // ProtectedRoute is a component that will check if a user is authenticated
 const ProtectedRoute = ({ element }) => {
@@ -66,33 +70,41 @@ const ProtectedRoute = ({ element }) => {
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/item/:id"
-          element={<ProtectedRoute element={<Item />} />}
-        />
-        <Route
-          path="/messages"
-          element={<ProtectedRoute element={<Messages />} />}
-        />
-        <Route
-          path="/saveditem"
-          element={<ProtectedRoute element={<SavedItems />} />}
-        />
-        <Route
-          path="/profile"
-          element={<ProtectedRoute element={<Profile />} />}
-        />
-        <Route path="/about" element={<ProtectedRoute element={<About />} />} />
-        <Route
-          path="/currentbids"
-          element={<ProtectedRoute element={<CurrentBids />} />}
-        />
-        <Route path="/authHandler" element={<AuthHandler />} />{" "}
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/item/:id"
+            element={<ProtectedRoute element={<Item />} />}
+          />
+          <Route
+            path="/messages"
+            element={<ProtectedRoute element={<Messages />} />}
+          />
+          <Route
+            path="/saveditem"
+            element={<ProtectedRoute element={<SavedItems />} />}
+          />
+          <Route
+            path="/sell"
+            element={<ProtectedRoute element={<CreateListing />} />}
+          />
+          <Route
+            path="/profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/codeofethics" element={<Ethics />} />
+          <Route path="/privacypolicy" element={<Privacy />} />
+          <Route
+            path="/currentbids"
+            element={<ProtectedRoute element={<CurrentBids />} />}
+          />
+          <Route path="/authHandler" element={<AuthHandler />} />{" "}
+        </Routes>
+      </Layout>
     </Router>
   );
 };

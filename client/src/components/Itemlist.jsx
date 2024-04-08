@@ -62,7 +62,11 @@ const Itemlist = () => {
                 <Card.Img
                   src={item.image_path}
                   alt={item.name}
-                  style={{ width: "100%", maxHeight: "275px" }}
+                  style={{
+                    width: "100%",
+                    maxHeight: "275px",
+                    border: "1px solid #ccc", // Grey border
+                  }}
                 />
                 <Card.Body>
                   <Card.Title className="mb-0">

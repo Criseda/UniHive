@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Logo from "../images/alt_logo.png";
-import { logoutRoute } from "../api/authentication";
+import { loginRoute } from "../api/authentication";
 
 const MyNavbar = () => {
   return (
@@ -25,40 +25,26 @@ const MyNavbar = () => {
         <Navbar.Collapse id="navbarResponsive">
           {/* Left-aligned links */}
           <Nav className="me-auto">
-            <Nav.Link href="/home">
-              <i className="bi bi-house"></i> Home
-            </Nav.Link>
+            <Nav.Link href="/home">About Us</Nav.Link>
           </Nav>
 
           {/* Right-aligned icons */}
           <Nav className="ms-auto">
-            <Nav.Link href="/sell">
-              <i className="bi bi-cash-coin"></i> Sell an Item
-            </Nav.Link>
             <Nav.Link href="/SavedItem">
-              <i className="bi bi-heart"></i> Saved Items
+              <i className="bi bi-lock"></i> Privacy Policy
             </Nav.Link>
             <Nav.Link href="/messages">
-              <i className="bi bi-envelope"></i> Messages
+              <i className="bi bi-envelope-heart"></i> Code of Ethics
             </Nav.Link>
-
-            {/* Dropdown for additional menu items if needed */}
-            <NavDropdown title="More" id="navbarDropdown">
-              <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
-              <NavDropdown.Item href="/currentbids">
-                Current Bids
-              </NavDropdown.Item>
-              <NavDropdown.Item
-                href={logoutRoute}
-                onClick={() => {
-                  sessionStorage.clear();
-                  localStorage.clear();
-                }}
+            <Nav.Link href={loginRoute}>
+              <i
+                className="bi bi-box-arrow-in-right"
+                style={{ color: "white" }}
               >
-                Logout
-              </NavDropdown.Item>
-              {/* Add more dropdown items as needed */}
-            </NavDropdown>
+                {" "}
+                Login
+              </i>
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

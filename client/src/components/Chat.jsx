@@ -51,13 +51,6 @@ const Chat = () => {
                           placeholder="Search"
                           aria-label="search"
                         />
-                        <a className="add" href="#">
-                          <img
-                            className="img-fluid"
-                            src="https://mehedihtml.com/chatbox/assets/img/add.svg"
-                            alt="add"
-                          />
-                        </a>
                       </div>
                       <ul className="nav nav-tabs" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
@@ -71,21 +64,7 @@ const Chat = () => {
                             aria-controls="Open"
                             aria-selected="true"
                           >
-                            Open
-                          </button>
-                        </li>
-                        <li className="nav-item" role="presentation">
-                          <button
-                            className="nav-link"
-                            id="Closed-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#Closed"
-                            type="button"
-                            role="tab"
-                            aria-controls="Closed"
-                            aria-selected="false"
-                          >
-                            Closed
+                            Chats
                           </button>
                         </li>
                       </ul>
