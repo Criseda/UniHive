@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ChatSelector from "./ChatSelector";
 import io from "socket.io-client";
 import {getMessagesOfRoom} from "../api/items";
 import {getLoggedInUser} from "../api/items";
+import {createMessage} from "../api/items";
+
 
 const socket = io("http://localhost:5000");
 
@@ -12,75 +14,89 @@ const Chat = () => {
   const [room, setRoom] = useState("");
   const [messages, setMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
-  
+  const [error, setError] = useState(null);
+  const [loading, setIsLoading] = useState(true);
+  const inputRef = useRef(null);
+  const chatContainerRef = useRef(null);
+
+ const handleSubmit = (event) => {
+  event.preventDefault();
+  const time = new Date().toISOString();
+  // Add to database and create message object
+  createMessage(currentUser.id, room, message, time)
+    .then((newMessage) => {
+      // Send message and receive it myself
+      sendMessage(newMessage);
+      //clear Everything 
+      setMessage("");
+      inputRef.current.value = "";
+    })
+    .catch((error) => {
+      console.error("Error creating message:", error);
+      // Handle error here
+    });
+};    
+ 
+  //sends message to the server
+  const sendMessage = (newMessage) => {
+    //DEBUGGING
+    socket.emit("send_message", { message: newMessage, room: room});
+    setMessage("");
+  }
+
   const handleItemClick = (roomId) => {
-    console.log("Room ID: ", roomId);
-    setRoom(roomId) 
-    //window.location.reload();
-  };
-
-
-  const sendMessage = () => {
-    socket.emit("send_message", { message: message, room: room});
-  };
-
-  const joinRoom = () => {
-    if (room !== "") {
-      socket.emit("join_room", room);
-    }
-  };
-/*
-  //temporary function might change 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    sendMessage(selectedConversation);
-*/
-
-//useEffect to fetch the logged in user
+    setRoom(roomId);
+    socket.emit("joinRoom", {room: roomId});
+    //Joined room in backend (/server/app.js):w
+  };  
 
   useEffect(() => {
-  const fetchUser = async () => {
-    try { 
-      console.log("getting user"); //debugging
-      const response = await getLoggedInUser();
-      setCurrentUser(response);
-    }
-    catch (error) {
-      console.error("Error fetching user:", error);
-    }
-  };
-  fetchUser();
-}, [currentUser]);
+    getLoggedInUser()
+    .then((response) => {
+      const user = response;
+      setCurrentUser(user);
+    }) 
+    .catch((error) => {
+      setError(error);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  }, []);
+   
+ useEffect(() => { 
+    getMessagesOfRoom(room) 
+    .then((response) => {
+      setMessages(response);
+    })
+    .catch((error) => {
+      setError(error);  
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  }, [room]);
 
-//Fetch messages when the component mounts or room changes 
-//When there is no room number present (without pressing on chat selector) it will give an error 
-//Once you press on the icon there is no longer an error because room number has an integer value
-  useEffect (() => {
-  const fetchMessages = async () => {
-    try {
-      console.log("getting messages of room: ", room); //debugging
-      const roomMessages = await getMessagesOfRoom(room);
-      setMessages(roomMessages);
-      console.log("Messages: ", roomMessages); //debugging
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-    }
-  };
-  fetchMessages();
-}, [room]);
-
-  //will always watch for recieve message event and alert the message
-  useEffect(() => {
-    socket.on(
-      "recieve_message",
-      (data) => {
-        setMessageReceived(data.message);
-      },
-      [socket]
-
-    );
+//looks for messages 
+useEffect(() => {
+  socket.on("receive_message", (data) => {
+    setMessageReceived(data.message);
+    setMessages(prevMessages => [...prevMessages, data.message]); // Append the received message to the messages array
   });
+
+  // Cleanup function to remove the event listener when the component unmounts
+  return () => {
+    socket.off("receive_message");
+  };
+}, [socket]);
+
+//scrolls to the bottom of the chat
+useEffect(() => {
+  if (chatContainerRef.current) {
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  }
+}, [messages]);
+
 
   //Need to implement room concept but use user icons to change room number.
   //Need to implement the ability to generate a unique room number everytime a user is created.
@@ -249,72 +265,29 @@ const Chat = () => {
                       </div>
                     </div>
                     {/* converstaion area */} 
-                    <div className="modal-body">
+                    <div className="modal-body" ref={chatContainerRef}>
                       <div className="msg-body" >
                         <ul>
                         {/*renders messages*/}
                         {messages.map((message, index) => {
-                          const isSentByCurrentUser = message.sender === currentUser.id; 
-                          const text = message && message.text;
-                          const time = message && message.time;
+                          const isSentByCurrentUser = message.sender_id === currentUser.id; 
                           return (
-                          <li key={index} className={isSentByCurrentUser ? "sender" : "reply"}>
-                          <p>{text}</p>
-                          <span className="time">{time}</span>
-                          </li>
+                          <li key={index} className={isSentByCurrentUser ? "reply" : "sender"}>
+                          <p>{message.message}</p>
+                          <span className="time">{message.created_at}</span>
+                          </li>                       
                           );
                         })}   
-    
+   
                         </ul>
                       </div> 
-                             
-                        {/* 
-                        <ul>
-                          <li className="sender">
-                            <p> Hey, Are you there? </p>
-                            <span className="time">10:06 am</span>
-                          </li>
-                          <li className="sender">
-                            <p> Hey, Are you there? </p>
-                            <span className="time">10:16 am</span>
-                          </li>
-                          <li className="reply">
-                            <p>yes!</p>
-                            <span className="time">10:20 am</span>
-                          </li>
-                          <li className="sender">
-                            <p> Hey, Are you there? </p>
-                            <span className="time">10:26 am</span>
-                          </li>
-                          <li className="sender">
-                            <p> Hey, Are you there? </p>
-                            <span className="time">10:32 am</span>
-                          </li>
-                          <li className="reply">
-                            <p>How are you?</p>
-                            <span className="time">10:35 am</span>
-                          </li>
-                          <li>
-                            <div className="divider">
-                              <h6>Today</h6>
-                            </div>
-                          </li>
-                          <li className="reply">
-                            <p> yes, tell me</p>
-                            <span className="time">10:36 am</span>
-                          </li>
-                          <li className="reply">
-                            <p>{messageReceived}</p>
-                            <span className="time">Just Now</span>
-                          </li>
-                        </ul>
-                        */} 
                     </div>
                     {/* converstaion area END*/} 
                     {/* Send Message/attachment section */}
                     <div className="send-box">
                       <form action="">
                         <input
+                          ref={inputRef}
                           type="text"
                           className="form-control"
                           aria-label="message…"
@@ -323,7 +296,7 @@ const Chat = () => {
                             setMessage(event.target.value);
                           }}
                         />
-                        <button type="button" onClick={sendMessage}>
+                        <button type="button" onClick={handleSubmit} disabled={!message.trim()}>
                           <i className="fa fa-paper-plane" aria-hidden="true" />{" "}
                           Send
                         </button>
