@@ -16,7 +16,6 @@ const Home = () => {
         className="mx-5 my-3"
         style={{
           backgroundColor: "#add8e6",
-          padding: "0px 0",
           borderRadius: "15px",
         }}
       >
