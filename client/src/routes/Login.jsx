@@ -8,7 +8,6 @@ import "../css/login.css";
 const Login = () => {
   return (
     <>
-      <Navbar />
       <Container>
         <Row className="align-items-center">
           <Col md={6}>

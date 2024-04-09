@@ -30,10 +30,10 @@ const MyNavbar = () => {
 
           {/* Right-aligned icons */}
           <Nav className="ms-auto">
-            <Nav.Link href="/SavedItem">
+            <Nav.Link href="/privacypolicy">
               <i className="bi bi-lock"></i> Privacy Policy
             </Nav.Link>
-            <Nav.Link href="/messages">
+            <Nav.Link href="/codeofethics">
               <i className="bi bi-envelope-heart"></i> Code of Ethics
             </Nav.Link>
             <Nav.Link href={loginRoute}>

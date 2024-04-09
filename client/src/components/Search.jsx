@@ -3,11 +3,11 @@ import React from "react";
 const Search = () => {
   return (
     <form className="container mt-3 mb-3">
-      <div className="input-group d-flex justify-content-center">
+      <div className="input-group justify-content-center">
         <input
           type="text"
-          className="form-control col-md-6"
-          placeholder="Search"
+          className="form-control"
+          placeholder="Search all items"
           aria-label="Search"
           aria-describedby="button-addon2"
         />

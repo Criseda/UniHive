@@ -6,7 +6,6 @@ import SavedItemList from "../components/SavedItemList";
 const CurrentBids = () => {
   return (
     <div>
-      <Navbar />
       <Search />
       <h1>Current Bids</h1>
       <SavedItemList />

@@ -6,7 +6,6 @@ import ItemDetails from "../components/ItemDetails";
 const Item = () => {
   return (
     <>
-      <Navbar />
       <Search />
       <ItemDetails />
     </>

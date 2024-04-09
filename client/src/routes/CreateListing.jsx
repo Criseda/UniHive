@@ -41,95 +41,92 @@ const CreateListing = () => {
   };
 
   return (
-    <>
-      <Nav />
-      <Container className="create-listing-container py-4">
-        <h2>Create Listing</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="itemName" style={{ marginTop: "1rem" }}>
-            <Form.Label>Item Name</Form.Label>
+    <Container className="create-listing-container py-4">
+      <h2>Create Listing</h2>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="itemName" style={{ marginTop: "1rem" }}>
+          <Form.Label>Item Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="itemName"
+            value={formData.itemName}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="description" style={{ marginTop: "1rem" }}>
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group controlId="images" style={{ marginTop: "1rem" }}>
+          <Form.Label>Images</Form.Label>
+          <Form.Control
+            type="file"
+            name="images"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="listingType" style={{ marginTop: "1rem" }}>
+          <Form.Label>Listing Type</Form.Label>
+          <Form.Control
+            as="select"
+            name="listingType"
+            value={formData.listingType}
+            onChange={handleChange}
+          >
+            <option value="fixedPrice">Fixed Price</option>
+            <option value="auction">Auction</option>
+          </Form.Control>
+        </Form.Group>
+
+        {formData.listingType === "fixedPrice" && (
+          <Form.Group controlId="price" style={{ marginTop: "1rem" }}>
+            <Form.Label>Price</Form.Label>
             <Form.Control
               type="text"
-              name="itemName"
-              value={formData.itemName}
+              name="price"
+              value={formData.price}
               onChange={handleChange}
               required
             />
           </Form.Group>
+        )}
 
-          <Form.Group controlId="description" style={{ marginTop: "1rem" }}>
-            <Form.Label>Description</Form.Label>
+        {formData.listingType === "auction" && (
+          <Form.Group controlId="startingBid" style={{ marginTop: "1rem" }}>
+            <Form.Label>Starting Bid</Form.Label>
             <Form.Control
-              as="textarea"
-              rows={3}
-              name="description"
-              value={formData.description}
+              type="number"
+              name="startingBid"
+              value={formData.startingBid}
               onChange={handleChange}
               required
             />
           </Form.Group>
+        )}
 
-          <Form.Group controlId="images" style={{ marginTop: "1rem" }}>
-            <Form.Label>Images</Form.Label>
-            <Form.Control
-              type="file"
-              name="images"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="listingType" style={{ marginTop: "1rem" }}>
-            <Form.Label>Listing Type</Form.Label>
-            <Form.Control
-              as="select"
-              name="listingType"
-              value={formData.listingType}
-              onChange={handleChange}
-            >
-              <option value="fixedPrice">Fixed Price</option>
-              <option value="auction">Auction</option>
-            </Form.Control>
-          </Form.Group>
-
-          {formData.listingType === "fixedPrice" && (
-            <Form.Group controlId="price" style={{ marginTop: "1rem" }}>
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type="text"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          )}
-
-          {formData.listingType === "auction" && (
-            <Form.Group controlId="startingBid" style={{ marginTop: "1rem" }}>
-              <Form.Label>Starting Bid</Form.Label>
-              <Form.Control
-                type="number"
-                name="startingBid"
-                value={formData.startingBid}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-          )}
-
-          <Button
-            size="lg"
-            style={{ marginTop: "1rem" }}
-            variant="primary"
-            type="submit"
-          >
-            List Item
-          </Button>
-        </Form>
-      </Container>
-    </>
+        <Button
+          size="lg"
+          style={{ marginTop: "1rem" }}
+          variant="primary"
+          type="submit"
+        >
+          List Item
+        </Button>
+      </Form>
+    </Container>
   );
 };
 

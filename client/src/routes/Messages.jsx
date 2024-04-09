@@ -4,12 +4,7 @@ import Chat from "../components/Chat";
 import "../css/chat.css";
 
 const Messages = () => {
-  return (
-    <div>
-      <Navbar />
-      <Chat />
-    </div>
-  );
+  return <Chat />;
 };
 
 export default Messages;
