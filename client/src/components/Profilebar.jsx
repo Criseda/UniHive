@@ -96,6 +96,7 @@ const Profilebar = ({ user_id }) => {
         )}
         {isOwnAccount && (
           <EditProfileModal
+            user_id={user_id}
             showModal={showModal}
             setShowModal={setShowModal}
             bio={bio}
