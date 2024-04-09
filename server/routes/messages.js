@@ -90,6 +90,30 @@ router.post("/room/user", cookieJWTAuth, async (req, res) => {
 
 // define routes for messages here
 
+// Route to fetch messages based on parameters
+router.get("/room/messages/:roomId", async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    // Query the database to fetch messages for the given room ID
+    const messages = await pool.query(
+      "SELECT * FROM message WHERE room_id = $1",
+      [roomId]
+    );
+    // Extract the message strings from the query result
+    //const messageStrings = messages.rows.map(row => row.message);
+    console.log(messages.rows); 
+    res.json(messages.rows); // Send the message strings as JSON response
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Export the router to use in your main Express app
+module.exports = router;
+
+
+
 // get all messages
 router.get("/", async (req, res) => {
   try {
