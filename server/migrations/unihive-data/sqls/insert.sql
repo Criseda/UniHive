@@ -8,10 +8,10 @@ VALUES
 ('user03', 'Michael', 'Johnson', NULL, 'Tech enthusiast and avid gamer.', '/images/default_pfp.jpg', FALSE),
 ('user04', 'Emily', 'Brown', NULL, 'Artist and nature lover.', '/images/default_pfp.jpg', FALSE),
 ('user05', 'David', 'Wilson', NULL, 'Musician and sports fan.', '/images/default_pfp.jpg', FALSE),
--- insert evil Joe
+-- insert evil Joe (a banned user)
 ('user06', 'Joe', 'Mama', NULL, 'I am evil', '/images/default_pfp.jpg', TRUE),
 -- insert cris
-('5c64d3', 'Laurentiu-Cristian', 'Preda', NULL, 'Lol kent minion lol', '/images/default_pfp.jpg', FALSE);
+('5c64d3', 'Laurentiu-Cristian', 'Preda', NULL, 'Lol kent minion lol', '/images/5c64d3.png', FALSE);
 
 
 
