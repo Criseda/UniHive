@@ -59,12 +59,10 @@ CREATE TABLE messageRoom (
 CREATE TABLE message (
     id SERIAL PRIMARY KEY,
     sender_id CHAR(6) NOT NULL,
-    receiver_id CHAR(6) NOT NULL,
     room_id INT NOT NULL,
     message TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (receiver_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (room_id) REFERENCES messageRoom (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- reviews table
