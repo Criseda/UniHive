@@ -9,6 +9,7 @@ const messagesRouter = require("./messages");
 const listingImagesRouter = require("./listing_images");
 const auctionImagesRouter = require("./auction_images");
 const savedItemsRouter = require("./saved_items")
+const imageUploadsRouter = require("./image_upload");
 
 const router = express.Router();
 
@@ -22,5 +23,6 @@ router.use("/messages", messagesRouter);
 router.use("/listing_images", listingImagesRouter);
 router.use("/auction_images", auctionImagesRouter);
 router.use("/saved_items", savedItemsRouter);
+router.use("/image_upload", imageUploadsRouter);
 
 module.exports = router;
