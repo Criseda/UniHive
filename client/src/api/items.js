@@ -167,24 +167,44 @@ export async function getAllMessageRooms() {
   return await res.json();
 }
 
-
-
-
-
 export async function getMessagesOfRoom(id) {
   try {
     const res = await fetch(`${BASE_URL}/messages/room/messages/${id}`);
-    console.log(res); //debugging
     const messages =  await res.json();
-    //sort messages by id in descending order 
-    console.log(messages); //debugging
-    messages.sort((a, b) => (b.id - a.id));
+    //sort messages by id in descending order
+    console.log(messages);
+    messages.sort((a, b) => (a.id - b.id));
+    console.log("This is the processed message objects", messages);
     return messages;
   } catch (error) {
     console.error("Error fetching messages:", error);
     return[];
   }
 
+}
+ 
+//send a new message 
+export async function createMessage(sender_id, room_id, message, time) { 
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/messages`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+      token: token,
+      sender_id: sender_id,
+      room_id: room_id,
+      message: message,
+      time: time,
+    }),
+  });
+  console.log("This is the response from the backend", res);
+  return await res.json();
 }
 
 
