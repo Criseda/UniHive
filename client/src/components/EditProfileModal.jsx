@@ -35,7 +35,7 @@ const EditProfileModal = ({
       formData.append("avatar", file);
       formData.append("user_id", user_id);
 
-      const response = await fetch(
+      const avatar_response = await fetch(
         `http://${process.env.REACT_APP_SERVER_HOST}:5000/api/image_upload/avatar`,
         {
           method: "POST",
@@ -43,8 +43,8 @@ const EditProfileModal = ({
         }
       );
 
-      const data = await response.json();
-      if (response.ok) {
+      const data = await avatar_response.json();
+      if (avatar_response.ok) {
         setNewAvatar(data.avatarUrl);
         setAvatar(data.avatarUrl);
       } else {
@@ -52,7 +52,26 @@ const EditProfileModal = ({
         return;
       }
 
-      setBio(newBio);
+      // Update the bio
+      // Update the user's bio
+      const bio_response = await fetch(
+        `http://${process.env.REACT_APP_SERVER_HOST}:5000/api/users/${user_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ bio: newBio }),
+        }
+      );
+
+      const bioData = await bio_response.json();
+      if (bio_response.ok) {
+        setBio(newBio);
+      } else {
+        alert(bioData.error);
+        return;
+      }
     }
     setShowModal(false);
   };
