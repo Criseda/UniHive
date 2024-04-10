@@ -122,16 +122,19 @@ const Itemlist = ({ user_id }) => {
         data.length > 0 ? 
         (
           <Row>
-            <Col>
+            <Col className="mb-4">
               <Button 
                 disabled={page==0}
                 variant="outline-success" 
+                className="w-100"
                 onClick={()=>{ console.log(page) ; setPage(page - 1) }} >
                 Previous Page
               </Button>
-
+            </Col>
+            <Col className="mb-4">
               <Button 
                 variant="outline-success" 
+                className="w-100"
                 onClick={()=>{ console.log(page) ; setPage(page + 1) }} >
                 Next Page
               </Button>
