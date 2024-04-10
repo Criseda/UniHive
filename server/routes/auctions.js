@@ -5,7 +5,8 @@ const pool = require("../db");
 // define routes for auctions here
 
 // get all auctions, and their highest bid
-router.get("/", async (req, res) => {
+router.get("/:page", async (req, res) => {
+  const { page } = req.params;
   try {
     const allAuctions = await pool.query(`
       SELECT auction.*, MAX(bid.amount) AS highest_bid
@@ -14,15 +15,15 @@ router.get("/", async (req, res) => {
       GROUP BY auction.id
     `);
 
-    res.json(allAuctions.rows);
+    res.json(allAuctions.rows.slice((page * 30), (page * 30) + 30));
   } catch (err) {
     console.error(err.message);
   }
 });
 
 // get all auctions made by a specific user, and their highest bid
-router.get("/user/:id", async (req, res) => {
-  const { id } = req.params;
+router.get("/user/:page/:id", async (req, res) => {
+  const { page, id } = req.params;
   try {
     const userAuctions = await pool.query(
       `SELECT auction.*, MAX(bid.amount) AS highest_bid
@@ -32,7 +33,21 @@ router.get("/user/:id", async (req, res) => {
        GROUP BY auction.id`,
       [id]
     );
-    res.json(userAuctions.rows);
+    res.json(userAuctions.rows.slice((page * 30), (page * 30) + 30));
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// get all listings for a search query
+router.get("/search/:page/:query", async (req, res) => {
+  const { page, query } = req.params;
+  try {
+    const allAuctions = await pool.query(
+      "SELECT * FROM auction WHERE name LIKE $1",
+      ['%' + query + '%']
+    );
+    res.json(allAuctions.rows.slice((page * 30), (page * 30) + 30));
   } catch (err) {
     console.error(err.message);
   }
