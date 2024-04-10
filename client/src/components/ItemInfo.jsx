@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import AuctionBidCount from "./AuctionBidCount";
 import Countdown from "./AuctionCountdown";
@@ -9,7 +9,7 @@ const ItemInfo = ({ item, isAuction, itemId }) => {
     <>
       <h5 className="card-title">{item.name}</h5>
       <div className="card-text">
-        <ProfileCard seller_id={item.seller_id}/>
+        <ProfileCard seller_id={item.seller_id} />
       </div>
       <div className="card-text">
         <p className="m-0 fs-3">£{isAuction ? item.highest_bid : item.price}</p>
