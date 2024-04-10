@@ -306,3 +306,26 @@ export async function getReviewCount(user_id) {
   const res = await fetch(`${BASE_URL}/reviews/count/${user_id}`);
   return await res.json();
 }
+
+// avatar upload route
+
+export async function uploadAvatar(formData) {
+  const res = await fetch(`${BASE_URL}/image_upload/avatar`, {
+    method: "POST",
+    body: formData,
+  });
+  return await res.json();
+}
+
+// update user bio route
+
+export async function updateUserBio(user_id, newBio) {
+  const res = await fetch(`${BASE_URL}/users/${user_id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ bio: newBio }),
+  });
+  return await res.json();
+}
