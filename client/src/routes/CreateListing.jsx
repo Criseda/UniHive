@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import "../css/createlisting.css";
-import Nav from "../components/Navbar";
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
@@ -10,23 +9,23 @@ const CreateListing = () => {
     images: [],
     listingType: "fixedPrice",
     price: "£", // Set the pound symbol as default
-    startingBid: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     // Format price input with pound symbol (£), commas, and allow positive numbers only
-    if (name === "price") {
-      const formattedValue = value.replace(/^£|,/g, ""); // Remove £ symbol and existing commas
-      const numberWithCommas = formattedValue.replace(
-        /\B(?=(\d{3})+(?!\d))/g,
-        ","
-      ); // Add commas to the numeric value
-      setFormData({ ...formData, [name]: "£" + numberWithCommas }); // Add £ symbol back to the formatted value
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    const formattedValue = value.replace(/^£|,/g, ""); // Remove £ symbol and existing commas
+    const numberWithCommas = formattedValue.replace(
+      /\B(?=(\d{3})+(?!\d))/g,
+      ","
+    ); // Add commas to the numeric value
+    setFormData({ ...formData, [name]: "£" + numberWithCommas }); // Add £ symbol back to the formatted value
+  };
+
+  const handleTypeChange = (e) => {
+    const { value } = e.target;
+    setFormData({ ["listingType"]: value });
   };
 
   const handleImageChange = (e) => {
@@ -84,38 +83,30 @@ const CreateListing = () => {
             as="select"
             name="listingType"
             value={formData.listingType}
-            onChange={handleChange}
+            onChange={handleTypeChange}
           >
             <option value="fixedPrice">Fixed Price</option>
             <option value="auction">Auction</option>
           </Form.Control>
         </Form.Group>
 
-        {formData.listingType === "fixedPrice" && (
-          <Form.Group controlId="price" style={{ marginTop: "1rem" }}>
+        {/* Simplified */}
+        <Form.Group style={{ marginTop: "1rem" }}>
+          {formData.listingType === "fixedPrice" && (
             <Form.Label>Price</Form.Label>
-            <Form.Control
-              type="text"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-        )}
+          )}
 
-        {formData.listingType === "auction" && (
-          <Form.Group controlId="startingBid" style={{ marginTop: "1rem" }}>
+          {formData.listingType === "auction" && (
             <Form.Label>Starting Bid</Form.Label>
-            <Form.Control
-              type="number"
-              name="startingBid"
-              value={formData.startingBid}
-              onChange={handleChange}
-              required
-            />
-          </Form.Group>
-        )}
+          )}
+          <Form.Control
+            type="text"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
         <Button
           size="lg"
