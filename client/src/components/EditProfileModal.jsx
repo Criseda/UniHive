@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import Range from "react-bootstrap/FormRange";
 import AvatarEditor from "react-avatar-editor";
-
+import { uploadAvatar, updateUserBio } from "../api/items";
 const EditProfileModal = ({
   user_id,
   showModal,
@@ -35,38 +35,18 @@ const EditProfileModal = ({
       formData.append("avatar", file);
       formData.append("user_id", user_id);
 
-      const avatar_response = await fetch(
-        `http://${process.env.REACT_APP_SERVER_HOST}:5000/api/image_upload/avatar`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await avatar_response.json();
-      if (avatar_response.ok) {
-        setNewAvatar(data.avatarUrl);
-        setAvatar(data.avatarUrl);
+      const avatar_data = await uploadAvatar(formData);
+      if (avatar_data.avatarUrl) {
+        setNewAvatar(avatar_data.avatarUrl);
+        setAvatar(avatar_data.avatarUrl);
       } else {
-        alert(data.error);
+        alert(avatar_data.error);
         return;
       }
-
-      // Update the bio
+  
       // Update the user's bio
-      const bio_response = await fetch(
-        `http://${process.env.REACT_APP_SERVER_HOST}:5000/api/users/${user_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ bio: newBio }),
-        }
-      );
-
-      const bioData = await bio_response.json();
-      if (bio_response.ok) {
+      const bioData = await updateUserBio(user_id, newBio);
+      if (bioData.bio) {
         setBio(newBio);
       } else {
         alert(bioData.error);
