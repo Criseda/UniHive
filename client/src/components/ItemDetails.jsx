@@ -183,10 +183,7 @@ const ItemDetails = () => {
                 </div>
                 <div className="align-self-end">
                   <Button variant="danger" className="btn-sm">
-                    <Link
-                      to="#"
-                      className="text-decoroom: ration-none text-white"
-                    >
+                    <Link to="#" className="text-decoration-none text-white">
                       {isAuction ? "Report Auction" : "Report Listing"}
                     </Link>
                   </Button>

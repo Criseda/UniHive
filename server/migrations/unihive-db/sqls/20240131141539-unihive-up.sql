@@ -6,7 +6,7 @@ CREATE TABLE app_user (
     id CHAR(6) NOT NULL PRIMARY KEY, --unique username given by API, fixed 6 characters
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
-    rating INT, --rating of the user (calculated by averaging all reviews, init null)
+    rating DECIMAL(2,1), --rating of the user (calculated by averaging all reviews, init null)
     bio VARCHAR(255),
     avatar_path VARCHAR(255) NOT NULL, --url of the image for the avatar
     banned BOOLEAN DEFAULT FALSE, --if the user is banned
@@ -70,7 +70,7 @@ CREATE TABLE review (
     id SERIAL PRIMARY KEY,
     reviewer_id CHAR(6) NOT NULL,
     reviewed_id CHAR(6) NOT NULL,
-    rating INT NOT NULL,
+    rating DECIMAL(2,1) NOT NULL,
     review TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (reviewer_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,

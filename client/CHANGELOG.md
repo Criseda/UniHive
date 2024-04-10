@@ -19,7 +19,7 @@
 - please run `npm install` on /client and /server
 - please create a .env file inside the /server folder, with the following code:
 
-```
+```Properties
 JWT_SECRET=super_secret_JWT_key
 SESSION_SECRET=super_secret_SESSION_key
 ```
@@ -52,7 +52,7 @@ SESSION_SECRET=super_secret_SESSION_key
 
 - Added `.env.example` file for `/client` and `/server`. Paste the contents into a `.env` file in the same directory as the example and that will initialise the environment variables for the application
 
-## Cristian Preda @ 23 Mar 2024
+## Cristian Preda @ 23rd Mar 2024
 
 ### auction-modal
 
@@ -92,7 +92,28 @@ SESSION_SECRET=super_secret_SESSION_key
 
 - Added some CSS to prevent the name or message from overflowing the chat selector. This is done by adding `overflow: hidden` and `text-overflow: ellipsis` to the `ListGroup.Item` class.
 
-### TODO
+## Cristian Preda @ 4th Apr 2024
+
+### profile-extended commit
+
+- created branch `profile-extended` from `develop` (to gain the newer updated version of the program and the new features we've added, Tom's profile branch is outdated)
+- merged Tom's `profile` branch into `profile-extended` to gain the profile page.
+- Added new node packages on the client: `fontawesome`
+- Renamed `Fivestar.jsx` to `Star.jsx` and implemented the stars using FontAwesome React.
+- Star size changes dynamically to window size like the rest of the components on the page.
+- Added route `/profile/:id` to `App.jsx` routes, the username of the user will get passed in, which will then get turned into description, image_url, name, etc...
+
+## Cristian Preda @ 10th Apr 2024
+
+### profile-middleware commit:
+
+- Added new modal to the profile page, which will allow the user to edit their profile. `EditProfileModal.jsx`
+- Added routes to input avatar and bio in the `/api/items.js`
+- Added a few npm packages to the server like multer and file-type to handle image uploads and prevent malicious files from being uploaded.
+- the profile page is complete.
+
+
+## TODO
 
 - Also add the auction to the saved item list, if the user has bidded on it.
-- implement a little notification thing? to signal when the auction ended, if you have won it or not. (would probably need a new page altogether, or maybe another modal, a notification box or something like that.)  
+- implement a little notification thing? to signal when the auction ended, if you have won it or not. (would probably need a new page altogether, or maybe another modal, a notification box or something like that.)

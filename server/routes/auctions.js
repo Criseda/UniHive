@@ -20,6 +20,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+// get all auctions made by a specific user, and their highest bid
+router.get("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const userAuctions = await pool.query(
+      `SELECT auction.*, MAX(bid.amount) AS highest_bid
+       FROM auction
+       INNER JOIN bid ON auction.id = bid.auction_id
+       WHERE auction.seller_id = $1
+       GROUP BY auction.id`,
+      [id]
+    );
+    res.json(userAuctions.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // get an auction
 // two inner joins to be able to return the first name and the last name of the seller
 // and the highest bid for the auction
