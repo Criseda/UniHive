@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import "../css/createlisting.css";
 import Nav from "../components/Navbar";
+import {createListing} from "../api/items";
 
-const CreateListing = () => {
+const 
+
   const [formData, setFormData] = useState({
     itemName: "",
     description: "",
@@ -37,6 +39,7 @@ const CreateListing = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle form submission here
+    createListing(
     console.log(formData);
   };
 

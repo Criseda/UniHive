@@ -87,7 +87,7 @@ const ItemDetails = () => {
     e.preventDefault();
     // Handle the bid submission here
 
-    postAuctionBid(itemId, userBid)
+     postAuctionBid(itemId, userBid)
       .then((response) => {
         // Handle the response here
         console.log("Bid submitted successfully", response);
@@ -165,7 +165,7 @@ const ItemDetails = () => {
                         className="mb-2 d-block w-100"
                         disabled={isLoading}
                       >
-                        {isLoading ? "Loading..." : "Make Offer"}
+                        {isLoading ? "Loading..." : "Message Seller"}
                       </Button>
                     </Link>
                   )}
