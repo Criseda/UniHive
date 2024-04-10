@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "fortawesome": "^0.0.1-security",
     "react": "^18.2.0",
     "react-avatar-editor": "^13.0.2",
     "react-bootstrap": "^2.10.2",
