@@ -1,15 +1,19 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Itemlist from "../components/Itemlist";
-import Prfilebar from "../components/Profilebar";
+import Profilebar from "../components/Profilebar"
 
 const Profilepage = () => {
-  return (
-    <div>
-      <Prfilebar />
-      <Itemlist />
-    </div>
-  );
-};
+    let { id } = useParams();
 
-export default Profilepage;
+    return (
+      <div>
+        <Navbar />
+        <Profilebar user_id={id}/>
+        <Itemlist user_id={id}/>
+      </div>
+    );
+  };
+  
+  export default Profilepage;
