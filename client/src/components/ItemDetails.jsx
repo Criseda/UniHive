@@ -15,6 +15,7 @@ import {
   getAuctionImages,
   postAuctionBid,
   createMessageRoom,
+  getLoggedInUser,
 } from "../api/items";
 
 const socket = io("http://localhost:5000");
@@ -33,8 +34,18 @@ const ItemDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [userBid, setUserBid] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
 
   const isAuction = itemType === "auction";
+
+  useEffect(() => {
+    const fetchLoggedInUser = async () => {
+      const user = await getLoggedInUser();
+      setLoggedInUserId(user.id);
+    };
+
+    fetchLoggedInUser();
+  }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -142,52 +153,61 @@ const ItemDetails = () => {
             <div className="card-body">
               <ItemInfo item={item} isAuction={isAuction} itemId={itemId} />
               <div className="input-group d-flex flex-column justify-content-between mt-auto">
-                <div>
-                  {/*Changed this conditional so that we can distinguish functions for auctions and listings*/}
-                  {isAuction ? (
-                    <Link
-                      to="#"
-                      className="text-decoration-none text-primary"
-                      onClick={() => setShowModal(true)}
-                    >
-                      <Button variant="primary" className="mb-2 d-block w-100">
-                        {isLoading ? "loading..." : "Submit Bid"}
-                      </Button>
-                    </Link>
-                  ) : (
-                    <Link
-                      to={isLoading ? "#" : "/messages"}
-                      className="text-decoration-none text-primary"
-                      onClick={createMessage}
-                    >
-                      <Button
-                        variant="primary"
-                        className="mb-2 d-block w-100"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? "Loading..." : "Message Seller"}
-                      </Button>
-                    </Link>
-                  )}
-                  <AuctionModal
-                    showModal={showModal}
-                    handleClose={() => setShowModal(false)}
-                    handleBidSubmit={handleBidSubmit}
-                    item={item}
-                    userBid={userBid}
-                    setUserBid={setUserBid}
-                    calculateBidIncrement={calculateBidIncrement}
-                  />
+                {loggedInUserId !== item.seller_id && (
+                  <>
+                    <div>
+                      {isAuction ? (
+                        <Link
+                          to="#"
+                          className="text-decoration-none text-primary"
+                          onClick={() => setShowModal(true)}
+                        >
+                          <Button
+                            variant="primary"
+                            className="mb-2 d-block w-100"
+                          >
+                            {isLoading ? "loading..." : "Submit Bid"}
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Link
+                          to={isLoading ? "#" : "/messages"}
+                          className="text-decoration-none text-primary"
+                          onClick={createMessage}
+                        >
+                          <Button
+                            variant="primary"
+                            className="mb-2 d-block w-100"
+                            disabled={isLoading}
+                          >
+                            {isLoading ? "Loading..." : "Make Offer"}
+                          </Button>
+                        </Link>
+                      )}
+                      <AuctionModal
+                        showModal={showModal}
+                        handleClose={() => setShowModal(false)}
+                        handleBidSubmit={handleBidSubmit}
+                        item={item}
+                        userBid={userBid}
+                        setUserBid={setUserBid}
+                        calculateBidIncrement={calculateBidIncrement}
+                      />
 
-                  <SaveItemButton itemId={itemId} itemType={itemType} />
-                </div>
-                <div className="align-self-end">
-                  <Button variant="danger" className="btn-sm">
-                    <Link to="#" className="text-decoration-none text-white">
-                      {isAuction ? "Report Auction" : "Report Listing"}
-                    </Link>
-                  </Button>
-                </div>
+                      <SaveItemButton itemId={itemId} itemType={itemType} />
+                    </div>
+                    <div className="align-self-end">
+                      <Button variant="danger" className="btn-sm">
+                        <Link
+                          to="#"
+                          className="text-decoration-none text-white"
+                        >
+                          {isAuction ? "Report Auction" : "Report Listing"}
+                        </Link>
+                      </Button>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

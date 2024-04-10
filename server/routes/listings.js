@@ -6,26 +6,41 @@ const pool = require("../db");
 
 // get all listings
 // inner join with app_user to get the seller's name
-router.get("/", async (req, res) => {
+router.get("/:page", async (req, res) => {
+  const { page } = req.params;
   try {
     const allListings = await pool.query(
       "SELECT * FROM listing"
     );
-    res.json(allListings.rows);
+    res.json(allListings.rows.slice((page * 30), (page * 30) + 30));
   } catch (err) {
     console.error(err.message);
   }
 });
 
 // get all listings for a specific user
-router.get("/user/:id", async (req, res) => {
-  const { id } = req.params;
+router.get("/user/:page/:id", async (req, res) => {
+  const { page, id } = req.params;
   try {
     const allListings = await pool.query(
       "SELECT * FROM listing WHERE seller_id = $1",
       [id]
     );
-    res.json(allListings.rows);
+    res.json(allListings.rows.slice((page * 30), (page * 30) + 30));
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// get all listings for a search query
+router.get("/search/:page/:query", async (req, res) => {
+  const { page, query } = req.params;
+  try {
+    const allListings = await pool.query(
+      "SELECT * FROM listing WHERE name LIKE $1",
+      ['%' + query + '%']
+    );
+    res.json(allListings.rows.slice((page * 30), (page * 30) + 30));
   } catch (err) {
     console.error(err.message);
   }

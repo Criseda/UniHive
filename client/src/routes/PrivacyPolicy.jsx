@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import { Container, Row, Col } from "react-bootstrap";
 import "../css/policy.css";
 

@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../components/Navbar";
 import { Container, Row, Col } from "react-bootstrap";
 import AboutImage from "../images/AboutImage.jpg";
 import "../css/about.css";
