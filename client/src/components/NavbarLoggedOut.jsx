@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Logo from "../images/alt_logo.png";
 import { loginRoute } from "../api/authentication";

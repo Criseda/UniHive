@@ -11,11 +11,10 @@ const CreateListing = () => {
     price: "£", // Set the pound symbol as default
   });
 
-  const handleChange = (e) => {
+  const handlePriceChange = (e) => {
     const { name, value } = e.target;
-
     // Format price input with pound symbol (£), commas, and allow positive numbers only
-    const formattedValue = value.replace(/^£|,/g, ""); // Remove £ symbol and existing commas
+    const formattedValue = value.replace(/\D/g, ""); // Remove non numeric characters
     const numberWithCommas = formattedValue.replace(
       /\B(?=(\d{3})+(?!\d))/g,
       ","
@@ -23,9 +22,9 @@ const CreateListing = () => {
     setFormData({ ...formData, [name]: "£" + numberWithCommas }); // Add £ symbol back to the formatted value
   };
 
-  const handleTypeChange = (e) => {
-    const { value } = e.target;
-    setFormData({ ["listingType"]: value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ [name]: value });
   };
 
   const handleImageChange = (e) => {
@@ -48,8 +47,8 @@ const CreateListing = () => {
           <Form.Control
             type="text"
             name="itemName"
-            value={formData.itemName}
             onChange={handleChange}
+            value={formData.itemName}
             required
           />
         </Form.Group>
@@ -60,8 +59,8 @@ const CreateListing = () => {
             as="textarea"
             rows={3}
             name="description"
-            value={formData.description}
             onChange={handleChange}
+            value={formData.description}
             required
           />
         </Form.Group>
@@ -83,7 +82,7 @@ const CreateListing = () => {
             as="select"
             name="listingType"
             value={formData.listingType}
-            onChange={handleTypeChange}
+            onChange={handleChange}
           >
             <option value="fixedPrice">Fixed Price</option>
             <option value="auction">Auction</option>
@@ -100,12 +99,17 @@ const CreateListing = () => {
             <Form.Label>Starting Bid</Form.Label>
           )}
           <Form.Control
-            type="text"
             name="price"
             value={formData.price}
-            onChange={handleChange}
+            onChange={handlePriceChange}
             required
           />
+          {formData.listingType === "auction" && (
+            <Form.Group controlId="date" style={{ marginTop: "1rem" }}>
+              <Form.Label>Chose End Date</Form.Label>
+              <Form.Control type="date" name="date" onChange={handleChange} />
+            </Form.Group>
+          )}
         </Form.Group>
 
         <Button
