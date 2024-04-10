@@ -334,9 +334,32 @@ export async function getLoggedInUser() {
     body: JSON.stringify({
       token: token,
     }),
+  }); 
+  return await res.json();
+}
+// createa a listing 
+export async function createListing(seller_id, name, description, price, image_path) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/listings/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+      seller_id: seller_id,
+      name: name,
+      description: description,
+      price: price,
+      image_path: image_path,
+    }),
   });
   return await res.json();
 }
+
 
 // get specific user
 export async function getUser(id) {
@@ -367,6 +390,8 @@ export async function uploadAvatar(formData) {
   });
   return await res.json();
 }
+
+
 
 // update user bio route
 

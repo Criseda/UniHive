@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import "../css/createlisting.css";
+import Nav from "../components/Navbar";
+import { useEffect } from "react";
+import {getLoggedInUser} from "../api/items";
+import {createListing} from "../api/items";
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +14,9 @@ const CreateListing = () => {
     listingType: "fixedPrice",
     price: "£", // Set the pound symbol as default
   });
+  const [user, setUser] = useState(null);
+
+  
 
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
@@ -34,9 +41,21 @@ const CreateListing = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
+    // Handle form submission here 
+    // remove the pound symbol and commas from the price before submitting
+    const price = formData.price.replace(/^£|,/g, "");
+   //ADD CONDITIONAL TO ADD AUCTION OR LISTING  
+    createListing(user.id, formData.itemName, formData.description, price, formData.images);
     console.log(formData);
   };
+  useEffect(() => {
+    async function fetchData() {
+      const user = await getLoggedInUser();
+      setUser(user);
+      
+    }
+    fetchData();
+  });
 
   return (
     <Container className="create-listing-container py-4">

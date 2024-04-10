@@ -98,7 +98,7 @@ const ItemDetails = () => {
     e.preventDefault();
     // Handle the bid submission here
 
-    postAuctionBid(itemId, userBid)
+     postAuctionBid(itemId, userBid)
       .then((response) => {
         // Handle the response here
         console.log("Bid submitted successfully", response);
