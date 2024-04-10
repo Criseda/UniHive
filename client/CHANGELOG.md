@@ -103,6 +103,16 @@ SESSION_SECRET=super_secret_SESSION_key
 - Star size changes dynamically to window size like the rest of the components on the page.
 - Added route `/profile/:id` to `App.jsx` routes, the username of the user will get passed in, which will then get turned into description, image_url, name, etc...
 
+## Cristian Preda @ 10th Apr 2024
+
+### profile-middleware commit:
+
+- Added new modal to the profile page, which will allow the user to edit their profile. `EditProfileModal.jsx`
+- Added routes to input avatar and bio in the `/api/items.js`
+- Added a few npm packages to the server like multer and file-type to handle image uploads and prevent malicious files from being uploaded.
+- the profile page is complete.
+
+
 ## TODO
 
 - Also add the auction to the saved item list, if the user has bidded on it.
