@@ -314,7 +314,7 @@ export async function getLoggedInUser() {
     body: JSON.stringify({
       token: token,
     }),
-  });
+  }); 
   return await res.json();
 }
 // createa a listing 
@@ -341,12 +341,10 @@ export async function createListing(seller_id, name, description, price, image_p
 }
 
 
-
-
-
-
 // get specific user
 export async function getUser(id) {
   const res = await fetch(`${BASE_URL}/users/${id}`);
   return await res.json();
 }
+
+
