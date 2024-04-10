@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Image, Row, Col, Alert } from "react-bootstrap";
-import { getUser, getReviewCount } from "../api/items";
+import { getUser, getReviewCount, getLoggedInUser } from "../api/items";
 import Stars from "./Star";
 
 const ProfileCard = ({ seller_id }) => {
@@ -11,6 +11,17 @@ const ProfileCard = ({ seller_id }) => {
   const [rating, setRating] = useState(null);
   const [reviewCount, setReviewCount] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [loggedInUserId, setLoggedInUserId] = useState(null);
+
+  //useEffect to get the user id of the logged in user
+  useEffect(() => {
+    const fetchLoggedInUser = async () => {
+      const user = await getLoggedInUser();
+      setLoggedInUserId(user.id);
+    };
+
+    fetchLoggedInUser();
+  }, []);
 
   useEffect(() => {
     if (seller_id) {
@@ -60,7 +71,7 @@ const ProfileCard = ({ seller_id }) => {
               className="text-dark mb-0 pt-1 d-block"
               href={`/profile/${seller_id}`}
             >
-              {name}
+              {name} {loggedInUserId === seller_id && "(You)"}
             </a>
             <a
               className={`small text-decoration-underline m-0 ${

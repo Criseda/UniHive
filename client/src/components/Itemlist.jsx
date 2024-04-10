@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { getListings } from "../api/items";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAuctionsBySearchQuery, getListings, getListingsBySearchQuery } from "../api/items";
 import { getAuctions } from "../api/items";
 import { getListingsByUser } from "../api/items";
 import { getAuctionsByUser } from "../api/items";
@@ -7,6 +7,11 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 
 const Itemlist = ({ user_id }) => {
+
+  let { option, query } = useParams();
+
+  const [page, setPage] = useState(0);
+
   const [data, setData] = useState([]); // store both items and auctions
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -14,8 +19,29 @@ const Itemlist = ({ user_id }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    const fetchListings = user_id ? getListingsByUser(user_id) : getListings();
-    const fetchAuctions = user_id ? getAuctionsByUser(user_id) : getAuctions();
+
+    let fetchListings = [], fetchAuctions = [];
+
+    if (query) {
+      switch (option) {
+        case "0": // all items
+          fetchListings = getListingsBySearchQuery(page, query);
+          fetchAuctions = getAuctionsBySearchQuery(page, query);
+          break;
+        case "1": // fixed price
+          fetchListings = getListingsBySearchQuery(page, query);
+          break;
+        case "2": // auctions
+          fetchAuctions = getAuctionsBySearchQuery(page, query);
+          break;
+        default:
+          throw "Invalid Option.";
+      }
+    }
+    else {
+      fetchListings = (user_id ? getListingsByUser(page, user_id) : getListings(page));
+      fetchAuctions = (user_id ? getAuctionsByUser(page, user_id) : getAuctions(page));
+    }
     Promise.all([fetchListings, fetchAuctions]) // fetch both items and auctions
       .then(([items, auctions]) => {
         const mergedData = [...items, ...auctions]; // merge items and auctions
@@ -30,7 +56,7 @@ const Itemlist = ({ user_id }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [page, option, query]);
 
   const handleCardClick = (key) => {
     navigate(`/item/${key}`);
@@ -51,7 +77,7 @@ const Itemlist = ({ user_id }) => {
   if(data.length === 0) {
     return (
       <div className="container">
-        <div className="text-center text-muted">No items posted yet...</div>
+        <div className="text-center text-muted">You've reached the end.</div>
       </div>
     );
   }
@@ -92,6 +118,31 @@ const Itemlist = ({ user_id }) => {
           );
         })}
       </Row>
+      {
+        data.length > 0 ? 
+        (
+          <Row>
+            <Col className="mb-4">
+              <Button 
+                disabled={page==0}
+                variant="outline-success" 
+                className="w-100"
+                onClick={()=>{ console.log(page) ; setPage(page - 1) }} >
+                Previous Page
+              </Button>
+            </Col>
+            <Col className="mb-4">
+              <Button 
+                variant="outline-success" 
+                className="w-100"
+                onClick={()=>{ console.log(page) ; setPage(page + 1) }} >
+                Next Page
+              </Button>
+            </Col>
+          </Row>
+        )
+        : null
+      }
     </Container>
   );
 };

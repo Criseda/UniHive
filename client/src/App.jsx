@@ -18,6 +18,7 @@ import Privacy from "./routes/PrivacyPolicy";
 import Ethics from "./routes/CodeOfEthics";
 import Layout from "./Layout";
 import CreateListing from "./routes/CreateListing";
+import Results from "./routes/Results";
 
 // ProtectedRoute is a component that will check if a user is authenticated
 const ProtectedRoute = ({ element }) => {
@@ -101,6 +102,10 @@ const App = () => {
           <Route
             path="/currentbids"
             element={<ProtectedRoute element={<CurrentBids />} />}
+          />
+          <Route
+            path="/results/:option/:query"
+            element={<ProtectedRoute element={<Results />} />}
           />
           <Route path="/authHandler" element={<AuthHandler />} />{" "}
         </Routes>
