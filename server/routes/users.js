@@ -114,6 +114,11 @@ router.put("/:id", async (req, res) => {
       params.push(banned);
     }
 
+    // Check if there are any fields to update
+    if (sets.length === 0) {
+      return res.status(400).json({ error: "No fields to update" });
+    }
+
     // add the id to the params array
     params.push(id);
 
@@ -122,11 +127,21 @@ router.put("/:id", async (req, res) => {
       params.length
     } RETURNING *`;
 
+    // Start a transaction
+    await pool.query("BEGIN");
+
     // run the query
     const updatedUser = await pool.query(query, params);
+
+    // Commit the transaction
+    await pool.query("COMMIT");
+
     res.json(updatedUser.rows[0]);
   } catch (err) {
+    // Rollback the transaction in case of error
+    await pool.query("ROLLBACK");
     console.error(err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
