@@ -44,7 +44,7 @@ router.get("/search/:page/:query", async (req, res) => {
   const { page, query } = req.params;
   try {
     const allAuctions = await pool.query(
-      "SELECT * FROM auction WHERE name LIKE $1",
+      "SELECT * FROM auction WHERE LOWER(name) LIKE LOWER($1)",
       ['%' + query + '%']
     );
     res.json(allAuctions.rows.slice((page * 30), (page * 30) + 30));
