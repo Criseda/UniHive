@@ -271,10 +271,11 @@ useEffect(() => {
                         {/*renders messages*/}
                         {messages.map((message, index) => {
                           const isSentByCurrentUser = message.sender_id === currentUser.id; 
+                          const messageTime = new Date(message.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                           return (
                           <li key={index} className={isSentByCurrentUser ? "reply" : "sender"}>
                           <p>{message.message}</p>
-                          <span className="time">{message.created_at}</span>
+                          <span className="time">{messageTime}</span>
                           </li>                       
                           );
                         })}   
