@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "../components/NavbarLoggedOut";
 import { Container, Col, Row, Button, Image } from "react-bootstrap";
 import BuyIllustration from "../images/BuyIllustration.jpg";
 import { loginRoute } from "../api/authentication";

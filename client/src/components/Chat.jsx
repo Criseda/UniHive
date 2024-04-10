@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import ChatSelector from "./ChatSelector";
 import io from "socket.io-client";
-import {getMessagesOfRoom} from "../api/items";
-import {getLoggedInUser} from "../api/items";
-import {createMessage} from "../api/items";
-
+import { getMessagesOfRoom } from "../api/items";
+import { getLoggedInUser } from "../api/items";
+import { createMessage } from "../api/items";
 
 const socket = io("http://localhost:5000");
 
@@ -19,84 +18,84 @@ const Chat = () => {
   const inputRef = useRef(null);
   const chatContainerRef = useRef(null);
 
- const handleSubmit = (event) => {
-  event.preventDefault();
-  const time = new Date().toISOString();
-  // Add to database and create message object
-  createMessage(currentUser.id, room, message, time)
-    .then((newMessage) => {
-      // Send message and receive it myself
-      sendMessage(newMessage);
-      //clear Everything 
-      setMessage("");
-      inputRef.current.value = "";
-    })
-    .catch((error) => {
-      console.error("Error creating message:", error);
-      // Handle error here
-    });
-};    
- 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const time = new Date().toISOString();
+    // Add to database and create message object
+    createMessage(currentUser.id, room, message, time)
+      .then((newMessage) => {
+        // Send message and receive it myself
+        sendMessage(newMessage);
+        //clear Everything
+        setMessage("");
+        inputRef.current.value = "";
+      })
+      .catch((error) => {
+        console.error("Error creating message:", error);
+        // Handle error here
+      });
+  };
+
   //sends message to the server
   const sendMessage = (newMessage) => {
     //DEBUGGING
-    socket.emit("send_message", { message: newMessage, room: room});
+    socket.emit("send_message", { message: newMessage, room: room });
     setMessage("");
-  }
+  };
 
   const handleItemClick = (roomId) => {
     setRoom(roomId);
-    socket.emit("joinRoom", {room: roomId});
+    socket.emit("joinRoom", { room: roomId });
     //Joined room in backend (/server/app.js):w
-  };  
+  };
 
   useEffect(() => {
     getLoggedInUser()
-    .then((response) => {
-      const user = response;
-      setCurrentUser(user);
-    }) 
-    .catch((error) => {
-      setError(error);
-    })
-    .finally(() => {
-      setIsLoading(false);
-    });
+      .then((response) => {
+        const user = response;
+        setCurrentUser(user);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
-   
- useEffect(() => { 
-    getMessagesOfRoom(room) 
-    .then((response) => {
-      setMessages(response);
-    })
-    .catch((error) => {
-      setError(error);  
-    })
-    .finally(() => {
-      setIsLoading(false);
-    });
+
+  useEffect(() => {
+    getMessagesOfRoom(room)
+      .then((response) => {
+        setMessages(response);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [room]);
 
-//looks for messages 
-useEffect(() => {
-  socket.on("receive_message", (data) => {
-    setMessageReceived(data.message);
-    setMessages(prevMessages => [...prevMessages, data.message]); // Append the received message to the messages array
-  });
+  //looks for messages
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setMessageReceived(data.message);
+      setMessages((prevMessages) => [...prevMessages, data.message]); // Append the received message to the messages array
+    });
 
-  // Cleanup function to remove the event listener when the component unmounts
-  return () => {
-    socket.off("receive_message");
-  };
-}, [socket]);
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      socket.off("receive_message");
+    };
+  }, [socket]);
 
-//scrolls to the bottom of the chat
-useEffect(() => {
-  if (chatContainerRef.current) {
-    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-  }
-}, [messages]);
-
+  //scrolls to the bottom of the chat
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   //Need to implement room concept but use user icons to change room number.
   //Need to implement the ability to generate a unique room number everytime a user is created.
@@ -151,19 +150,9 @@ useEffect(() => {
                             {/* chat-list */}
                             <div className="chat-list">
                               {/* stacked chats */}
-                              <ChatSelector onItemClick={handleItemClick}/>
+                              <ChatSelector onItemClick={handleItemClick} />
                             </div>
                             {/* chat-list */}
-                          </div>
-                          <div
-                            className="tab-pane fade"
-                            id="Closed"
-                            role="tabpanel"
-                            aria-labelledby="Closed-tab"
-                          >
-                            <div className="chat-list">
-                              Closed is now redundant (remove?)
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -202,68 +191,39 @@ useEffect(() => {
                             </div>
                           </div>
                         </div>
-
-                        <div className="col-4">
-                          <ul className="moreoption">
-                            <li className="navbar nav-item dropdown">
-                              <a
-                                className="nav-link dropdown-toggle"
-                                href="#"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i
-                                  className="fa fa-ellipsis-v"
-                                  aria-hidden="true"
-                                />
-                              </a>
-                              <ul className="dropdown-menu">
-                                <li>
-                                  <a className="dropdown-item" href="#">
-                                    Action
-                                  </a>
-                                </li>
-                                <li>
-                                  <a className="dropdown-item" href="#">
-                                    Another action
-                                  </a>
-                                </li>
-                                <li>
-                                  <hr className="dropdown-divider" />
-                                </li>
-                                <li>
-                                  <a className="dropdown-item" href="#">
-                                    Something else here
-                                  </a>
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </div>
                       </div>
                     </div>
-                    {/* converstaion area */} 
+                    {/* converstaion area */}
                     <div className="modal-body" ref={chatContainerRef}>
-                      <div className="msg-body" >
+                      <div className="msg-body">
                         <ul>
-                        {/*renders messages*/}
-                        {messages.map((message, index) => {
-                          const isSentByCurrentUser = message.sender_id === currentUser.id; 
-                          const messageTime = new Date(message.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                          return (
-                          <li key={index} className={isSentByCurrentUser ? "reply" : "sender"}>
-                          <p>{message.message}</p>
-                          <span className="time">{messageTime}</span>
-                          </li>                       
-                          );
-                        })}   
-   
+                          {/*renders messages*/}
+                          {messages.map((message, index) => {
+                            const isSentByCurrentUser =
+                              message.sender_id === currentUser.id;
+                            const messageTime = new Date(
+                              message.created_at
+                            ).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            });
+                            return (
+                              <li
+                                key={index}
+                                className={
+                                  isSentByCurrentUser ? "reply" : "sender"
+                                }
+                              >
+                                <p>{message.message}</p>
+                                <span className="time">{messageTime}</span>
+                              </li>
+                            );
+                          })}
                         </ul>
-                      </div> 
+                      </div>
                     </div>
-                    {/* converstaion area END*/} 
-                    {/* Send Message/attachment section */}
+                    {/* converstaion area END*/}
+                    {/* Send Message section */}
                     <div className="send-box">
                       <form action="">
                         <input
@@ -276,33 +236,15 @@ useEffect(() => {
                             setMessage(event.target.value);
                           }}
                         />
-                        <button type="button" onClick={handleSubmit} disabled={!message.trim()}>
+                        <button
+                          type="button"
+                          onClick={handleSubmit}
+                          disabled={!message.trim()}
+                        >
                           <i className="fa fa-paper-plane" aria-hidden="true" />{" "}
                           Send
                         </button>
                       </form>
-                      <div className="send-btns">
-                        <div className="attach">
-                          <div className="button-wrapper">
-                            <span className="label">
-                              <img
-                                className="img-fluid"
-                                src="https://mehedihtml.com/chatbox/assets/img/upload.svg"
-                                alt="image title"
-                              />{" "}
-                              Attach file
-                            </span>
-                            <input
-                              type="file"
-                              name="upload"
-                              id="upload"
-                              className="upload-box"
-                              placeholder="Upload File"
-                              aria-label="Upload File"
-                            />
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
