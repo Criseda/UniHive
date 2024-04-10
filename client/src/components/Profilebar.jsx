@@ -79,7 +79,7 @@ const Profilebar = ({ user_id }) => {
             <Stars starnumber={rating} mobileSize={"lg"} size={"2x"} />
           </div>
           <h3 className="pt-4">Bio:</h3>
-          <pre>{bio ? bio : "This user has not set up a bio yet."}</pre>
+          <pre style={{fontFamily: "inherit", whiteSpace: "pre-wrap"}}>{bio ? bio : "This user has not set up a bio yet."}</pre>
         </Col>
 
         {isOwnAccount && (
