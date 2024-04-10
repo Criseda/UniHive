@@ -89,7 +89,7 @@ router.get("/dashboard", async (req, res) => {
       const response = await axios.post(`http://${process.env.SERVER_HOST || "localhost"}:5000/api/users`, {
         id: username,
         name: fullname,
-        avatar_path: "images/default_pfp.jpg",
+        avatar_path: "/images/default_pfp.jpg",
       });
     }
     // CREATE A JWT

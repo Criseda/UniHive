@@ -92,7 +92,7 @@ const App = () => {
             element={<ProtectedRoute element={<CreateListing />} />}
           />
           <Route
-            path="/profile"
+            path="/profile/:id"
             element={<ProtectedRoute element={<Profile />} />}
           />
           <Route path="/about" element={<About />} />

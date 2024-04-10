@@ -1,10 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Alert } from "react-bootstrap";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Logo from "../images/alt_logo.png";
 import { logoutRoute } from "../api/authentication";
+import { getLoggedInUser } from "../api/items";
 
 const MyNavbar = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getLoggedInUser()
+      .then((data) => {
+        setUser(data.id);
+      })
+      .catch((error) => {
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  });
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <Alert variant="danger">{error}</Alert>;
+  }
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg" className="sticky-top">
       <Container>
@@ -44,7 +71,7 @@ const MyNavbar = () => {
 
             {/* Dropdown for additional menu items if needed */}
             <NavDropdown title="More" id="navbarDropdown">
-              <NavDropdown.Item href="/profile">Account</NavDropdown.Item>
+              <NavDropdown.Item href={`/profile/${user}`}>Account</NavDropdown.Item>
               <NavDropdown.Item href="/currentbids">
                 Current Bids
               </NavDropdown.Item>
