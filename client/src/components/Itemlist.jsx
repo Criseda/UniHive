@@ -76,9 +76,30 @@ const Itemlist = ({ user_id }) => {
 
   if(data.length === 0) {
     return (
-      <div className="container">
-        <div className="text-center text-muted">You've reached the end.</div>
-      </div>
+      <Container>
+        <div className="text-center text-muted mb-4">You've reached the end.</div>
+
+        <Row>
+            <Col className="mb-4">
+              <Button 
+                disabled={page==0}
+                variant="outline-success" 
+                className="w-100"
+                onClick={()=>{ console.log(page) ; setPage(page - 1) }} >
+                Previous Page
+              </Button>
+            </Col>
+            <Col className="mb-4">
+              <Button 
+                disabled={data.length == 0}
+                variant="outline-success" 
+                className="w-100"
+                onClick={()=>{ console.log(page) ; setPage(page + 1) }} >
+                Next Page
+              </Button>
+            </Col>
+          </Row>
+      </Container>
     );
   }
 
@@ -112,15 +133,20 @@ const Itemlist = ({ user_id }) => {
                   <Button variant="outline-success" className="mt-auto w-100">
                     View Listing
                   </Button>
+                  {
+                    item.seller_id == user_id ?
+                    <Button variant="outline-danger" className="mt-auto w-100">
+                      Delete Listing
+                    </Button> 
+                    :
+                    null
+                  }
                 </Card.Body>
               </Card>
             </Col>
           );
         })}
       </Row>
-      {
-        data.length > 0 ? 
-        (
           <Row>
             <Col className="mb-4">
               <Button 
@@ -133,6 +159,7 @@ const Itemlist = ({ user_id }) => {
             </Col>
             <Col className="mb-4">
               <Button 
+                disabled={data.length == 0}
                 variant="outline-success" 
                 className="w-100"
                 onClick={()=>{ console.log(page) ; setPage(page + 1) }} >
@@ -140,9 +167,6 @@ const Itemlist = ({ user_id }) => {
               </Button>
             </Col>
           </Row>
-        )
-        : null
-      }
     </Container>
   );
 };
