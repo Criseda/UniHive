@@ -39,21 +39,22 @@ const EditProfileModal = ({
       if (avatar_data.avatarUrl) {
         setNewAvatar(avatar_data.avatarUrl);
         setAvatar(avatar_data.avatarUrl);
+  
+        // Update the user's bio
+        const bioData = await updateUserBio(user_id, newBio);
+        if (bioData.bio) {
+          setBio(newBio);
+        } else {
+          alert(bioData.error);
+          return;
+        }
       } else {
         alert(avatar_data.error);
         return;
       }
   
-      // Update the user's bio
-      const bioData = await updateUserBio(user_id, newBio);
-      if (bioData.bio) {
-        setBio(newBio);
-      } else {
-        alert(bioData.error);
-        return;
-      }
+      setShowModal(false);
     }
-    setShowModal(false);
   };
 
   const handleFileChange = (e) => {
