@@ -25,6 +25,7 @@ const Chat = () => {
   const chatContainerRef = useRef(null);
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
+  const [avatarPath, setAvatarPath] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -83,10 +84,11 @@ const Chat = () => {
     setMessage("");
   };
 
-  const handleItemClick = (roomId, firstName, lastName) => {
+  const handleItemClick = (roomId, firstName, lastName, avatarPath) => {
     setRoom(roomId);
     setfirstName(firstName);
     setlastName(lastName);
+    setAvatarPath(avatarPath); // Add this line to set the avatarPath state
     socket.emit("joinRoom", { room: roomId });
     //Joined room in backend (/server/app.js):w
   };
@@ -223,8 +225,9 @@ const Chat = () => {
                             <div className="flex-shrink-0">
                               <img
                                 className="img-fluid"
-                                src="https://mehedihtml.com/chatbox/assets/img/user.png"
+                                src={avatarPath}
                                 alt="user img"
+                                style={{ width: "4rem", height: "4rem" }}
                               />
                             </div>
                             <div className="flex-grow-1 ms-3">
@@ -259,18 +262,21 @@ const Chat = () => {
                                   isSentByCurrentUser ? "reply" : "sender"
                                 }
                               >
-                                <p>{message.message}</p>
                                 {message.image_path && (
-                                  <img
-                                    src={`http://localhost:5000${message.image_path}`}
-                                    alt="message"
-                                    style={{
-                                      maxWidth: "120px",
-                                      maxHeight: "90px",
-                                      height: "auto",
-                                    }}
-                                  />
+                                  <>
+                                    <img
+                                      src={`http://localhost:5000${message.image_path}`}
+                                      alt="message"
+                                      style={{
+                                        maxWidth: "240px",
+                                        maxHeight: "180px",
+                                        height: "auto",
+                                      }}
+                                    />
+                                    <br />
+                                  </>
                                 )}
+                                <p>{message.message}</p>
                                 <span className="time">{messageTime}</span>
                               </li>
                             );

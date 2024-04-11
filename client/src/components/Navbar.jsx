@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Logo from "../images/alt_logo.png";
+import Logo from "../images/logo.png";
 import { logoutRoute } from "../api/authentication";
 import { getLoggedInUser } from "../api/items";
 
@@ -67,10 +67,13 @@ const MyNavbar = () => {
 
             {/* Dropdown for additional menu items if needed */}
             <NavDropdown title="More" id="navbarDropdown">
-              {loading ? 
-                <NavDropdown.Item href={`#`}>Loading</NavDropdown.Item> :
-                <NavDropdown.Item href={`/profile/${user}`}>Account</NavDropdown.Item>
-              }
+              {loading ? (
+                <NavDropdown.Item href={`#`}>Loading</NavDropdown.Item>
+              ) : (
+                <NavDropdown.Item href={`/profile/${user}`}>
+                  Account
+                </NavDropdown.Item>
+              )}
               <NavDropdown.Item href="/currentbids">
                 Current Bids
               </NavDropdown.Item>
