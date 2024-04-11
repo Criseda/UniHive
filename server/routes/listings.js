@@ -6,7 +6,7 @@ const pool = require("../db");
 
 // get all listings
 // inner join with app_user to get the seller's name
-router.get("/:page", async (req, res) => {
+router.get("/page/:page", async (req, res) => {
   const { page } = req.params;
   try {
     const allListings = await pool.query(
@@ -19,7 +19,7 @@ router.get("/:page", async (req, res) => {
 });
 
 // get all listings for a specific user
-router.get("/user/:page/:id", async (req, res) => {
+router.get("/user/page/:page/:id", async (req, res) => {
   const { page, id } = req.params;
   try {
     const allListings = await pool.query(
@@ -33,7 +33,7 @@ router.get("/user/:page/:id", async (req, res) => {
 });
 
 // get all listings for a search query
-router.get("/search/:page/:query", async (req, res) => {
+router.get("/search/page/:page/:query", async (req, res) => {
   const { page, query } = req.params;
   try {
     const allListings = await pool.query(

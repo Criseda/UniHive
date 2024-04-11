@@ -5,7 +5,7 @@ const pool = require("../db");
 // define routes for auctions here
 
 // get all auctions, and their highest bid
-router.get("/:page", async (req, res) => {
+router.get("/page/:page", async (req, res) => {
   const { page } = req.params;
   try {
     const allAuctions = await pool.query(`
@@ -22,7 +22,7 @@ router.get("/:page", async (req, res) => {
 });
 
 // get all auctions made by a specific user, and their highest bid
-router.get("/user/:page/:id", async (req, res) => {
+router.get("/user/page/:page/:id", async (req, res) => {
   const { page, id } = req.params;
   try {
     const userAuctions = await pool.query(
@@ -40,7 +40,7 @@ router.get("/user/:page/:id", async (req, res) => {
 });
 
 // get all listings for a search query
-router.get("/search/:page/:query", async (req, res) => {
+router.get("/search/page/:page/:query", async (req, res) => {
   const { page, query } = req.params;
   try {
     const allAuctions = await pool.query(
