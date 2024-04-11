@@ -15,6 +15,8 @@ import {
   getAuctionImages,
   postAuctionBid,
   getLoggedInUser,
+  deleteAuction,
+  deleteListing
 } from "../api/items";
 
 const ItemDetails = () => {
@@ -31,14 +33,14 @@ const ItemDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const [userBid, setUserBid] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
-  const [loggedInUserId, setLoggedInUserId] = useState(null);
+  const [currentUser, setcurrentUser] = useState(null);
 
   const isAuction = itemType === "auction";
 
   useEffect(() => {
     const fetchLoggedInUser = async () => {
       const user = await getLoggedInUser();
-      setLoggedInUserId(user.id);
+      setcurrentUser(user);
     };
 
     fetchLoggedInUser();
@@ -134,7 +136,7 @@ const ItemDetails = () => {
             <div className="card-body">
               <ItemInfo item={item} isAuction={isAuction} itemId={itemId} />
               <div className="input-group d-flex flex-column justify-content-between mt-auto">
-                {loggedInUserId !== item.seller_id && (
+                {currentUser != null && currentUser.id !== item.seller_id && (
                   <>
                     <div>
                       {isAuction ? (
@@ -180,10 +182,11 @@ const ItemDetails = () => {
                     <div className="align-self-end">
                       <Button variant="danger" className="btn-sm">
                         <Link
-                          to="#"
+                          to={true ? "/home" : "#"}
                           className="text-decoration-none text-white"
+                          onClick={currentUser.super_user ? (isAuction ? deleteAuction(itemId) : deleteListing(itemId)) : null}
                         >
-                          {isAuction ? "Report Auction" : "Report Listing"}
+                          {currentUser.super_user ? "Delete Listing" : (isAuction ? "Report Auction" : "Report Listing")}
                         </Link>
                       </Button>
                     </div>

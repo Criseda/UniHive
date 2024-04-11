@@ -24,10 +24,6 @@ const MyNavbar = () => {
       });
   });
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
     return <Alert variant="danger">{error}</Alert>;
   }
@@ -71,7 +67,10 @@ const MyNavbar = () => {
 
             {/* Dropdown for additional menu items if needed */}
             <NavDropdown title="More" id="navbarDropdown">
-              <NavDropdown.Item href={`/profile/${user}`}>Account</NavDropdown.Item>
+              {loading ? 
+                <NavDropdown.Item href={`#`}>Loading</NavDropdown.Item> :
+                <NavDropdown.Item href={`/profile/${user}`}>Account</NavDropdown.Item>
+              }
               <NavDropdown.Item href="/currentbids">
                 Current Bids
               </NavDropdown.Item>
