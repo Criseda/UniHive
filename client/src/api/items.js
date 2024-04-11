@@ -226,19 +226,24 @@ export async function getAllMessageRooms() {
 export async function getMessagesOfRoom(id) {
   try {
     const res = await fetch(`${BASE_URL}/messages/room/messages/${id}`);
-    const messages =  await res.json();
+    const messages = await res.json();
     //sort messages by id in descending order
-    messages.sort((a, b) => (a.id - b.id));
+    messages.sort((a, b) => a.id - b.id);
     return messages;
   } catch (error) {
     console.error("Error fetching messages:", error);
-    return[];
+    return [];
   }
-
 }
- 
-//send a new message 
-export async function createMessage(sender_id, room_id, message, time, imageUrl) { 
+
+//send a new message
+export async function createMessage(
+  sender_id,
+  room_id,
+  message,
+  time,
+  imageUrl
+) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
@@ -266,7 +271,6 @@ export async function createMessage(sender_id, room_id, message, time, imageUrl)
 
   return await res.json();
 }
-
 
 //JWT Requests
 
@@ -374,11 +378,18 @@ export async function getLoggedInUser() {
     body: JSON.stringify({
       token: token,
     }),
-  }); 
+  });
   return await res.json();
 }
-//create an auction 
-export async function createAuction(seller_id, name, description, opening_bid, closing_date, image_path) {
+//create an auction
+export async function createAuction(
+  seller_id,
+  name,
+  description,
+  opening_bid,
+  closing_date,
+  image_path
+) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
@@ -400,8 +411,14 @@ export async function createAuction(seller_id, name, description, opening_bid, c
   });
   return await res.json();
 }
-// createa a listing 
-export async function createListing(seller_id, name, description, price, image_path) {
+// createa a listing
+export async function createListing(
+  seller_id,
+  name,
+  description,
+  price,
+  image_path
+) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
@@ -422,7 +439,6 @@ export async function createListing(seller_id, name, description, price, image_p
   });
   return await res.json();
 }
-
 
 // get specific user
 export async function getUser(id) {
@@ -461,7 +477,20 @@ export async function uploadMessageImage(formData) {
     body: formData,
   });
   return await res.json();
+}
 
+//item image upload route
+export async function uploadItemImages(formData) {
+  const res = await fetch(`${BASE_URL}/image_upload/itemImages`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error(`Server responded with status ${res.status}`);
+  }
+
+  return await res.json();
 }
 
 // update user bio route
@@ -477,7 +506,7 @@ export async function updateUserBio(user_id, newBio) {
   return await res.json();
 }
 
-// delete user 
+// delete user
 export async function deleteUser(id) {
   const token = localStorage.getItem("token");
   if (!token) {
