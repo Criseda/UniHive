@@ -228,9 +228,7 @@ export async function getMessagesOfRoom(id) {
     const res = await fetch(`${BASE_URL}/messages/room/messages/${id}`);
     const messages =  await res.json();
     //sort messages by id in descending order
-    console.log(messages);
     messages.sort((a, b) => (a.id - b.id));
-    console.log("This is the processed message objects", messages);
     return messages;
   } catch (error) {
     console.error("Error fetching messages:", error);
@@ -266,7 +264,6 @@ export async function createMessage(sender_id, room_id, message, time, imageUrl)
     body: JSON.stringify(body),
   });
 
-  console.log("This is the response from the backend", res);
   return await res.json();
 }
 
