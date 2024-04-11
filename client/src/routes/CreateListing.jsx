@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import "../css/createlisting.css";
 import { getLoggedInUser } from "../api/items";
-import { createListing, createAuction } from "../api/items";
+import { createListing, createAuction, uploadItemImages } from "../api/items";
 
 
 
