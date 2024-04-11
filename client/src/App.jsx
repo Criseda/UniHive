@@ -16,10 +16,12 @@ import About from "./routes/About";
 import CurrentBids from "./routes/CurrentBids";
 import Privacy from "./routes/PrivacyPolicy";
 import Ethics from "./routes/CodeOfEthics";
-import Layout from "./Layout";
 import CreateListing from "./routes/CreateListing";
 import Results from "./routes/Results";
 import FAQ from "./routes/FAQ";
+import Footer from "./components/Footer";
+import Nav from "./components/Navbar";
+import NavOut from "./components/NavbarLoggedOut";
 
 // ProtectedRoute is a component that will check if a user is authenticated
 const ProtectedRoute = ({ element }) => {
@@ -70,48 +72,51 @@ const ProtectedRoute = ({ element }) => {
 };
 
 const App = () => {
+  // Check if the user is authenticated
+  const isAuthenticated = !!localStorage.getItem("token");
+
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/item/:id"
-            element={<ProtectedRoute element={<Item />} />}
-          />
-          <Route
-            path="/messages"
-            element={<ProtectedRoute element={<Messages />} />}
-          />
-          <Route
-            path="/saveditem"
-            element={<ProtectedRoute element={<SavedItems />} />}
-          />
-          <Route
-            path="/sell"
-            element={<ProtectedRoute element={<CreateListing />} />}
-          />
-          <Route
-            path="/profile/:id"
-            element={<ProtectedRoute element={<Profile />} />}
-          />
-          <Route path="/about" element={<About />} />
-          <Route path="/codeofethics" element={<Ethics />} />
-          <Route path="/privacypolicy" element={<Privacy />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route
-            path="/currentbids"
-            element={<ProtectedRoute element={<CurrentBids />} />}
-          />
-          <Route
-            path="/results/:option/:query"
-            element={<ProtectedRoute element={<Results />} />}
-          />
-          <Route path="/authHandler" element={<AuthHandler />} />{" "}
-        </Routes>
-      </Layout>
+      {isAuthenticated ? <Nav /> : <NavOut />}
+      <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/item/:id"
+          element={<ProtectedRoute element={<Item />} />}
+        />
+        <Route
+          path="/messages"
+          element={<ProtectedRoute element={<Messages />} />}
+        />
+        <Route
+          path="/saveditem"
+          element={<ProtectedRoute element={<SavedItems />} />}
+        />
+        <Route
+          path="/sell"
+          element={<ProtectedRoute element={<CreateListing />} />}
+        />
+        <Route
+          path="/profile/:id"
+          element={<ProtectedRoute element={<Profile />} />}
+        />
+        <Route path="/about" element={<About />} />
+        <Route path="/codeofethics" element={<Ethics />} />
+        <Route path="/privacypolicy" element={<Privacy />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route
+          path="/currentbids"
+          element={<ProtectedRoute element={<CurrentBids />} />}
+        />
+        <Route
+          path="/results/:option/:query"
+          element={<ProtectedRoute element={<Results />} />}
+        />
+        <Route path="/authHandler" element={<AuthHandler />} />{" "}
+      </Routes>
+      <Footer />
     </Router>
   );
 };

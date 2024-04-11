@@ -4,8 +4,6 @@ import "../css/createlisting.css";
 import { getLoggedInUser } from "../api/items";
 import { createListing, createAuction } from "../api/items";
 
-
-
 const CreateListing = () => {
   const [formData, setFormData] = useState({
     itemName: "",
@@ -50,7 +48,6 @@ const CreateListing = () => {
     const price = formData.price.replace(/^£|,/g, "");
     //ADD CONDITIONAL TO ADD AUCTION OR LISTING
     if (formData.listingType === "fixedPrice") {
-      console.log("created a listing");
       createListing(
         user.id,
         formData.itemName,
@@ -60,7 +57,6 @@ const CreateListing = () => {
       );
     }
     if (formData.listingType === "auction") {
-      console.log("created an auction");
       const dateObject = new Date(formData.date);
       const date = dateObject.toISOString();
 
@@ -74,7 +70,6 @@ const CreateListing = () => {
       );
     }
 
-    console.log(formData);
     window.location.href = "/home";
   };
 

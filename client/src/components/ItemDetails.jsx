@@ -6,7 +6,7 @@ import SaveItemButton from "./SaveItemButton.jsx";
 import calculateBidIncrement from "./AuctionBidIncrement.js";
 import { Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
-import { createMessage } from "../api/messages"
+import { createMessage } from "../api/messages";
 
 import {
   getListing,
@@ -16,7 +16,7 @@ import {
   postAuctionBid,
   getLoggedInUser,
   deleteAuction,
-  deleteListing
+  deleteListing,
 } from "../api/items";
 
 const ItemDetails = () => {
@@ -97,10 +97,9 @@ const ItemDetails = () => {
     e.preventDefault();
     // Handle the bid submission here
 
-     postAuctionBid(itemId, userBid)
+    postAuctionBid(itemId, userBid)
       .then((response) => {
         // Handle the response here
-        console.log("Bid submitted successfully", response);
         refreshPage();
         setShowModal(false);
       })
@@ -185,10 +184,19 @@ const ItemDetails = () => {
                         <Link
                           to={true ? "/home" : "#"}
                           className="text-decoration-none text-white"
-                          onClick={() => { if (currentUser.super_user) { if(isAuction) deleteAuction(itemId); else deleteListing(itemId);}}}
+                          onClick={() => {
+                            if (currentUser.super_user) {
+                              if (isAuction) deleteAuction(itemId);
+                              else deleteListing(itemId);
+                            }
+                          }}
                           disabled={isLoading}
                         >
-                          {currentUser.super_user ? "Delete Listing" : (isAuction ? "Report Auction" : "Report Listing")}
+                          {currentUser.super_user
+                            ? "Delete Listing"
+                            : isAuction
+                            ? "Report Auction"
+                            : "Report Listing"}
                         </Link>
                       </Button>
                     </div>

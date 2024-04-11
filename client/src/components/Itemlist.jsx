@@ -113,7 +113,6 @@ const Itemlist = ({ user_id }) => {
               variant="outline-success"
               className="w-100"
               onClick={() => {
-                console.log(page);
                 setPage(page - 1);
               }}
             >
@@ -126,7 +125,6 @@ const Itemlist = ({ user_id }) => {
               variant="outline-success"
               className="w-100"
               onClick={() => {
-                console.log(page);
                 setPage(page + 1);
               }}
             >
@@ -178,7 +176,8 @@ const Itemlist = ({ user_id }) => {
                   <Button variant="outline-success" className="mt-auto w-100">
                     View Listing
                   </Button>
-                  {(item.seller_id === currentUser.id || currentUser.super_user) && ( // Check if the current user is the seller or a superuser
+                  {(item.seller_id === currentUser.id ||
+                    currentUser.super_user) && ( // Check if the current user is the seller or a superuser
                     <Button
                       variant="outline-danger"
                       className="mt-2 w-100"
@@ -205,7 +204,6 @@ const Itemlist = ({ user_id }) => {
             variant="outline-success"
             className="w-100"
             onClick={() => {
-              console.log(page);
               setPage(page - 1);
             }}
           >
@@ -218,7 +216,6 @@ const Itemlist = ({ user_id }) => {
             variant="outline-success"
             className="w-100"
             onClick={() => {
-              console.log(page);
               setPage(page + 1);
             }}
           >
@@ -231,4 +228,3 @@ const Itemlist = ({ user_id }) => {
 };
 
 export default Itemlist;
-
