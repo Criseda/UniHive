@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import "../css/createlisting.css";
-import { useEffect } from "react";
 import { getLoggedInUser } from "../api/items";
-import { createListing } from "../api/items";
+import { createListing, createAuction } from "../api/items";
+
+
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
@@ -12,13 +13,14 @@ const CreateListing = () => {
     images: [],
     listingType: "fixedPrice",
     price: "£", // Set the pound symbol as default
+    date: "",
   });
   const [user, setUser] = useState(null);
 
   const handlePriceChange = (e) => {
     const { name, value } = e.target;
     // Format price input with pound symbol (£), commas, and allow positive numbers only
-    const formattedValue = value.replace(/\D/g, ""); // Remove non numeric characters
+    const formattedValue = value.replace(/\D/g, ""); // Remove non-numeric characters
     const numberWithCommas = formattedValue.replace(
       /\B(?=(\d{3})+(?!\d))/g,
       ","
@@ -38,26 +40,52 @@ const CreateListing = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here
+    const currentDate = new Date(); // gets the current date
+    const selectedDate = new Date(formData.date); // gets the selected date
+    if (selectedDate < currentDate) {
+      alert("Please select a future date");
+      return;
+    }
     // remove the pound symbol and commas from the price before submitting
     const price = formData.price.replace(/^£|,/g, "");
     //ADD CONDITIONAL TO ADD AUCTION OR LISTING
-    createListing(
-      user.id,
-      formData.itemName,
-      formData.description,
-      price,
-      formData.images
-    );
+    if (formData.listingType === "fixedPrice") {
+      console.log("created a listing");
+      createListing(
+        user.id,
+        formData.itemName,
+        formData.description,
+        price,
+        formData.images
+      );
+    }
+    if (formData.listingType === "auction") {
+      console.log("created an auction");
+      const dateObject = new Date(formData.date);
+      const date = dateObject.toISOString();
+
+      createAuction(
+        user.id,
+        formData.itemName,
+        formData.description,
+        price,
+        date,
+        formData.images
+      );
+    }
+
     console.log(formData);
+    window.location.href = "/home";
   };
+
+  //get the logged in user
   useEffect(() => {
     async function fetchData() {
       const user = await getLoggedInUser();
       setUser(user);
     }
     fetchData();
-  });
+  }, []);
 
   return (
     <Container className="create-listing-container py-4">
@@ -128,8 +156,13 @@ const CreateListing = () => {
         </Form.Group>
         {formData.listingType === "auction" && (
           <Form.Group controlId="date" style={{ marginTop: "1rem" }}>
-            <Form.Label>Chose End Date</Form.Label>
-            <Form.Control type="date" name="date" onChange={handleChange} />
+            <Form.Label>Choose End Date</Form.Label>
+            <Form.Control
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+            />
           </Form.Group>
         )}
 
@@ -138,6 +171,7 @@ const CreateListing = () => {
           style={{ marginTop: "1rem" }}
           variant="primary"
           type="submit"
+          onClick={handleSubmit}
         >
           List Item
         </Button>
