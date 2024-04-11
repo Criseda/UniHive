@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, ListGroup } from "react-bootstrap";
 import { getMessageRoomsOfUser, getLoggedInUser, getUser } from "../api/items";
+import { getMessagesOfRoom } from "../api/items";
 
 
 const ChatSelector = ({onItemClick}) => { // prop to handle the click event
@@ -8,6 +9,7 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
   const [rooms, setRooms] = useState([]); // State to hold the rooms
   const [currentUser, setCurrentUser] = useState(null); // State to hold the logged in user
   const [otherUsers, setOtherUsers] = useState({}); // State to hold the other users
+  const [initialSelectionMade, setInitialSelectionMade] = useState(false); // State to hold the initial selection status
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -19,7 +21,20 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
         const fetchRooms = async () => {
           try {
             const response = await getMessageRoomsOfUser(); // Fetch the rooms
-            setRooms(response); // Update the state with the fetched rooms
+            //logic to fetch most recent message
+            const roomsData = await Promise.all(
+              response.map(async (room) => {
+                const otherUser = await getUser(room.user1 === currentUser ? room.user1 : room.user2); // Fetch the other user
+                const messagesResonse = await getMessagesOfRoom(room.id); // Fetch the messages of the room
+                const lastMessage = messagesResonse[messagesResonse.length - 1]; // Get the last message
+                return {
+                  id: room.id,
+                  otherUser,
+                  lastMessage
+                };
+              })
+            );
+            setRooms(roomsData); // Update the state with the fetched rooms
             // Fetch the other users
             const otherUsers = await Promise.all(
               response.map((room) =>
@@ -41,9 +56,23 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
 
     fetchUser(); // Call the function when the component mounts
   }, [currentUser]);
+  
+//Function to handle when first landing on messages 
+  useEffect(() => {
+    if (!isLoading && rooms.length > 0 && !initialSelectionMade) {
+      const {id, first_name, last_name} = rooms[0];
+      onItemClick(id, first_name, last_name);
+      setInitialSelectionMade(true);
+    }
+  }, [rooms, isLoading, onItemClick]);
+
 
   if (isLoading) {
     return <p>Loading...</p>; // Or render a spinner
+  }
+  
+  if (rooms.length === 0) {
+    return <p>No messages found</p>;
   }
 //Function to render in all messagesWITHOUT USING PROPS (YET TO FINISH)
   
@@ -76,9 +105,7 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
               </h5>
             )}
             <p className="text">
-              Last message here there was a dog his name wass blog lalala
-              testing a very long message to see if overflow works (it does
-              hooray!)
+              {room.lastMessage ? room.lastMessage.message : "No messages yet"}
             </p>
           </div>
         </ListGroup.Item>
