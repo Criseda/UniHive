@@ -59,11 +59,9 @@ router.post("/room", cookieJWTAuth, async (req, res) => {
 
     if (existingRoom.rows.length > 0) {
       // If a room already exists, return it
-      console.log("room already exists");
       res.json(existingRoom.rows[0]);
     } else {
       // If no room exists, create a new one
-      console.log("room does not exist, making new one");
       const newMessageRoom = await pool.query(
         "INSERT INTO messageRoom (user1, user2) VALUES($1, $2) RETURNING *",
         [user1_id, user2_id]

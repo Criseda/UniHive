@@ -13,11 +13,9 @@ const CurrentBidsList = () => {
     setIsLoading(true);
     getLoggedInUser()
       .then((data) => {
-        console.log(data);
         return getAuctionsByBidder(0, data.id)
       })
       .then((data) => {
-        console.log(data);
         setItems(data);
       })
       .catch((error) => {

@@ -50,7 +50,6 @@ const CreateListing = () => {
     const price = formData.price.replace(/^£|,/g, "");
     //ADD CONDITIONAL TO ADD AUCTION OR LISTING
     if (formData.listingType === "fixedPrice") {
-      console.log("created a listing");
       createListing(
         user.id,
         formData.itemName,
@@ -60,7 +59,6 @@ const CreateListing = () => {
       );
     }
     if (formData.listingType === "auction") {
-      console.log("created an auction");
       const dateObject = new Date(formData.date);
       const date = dateObject.toISOString();
 
@@ -73,8 +71,6 @@ const CreateListing = () => {
         formData.images
       );
     }
-
-    console.log(formData);
     window.location.href = "/home";
   };
 

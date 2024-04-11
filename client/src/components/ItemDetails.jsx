@@ -100,7 +100,6 @@ const ItemDetails = () => {
      postAuctionBid(itemId, userBid)
       .then((response) => {
         // Handle the response here
-        console.log("Bid submitted successfully", response);
         refreshPage();
         setShowModal(false);
       })

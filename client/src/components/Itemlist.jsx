@@ -113,7 +113,6 @@ const Itemlist = ({ user_id }) => {
               variant="outline-success"
               className="w-100"
               onClick={() => {
-                console.log(page);
                 setPage(page - 1);
               }}
             >
@@ -126,7 +125,6 @@ const Itemlist = ({ user_id }) => {
               variant="outline-success"
               className="w-100"
               onClick={() => {
-                console.log(page);
                 setPage(page + 1);
               }}
             >
@@ -205,7 +203,6 @@ const Itemlist = ({ user_id }) => {
             variant="outline-success"
             className="w-100"
             onClick={() => {
-              console.log(page);
               setPage(page - 1);
             }}
           >
@@ -218,7 +215,6 @@ const Itemlist = ({ user_id }) => {
             variant="outline-success"
             className="w-100"
             onClick={() => {
-              console.log(page);
               setPage(page + 1);
             }}
           >
