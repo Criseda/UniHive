@@ -1,8 +1,16 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { getAuctionsBySearchQuery, getListings, getListingsBySearchQuery } from "../api/items";
-import { getAuctions } from "../api/items";
-import { getListingsByUser } from "../api/items";
-import { getAuctionsByUser } from "../api/items";
+import { 
+  getAuctionsBySearchQuery, 
+  getListings, 
+  getListingsBySearchQuery,
+  getAuctions, 
+  getListingsByUser,
+   getAuctionsByUser, 
+   getLoggedInUser, 
+   deleteAuction,
+   deleteListing
+  } from "../api/items";
+
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 
@@ -17,11 +25,15 @@ const Itemlist = ({ user_id }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     setIsLoading(true);
 
-    let fetchListings = [], fetchAuctions = [];
+    let fetchListings = [], fetchAuctions = [], fetchUser;
 
+    fetchUser = getLoggedInUser();
+    
     if (query) {
       switch (option) {
         case "0": // all items
@@ -42,13 +54,14 @@ const Itemlist = ({ user_id }) => {
       fetchListings = (user_id ? getListingsByUser(page, user_id) : getListings(page));
       fetchAuctions = (user_id ? getAuctionsByUser(page, user_id) : getAuctions(page));
     }
-    Promise.all([fetchListings, fetchAuctions]) // fetch both items and auctions
-      .then(([items, auctions]) => {
+    Promise.all([fetchListings, fetchAuctions, fetchUser]) // fetch both items and auctions
+      .then(([items, auctions, user]) => {
         const mergedData = [...items, ...auctions]; // merge items and auctions
         mergedData.sort(
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         ); // sort by created_at
         setData(mergedData); // set data
+        setUser(user.id);
       })
       .catch((error) => {
         setError(error);
@@ -134,8 +147,11 @@ const Itemlist = ({ user_id }) => {
                     View Listing
                   </Button>
                   {
-                    item.seller_id == user_id ?
-                    <Button variant="outline-danger" className="mt-auto w-100">
+                    item.seller_id == user ?
+                    <Button 
+                      variant="outline-danger" 
+                      className="mt-2 w-100"
+                      onClick={() => { item.price ? deleteListing(item.id) : deleteAuction(item.id); window.location.reload(); }}>
                       Delete Listing
                     </Button> 
                     :

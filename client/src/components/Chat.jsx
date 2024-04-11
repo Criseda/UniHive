@@ -111,15 +111,6 @@ const Chat = () => {
                 <div className="modal-dialog-scrollable">
                   <div className="modal-content">
                     <div className="chat-header">
-                      <div className="msg-search">
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="inlineFormInputGroup"
-                          placeholder="Search"
-                          aria-label="search"
-                        />
-                      </div>
                       <ul className="nav nav-tabs" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
                           <button

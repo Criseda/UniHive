@@ -136,6 +136,42 @@ export async function deleteSavedAuction(id) {
   return await res.json();
 }
 
+// delete listing
+export async function deleteListing(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/listings/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}
+
+// delete auction
+export async function deleteAuction(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/auctions/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}
+
 //messages requests
 
 // This will take in user2 (the person to message) and feed in this information to the backend
