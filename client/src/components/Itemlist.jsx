@@ -1,21 +1,20 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { 
-  getAuctionsBySearchQuery, 
-  getListings, 
+import {
+  getAuctionsBySearchQuery,
+  getListings,
   getListingsBySearchQuery,
-  getAuctions, 
+  getAuctions,
   getListingsByUser,
-   getAuctionsByUser, 
-   getLoggedInUser, 
-   deleteAuction,
-   deleteListing
-  } from "../api/items";
+  getAuctionsByUser,
+  getLoggedInUser,
+  deleteAuction,
+  deleteListing,
+} from "../api/items";
 
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 
 const Itemlist = ({ user_id }) => {
-
   let { option, query } = useParams();
 
   const [page, setPage] = useState(0);
@@ -30,10 +29,12 @@ const Itemlist = ({ user_id }) => {
   useEffect(() => {
     setIsLoading(true);
 
-    let fetchListings = [], fetchAuctions = [], fetchUser;
+    let fetchListings = [],
+      fetchAuctions = [],
+      fetchUser;
 
     fetchUser = getLoggedInUser();
-    
+
     if (query) {
       switch (option) {
         case "0": // all items
@@ -49,14 +50,25 @@ const Itemlist = ({ user_id }) => {
         default:
           throw "Invalid Option.";
       }
-    }
-    else {
-      fetchListings = (user_id ? getListingsByUser(page, user_id) : getListings(page));
-      fetchAuctions = (user_id ? getAuctionsByUser(page, user_id) : getAuctions(page));
+    } else {
+      fetchListings = user_id
+        ? getListingsByUser(page, user_id)
+        : getListings(page);
+      fetchAuctions = user_id
+        ? getAuctionsByUser(page, user_id)
+        : getAuctions(page);
     }
     Promise.all([fetchListings, fetchAuctions, fetchUser]) // fetch both items and auctions
       .then(([items, auctions, user]) => {
-        const mergedData = [...items, ...auctions]; // merge items and auctions
+        const prefixedItems = items.map((item) => ({
+          ...item,
+          id: `listingid${item.id}`,
+        }));
+        const prefixedAuctions = auctions.map((auction) => ({
+          ...auction,
+          id: `auctionid${auction.id}`,
+        }));
+        const mergedData = [...prefixedItems, ...prefixedAuctions]; // merge items and auctions
         mergedData.sort(
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         ); // sort by created_at
@@ -87,31 +99,41 @@ const Itemlist = ({ user_id }) => {
     );
   }
 
-  if(data.length === 0) {
+  if (data.length === 0) {
     return (
       <Container>
-        <div className="text-center text-muted mb-4">You've reached the end.</div>
+        <div className="text-center text-muted mb-4">
+          You've reached the end.
+        </div>
 
         <Row>
-            <Col className="mb-4">
-              <Button 
-                disabled={page==0}
-                variant="outline-success" 
-                className="w-100"
-                onClick={()=>{ console.log(page) ; setPage(page - 1) }} >
-                Previous Page
-              </Button>
-            </Col>
-            <Col className="mb-4">
-              <Button 
-                disabled={data.length == 0}
-                variant="outline-success" 
-                className="w-100"
-                onClick={()=>{ console.log(page) ; setPage(page + 1) }} >
-                Next Page
-              </Button>
-            </Col>
-          </Row>
+          <Col className="mb-4">
+            <Button
+              disabled={page == 0}
+              variant="outline-success"
+              className="w-100"
+              onClick={() => {
+                console.log(page);
+                setPage(page - 1);
+              }}
+            >
+              Previous Page
+            </Button>
+          </Col>
+          <Col className="mb-4">
+            <Button
+              disabled={data.length == 0}
+              variant="outline-success"
+              className="w-100"
+              onClick={() => {
+                console.log(page);
+                setPage(page + 1);
+              }}
+            >
+              Next Page
+            </Button>
+          </Col>
+        </Row>
       </Container>
     );
   }
@@ -120,7 +142,7 @@ const Itemlist = ({ user_id }) => {
     <Container className="mt-4">
       <Row>
         {data.map((item) => {
-          const key = (item.price ? "listing" : "auction") + "id" + item.id;
+          const key = item.id;
           return (
             <Col
               onClick={() => handleCardClick(key)}
@@ -146,43 +168,54 @@ const Itemlist = ({ user_id }) => {
                   <Button variant="outline-success" className="mt-auto w-100">
                     View Listing
                   </Button>
-                  {
-                    item.seller_id == user ?
-                    <Button 
-                      variant="outline-danger" 
+                  {item.seller_id == user ? (
+                    <Button
+                      variant="outline-danger"
                       className="mt-2 w-100"
-                      onClick={() => { item.price ? deleteListing(item.id) : deleteAuction(item.id); window.location.reload(); }}>
+                      onClick={() => {
+                        item.price
+                          ? deleteListing(item.id)
+                          : deleteAuction(item.id);
+                        window.location.reload();
+                      }}
+                    >
                       Delete Listing
-                    </Button> 
-                    :
-                    null
-                  }
+                    </Button>
+                  ) : null}
                 </Card.Body>
               </Card>
             </Col>
           );
         })}
       </Row>
-          <Row>
-            <Col className="mb-4">
-              <Button 
-                disabled={page==0}
-                variant="outline-success" 
-                className="w-100"
-                onClick={()=>{ console.log(page) ; setPage(page - 1) }} >
-                Previous Page
-              </Button>
-            </Col>
-            <Col className="mb-4">
-              <Button 
-                disabled={data.length == 0}
-                variant="outline-success" 
-                className="w-100"
-                onClick={()=>{ console.log(page) ; setPage(page + 1) }} >
-                Next Page
-              </Button>
-            </Col>
-          </Row>
+      <Row>
+        <Col className="mb-4">
+          <Button
+            disabled={page == 0}
+            variant="outline-success"
+            className="w-100"
+            onClick={() => {
+              console.log(page);
+              setPage(page - 1);
+            }}
+          >
+            Previous Page
+          </Button>
+        </Col>
+        <Col className="mb-4">
+          <Button
+            disabled={data.length == 0}
+            variant="outline-success"
+            className="w-100"
+            onClick={() => {
+              console.log(page);
+              setPage(page + 1);
+            }}
+          >
+            Next Page
+          </Button>
+        </Col>
+      </Row>
     </Container>
   );
 };
