@@ -140,7 +140,8 @@ router.get("/room/messages/:roomId", async (req, res) => {
     );
     // Extract the message strings from the query result
     //const messageStrings = messages.rows.map(row => row.message);
-    console.log(messages.rows);
+    // this console.log SPAMS the hell out of the console:
+    // console.log(messages.rows);
     res.json(messages.rows); // Send the message strings as JSON response
   } catch (err) {
     console.error(err.message);
