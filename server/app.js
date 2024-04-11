@@ -27,6 +27,8 @@ app.use(
 app.use("/api", routes);
 app.use("/auth", authRoutes);
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use('*', (req, res) => {

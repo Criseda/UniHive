@@ -2,8 +2,47 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../db");
 const { cookieJWTAuth } = require("../middleware/cookieJWTAuth");
+const multer = require("multer");
+const fs = require("fs");
+const fileType = require("file-type");
+const readChunk = require("read-chunk");
 
 //Room routes
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads/");
+  },
+  filename: function (req, file, cb) {
+    const date = new Date().toISOString().replace(/:/g, '-');
+    cb(null, date + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// Add a new route for image upload
+router.post("/upload", upload.single("image"), async (req, res, next) => {
+  const file = req.file;
+  if (!file) {
+    return res.status(400).send({ message: "Please upload a file." });
+  }
+
+  // Read a chunk of the file
+  const buffer = await readChunk(file.path, 0, 4100);
+
+  // Determine the file type
+  const type = await fileType.fromBuffer(buffer);
+
+  // Check if the file is an image
+  if (!type || !type.mime.startsWith('image/')) {
+    // If the file is not an image, delete it and return an error
+    fs.unlinkSync(file.path);
+    return res.status(400).send({ message: "Uploaded file is not an image." });
+  }
+
+  res.send({ imageUrl: "/uploads/" + file.filename });
+});
 
 //create a messageRoom between two users (if it does not exist already)
 //if it exists, return the existing room
@@ -101,18 +140,13 @@ router.get("/room/messages/:roomId", async (req, res) => {
     );
     // Extract the message strings from the query result
     //const messageStrings = messages.rows.map(row => row.message);
-    console.log(messages.rows); 
+    console.log(messages.rows);
     res.json(messages.rows); // Send the message strings as JSON response
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-// Export the router to use in your main Express app
-module.exports = router;
-
-
 
 // get all messages
 router.get("/", async (req, res) => {
@@ -140,15 +174,19 @@ router.get("/:id", async (req, res) => {
 //send a new message (add message to the database)
 router.post("/", async (req, res) => {
   try {
-    const { sender_id, receiver_id, room_id, message } = req.body; // Include room_id in the destructuring
+    const { sender_id, room_id, message, image_path } = req.body;
     const newMessage = await pool.query(
-      "INSERT INTO message (sender_id, room_id, message) VALUES($1, $2, $3) RETURNING *",
-      [sender_id, room_id, message] // Include room_id in the query parameters
+      image_path
+        ? "INSERT INTO message (sender_id, room_id, message, image_path) VALUES($1, $2, $3, $4) RETURNING *"
+        : "INSERT INTO message (sender_id, room_id, message) VALUES($1, $2, $3) RETURNING *",
+      image_path
+        ? [sender_id, room_id, message, image_path]
+        : [sender_id, room_id, message]
     );
     res.json(newMessage.rows[0]);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: "Internal Server Error" }); // Return an error response
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
