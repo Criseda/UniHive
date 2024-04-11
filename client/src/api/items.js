@@ -476,3 +476,21 @@ export async function updateUserBio(user_id, newBio) {
   });
   return await res.json();
 }
+
+// delete user 
+export async function deleteUser(id) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/users/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+    }),
+  });
+  return await res.json();
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Image, Container, Col, Alert } from "react-bootstrap";
-import { getUser, getLoggedInUser } from "../api/items";
+import { Button, Image, Container, Col, Alert, Modal } from "react-bootstrap";
+import { getUser, getLoggedInUser, deleteUser } from "../api/items";
 import Stars from "./Star";
 import EditProfileModal from "./EditProfileModal";
 
@@ -15,6 +15,7 @@ const Profilebar = ({ user_id }) => {
   const [avatar, setAvatar] = useState(null);
   const [banned, setBanned] = useState(null);
   const [isOwnAccount, setIsOwnAccount] = useState(false);
+  const [isSuperUser, setIsSuperUser] = useState(false);
 
   useEffect(() => {
     getUser(user_id)
@@ -33,6 +34,9 @@ const Profilebar = ({ user_id }) => {
         getLoggedInUser().then((user) => {
           if (user && user.id === user_id) {
             setIsOwnAccount(true);
+          }
+          if (user && user.super_user) {
+            setIsSuperUser(true);
           }
         });
       })
@@ -82,7 +86,7 @@ const Profilebar = ({ user_id }) => {
           <pre style={{fontFamily: "inherit", whiteSpace: "pre-wrap"}}>{bio ? bio : "This user has not set up a bio yet."}</pre>
         </Col>
 
-        {isOwnAccount && (
+        {(isOwnAccount || isSuperUser) && (
           //Edit profile button
           <Col xs="auto">
             <Button
@@ -94,7 +98,7 @@ const Profilebar = ({ user_id }) => {
             </Button>
           </Col>
         )}
-        {isOwnAccount && (
+        {(isOwnAccount || isSuperUser) && (
           <EditProfileModal
             user_id={user_id}
             showModal={showModal}
@@ -104,6 +108,17 @@ const Profilebar = ({ user_id }) => {
             setBio={setBio}
             setAvatar={setAvatar}
           />
+        )}
+        {isSuperUser && (
+          <Col xs="auto">
+            <Button
+              variant="danger"
+              className="m-2 mt-3"
+              onClick={() => deleteUser(user_id) /* This will delete their listings because the user is deleted, so the database smokes the listings/auctions */}
+            >
+              Ban User
+            </Button>
+          </Col>
         )}
       </Container>
       <h4 className="pt-3 text-center h4 font-weight-bold">Posted items</h4>
