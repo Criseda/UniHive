@@ -21,6 +21,23 @@ router.get("/page/:page", async (req, res) => {
   }
 });
 
+router.get("/id/:id/page/:page", async (req, res) => {
+  const { id, page } = req.params;
+  try {
+    const allAuctions = await pool.query(`
+      SELECT auction.*, MAX(bid.amount) AS bid_amount 
+      FROM auction 
+      INNER JOIN bid ON auction.id = bid.auction_id AND bid.bidder_id = $1
+      GROUP BY auction.id`,
+      [id]
+    );
+
+    res.json(allAuctions.rows.slice((page * 30), (page * 30) + 30));
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
 // get all auctions made by a specific user, and their highest bid
 router.get("/user/page/:page/:id", async (req, res) => {
   const { page, id } = req.params;
