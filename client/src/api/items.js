@@ -337,6 +337,29 @@ export async function getLoggedInUser() {
   }); 
   return await res.json();
 }
+//create an auction 
+export async function createAuction(seller_id, name, description, opening_bid, closing_date, image_path) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  const res = await fetch(`${BASE_URL}/auctions/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: token,
+      seller_id: seller_id,
+      name: name,
+      description: description,
+      opening_bid: opening_bid,
+      closing_date: closing_date,
+      image_path: image_path,
+    }),
+  });
+  return await res.json();
+}
 // createa a listing 
 export async function createListing(seller_id, name, description, price, image_path) {
   const token = localStorage.getItem("token");

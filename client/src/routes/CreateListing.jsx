@@ -5,6 +5,7 @@ import Nav from "../components/Navbar";
 import { useEffect } from "react";
 import {getLoggedInUser} from "../api/items";
 import {createListing} from "../api/items";
+import {createAuction} from "../api/items";
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
@@ -41,21 +42,29 @@ const CreateListing = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here 
     // remove the pound symbol and commas from the price before submitting
     const price = formData.price.replace(/^£|,/g, "");
+    console.log("pressed the handle submit button");
    //ADD CONDITIONAL TO ADD AUCTION OR LISTING  
-    createListing(user.id, formData.itemName, formData.description, price, formData.images);
-    console.log(formData);
+    if (formData.listingType === "fixedPrice") {
+      console.log("fixedprice listing");
+      createListing(user.id, formData.itemName, formData.description, price, formData.images);
+    }
+    if (formData.listingType === "auction") {
+      console.log("auction listing"); 
+      createAuction (user.id, formData.itemName, formData.description, price, formData.date, formData.images);
   };
+  console.log(formData);
+};
+
+//get the logged in user 
   useEffect(() => {
     async function fetchData() {
       const user = await getLoggedInUser();
-      setUser(user);
-      
+      setUser(user); 
     }
     fetchData();
-  });
+  }, []);
 
   return (
     <Container className="create-listing-container py-4">
@@ -136,6 +145,7 @@ const CreateListing = () => {
           style={{ marginTop: "1rem" }}
           variant="primary"
           type="submit"
+          onClick={handleSubmit}
         >
           List Item
         </Button>
