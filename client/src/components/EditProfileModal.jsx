@@ -14,7 +14,6 @@ const EditProfileModal = ({
 }) => {
   const [newBio, setNewBio] = useState(bio);
   const [newAvatar, setNewAvatar] = useState(avatar);
-  const [newAvatarFile, setNewAvatarFile] = useState(null);
   const [scale, setScale] = useState(1);
   const editor = useRef(null);
 
@@ -66,8 +65,6 @@ const EditProfileModal = ({
         return;
       }
 
-      // Save the file in state and read its data URL to display it in the editor
-      setNewAvatarFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setNewAvatar(reader.result);

@@ -3,7 +3,7 @@
 
 INSERT INTO app_user (id, first_name, last_name, super_user, rating, bio, avatar_path, banned)
 VALUES 
-('34e9a4', 'Anthony', 'Nguyen', TRUE, NULL, 'YourBio', 'YourAvatarPath', FALSE)
+('34e9a4', 'Anthony', 'Nguyen', TRUE, NULL, NULL, '/images/default_pfp.jpg', FALSE)
 ON CONFLICT (id) DO UPDATE 
 SET
   first_name = excluded.first_name,
@@ -16,7 +16,7 @@ SET
   
 INSERT INTO app_user (id, first_name, last_name, super_user, rating, bio, avatar_path, banned)
 VALUES 
-('61c474', 'Hussain', 'Faiz', TRUE, NULL, 'YourBio', 'YourAvatarPath', FALSE) 
+('61c474', 'Hussain', 'Faiz', TRUE, NULL, NULL, '/images/default_pfp.jpg', FALSE) 
 ON CONFLICT (id) DO UPDATE 
 SET
   first_name = excluded.first_name,
@@ -29,7 +29,7 @@ SET
  
 INSERT INTO app_user (id, first_name, last_name, super_user, rating, bio, avatar_path, banned)
 VALUES 
-('5c64d3', 'Hussain', 'Faiz', TRUE, NULL, 'YourBio', 'YourAvatarPath', FALSE) 
+('5c64d3', 'Cristian', 'Preda', TRUE, NULL, NULL, '/images/default_pfp.jpg', FALSE) 
 ON CONFLICT (id) DO UPDATE 
 SET  
   first_name = excluded.first_name,

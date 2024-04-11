@@ -240,25 +240,32 @@ export async function getMessagesOfRoom(id) {
 }
  
 //send a new message 
-export async function createMessage(sender_id, room_id, message, time) { 
+export async function createMessage(sender_id, room_id, message, time, imageUrl) { 
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
   }
+
+  const body = {
+    token: token,
+    sender_id: sender_id,
+    room_id: room_id,
+    message: message,
+    time: time,
+  };
+
+  if (imageUrl) {
+    body.image_path = imageUrl;
+  }
+
   const res = await fetch(`${BASE_URL}/messages`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-
-    body: JSON.stringify({
-      token: token,
-      sender_id: sender_id,
-      room_id: room_id,
-      message: message,
-      time: time,
-    }),
+    body: JSON.stringify(body),
   });
+
   console.log("This is the response from the backend", res);
   return await res.json();
 }
@@ -450,7 +457,15 @@ export async function uploadAvatar(formData) {
   return await res.json();
 }
 
+// message image upload route
+export async function uploadMessageImage(formData) {
+  const res = await fetch(`${BASE_URL}/messages/upload`, {
+    method: "POST",
+    body: formData,
+  });
+  return await res.json();
 
+}
 
 // update user bio route
 
