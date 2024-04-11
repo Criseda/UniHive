@@ -109,7 +109,7 @@ const Profilebar = ({ user_id }) => {
             setAvatar={setAvatar}
           />
         )}
-        {isSuperUser && (
+        {(!isOwnAccount && isSuperUser) && (
           <Col xs="auto">
             <Button
               variant="danger"
