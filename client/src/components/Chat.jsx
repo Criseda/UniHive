@@ -13,7 +13,6 @@ const socket = io("http://localhost:5000");
 
 const Chat = () => {
   const [message, setMessage] = useState("");
-  const [messageReceived, setMessageReceived] = useState("");
   const [room, setRoom] = useState("");
   const [messages, setMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
@@ -130,7 +129,6 @@ const Chat = () => {
   //looks for messages
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      setMessageReceived(data.message);
       setMessages((prevMessages) => [...prevMessages, data.message]); // Append the received message to the messages array
     });
 
@@ -138,7 +136,7 @@ const Chat = () => {
     return () => {
       socket.off("receive_message");
     };
-  }, [socket]);
+  }, []);
 
   //scrolls to the bottom of the chat
   useEffect(() => {
@@ -150,6 +148,18 @@ const Chat = () => {
 
   //Need to implement room concept but use user icons to change room number.
   //Need to implement the ability to generate a unique room number everytime a user is created.
+
+  if (loading) {
+    return null; // makes it less jarring when the page loads
+  }
+
+  if (error) {
+    return (
+      <div className="container mt-4">
+        <div className="alert alert-danger">Error: {error.message}</div>
+      </div>
+    );
+  }
 
   return (
     <section className="message-area">
