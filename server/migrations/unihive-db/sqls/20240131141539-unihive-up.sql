@@ -6,6 +6,7 @@ CREATE TABLE app_user (
     id CHAR(6) NOT NULL PRIMARY KEY, --unique username given by API, fixed 6 characters
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
+    super_user BOOLEAN DEFAULT FALSE, --if the user is a super user
     rating DECIMAL(2,1), --rating of the user (calculated by averaging all reviews, init null)
     bio VARCHAR(255),
     avatar_path VARCHAR(255) NOT NULL, --url of the image for the avatar

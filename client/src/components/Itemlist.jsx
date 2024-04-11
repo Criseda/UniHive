@@ -25,6 +25,7 @@ const Itemlist = ({ user_id }) => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null); // State to hold the current user's information
 
   useEffect(() => {
     setIsLoading(true);
@@ -74,6 +75,8 @@ const Itemlist = ({ user_id }) => {
         ); // sort by created_at
         setData(mergedData); // set data
         setUser(user.id);
+        setCurrentUser(user); // Set the current user's information
+        console.log(user);
       })
       .catch((error) => {
         setError(error);
@@ -178,7 +181,7 @@ const Itemlist = ({ user_id }) => {
                   <Button variant="outline-success" className="mt-auto w-100">
                     View Listing
                   </Button>
-                  {item.seller_id == user ? (
+                  {(item.seller_id === user || currentUser.super_user) && ( // Check if the current user is the seller or a superuser
                     <Button
                       variant="outline-danger"
                       className="mt-2 w-100"
@@ -191,7 +194,7 @@ const Itemlist = ({ user_id }) => {
                     >
                       Delete Listing
                     </Button>
-                  ) : null}
+                  )}
                 </Card.Body>
               </Card>
             </Col>
@@ -231,3 +234,4 @@ const Itemlist = ({ user_id }) => {
 };
 
 export default Itemlist;
+
