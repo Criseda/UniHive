@@ -26,8 +26,7 @@ const CodeOfEthics = () => {
           <p>
             We conduct our business with honesty, transparency, and
             accountability. We adhere to ethical principles and strive to
-            maintain the trust and confidence of our users, partners, and
-            stakeholders.
+            maintain the trust and confidence of our users.
           </p>
         </Col>
       </Row>
@@ -57,9 +56,9 @@ const CodeOfEthics = () => {
           <h2>Accountability</h2>
           <p>
             We hold ourselves accountable for upholding this Code of Ethics and
-            fulfilling our commitments to our users, partners, and stakeholders.
-            We welcome feedback and strive to continuously improve our ethical
-            practices and business conduct.
+            fulfilling our commitments to our fellow students. We welcome
+            feedback and strive to continuously improve our ethical practices
+            and business conduct.
           </p>
         </Col>
       </Row>

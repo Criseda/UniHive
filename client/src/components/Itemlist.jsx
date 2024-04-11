@@ -151,15 +151,25 @@ const Itemlist = ({ user_id }) => {
               className="mb-4"
             >
               <Card>
-                <Card.Img
-                  src={item.image_path}
-                  alt={item.name}
+                <div
                   style={{
-                    width: "100%",
-                    maxHeight: "275px",
+                    height: "275px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                     border: "1px solid #ccc", // Grey border
                   }}
-                />
+                >
+                  <img
+                    src={item.image_path}
+                    alt={item.name}
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "contain", // Preserve aspect ratio, may leave blank space
+                    }}
+                  />
+                </div>
                 <Card.Body>
                   <Card.Title className="mb-0">
                     £{item.price || item.highest_bid}
