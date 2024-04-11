@@ -1,6 +1,6 @@
 
 import { useNavigate, useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const Search = () => {
 
@@ -11,7 +11,7 @@ const Search = () => {
   const navigate = useNavigate();
 
   const handleSearchQuery = () => {
-    if (query_input != undefined && query_input != null && query_input != "") {
+    if (query_input !== undefined && query_input !== null && query_input != "") {
       navigate(`/results/${option_input}/${query_input}`);
     }
     //
