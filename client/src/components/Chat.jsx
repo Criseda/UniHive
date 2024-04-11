@@ -221,7 +221,7 @@ const Chat = () => {
                     {/* converstaion area END*/}
                     {/* Send Message section */}
                     <div className="send-box">
-                      <form action="">
+                      <form onSubmit={handleSubmit}>
                         <input
                           ref={inputRef}
                           type="text"
