@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import Logo from "../images/alt_logo.png";
+import Logo from "../images/logo.png";
 import { loginRoute } from "../api/authentication";
 
 const MyNavbar = () => {

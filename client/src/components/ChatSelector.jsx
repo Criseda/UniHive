@@ -3,8 +3,8 @@ import { Image, ListGroup } from "react-bootstrap";
 import { getMessageRoomsOfUser, getLoggedInUser, getUser } from "../api/items";
 import { getMessagesOfRoom } from "../api/items";
 
-
-const ChatSelector = ({onItemClick}) => { // prop to handle the click event
+const ChatSelector = ({ onItemClick }) => {
+  // prop to handle the click event
   const [isLoading, setIsLoading] = useState(true); // State to hold the loading status
   const [rooms, setRooms] = useState([]); // State to hold the rooms
   const [otherUsers, setOtherUsers] = useState({}); // State to hold the other users
@@ -28,7 +28,7 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
                 return {
                   id: room.id,
                   otherUser,
-                  lastMessage
+                  lastMessage,
                 };
               })
             );
@@ -54,29 +54,34 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
 
     fetchUser(); // Call the function when the component mounts
   }, []);
-  
-//Function to handle when first landing on messages 
+
+  //Function to handle when first landing on messages
+  //Function to handle when first landing on messages
   useEffect(() => {
     if (!isLoading && rooms.length > 0 && !initialSelectionMade.current) {
-      const {id, first_name, last_name} = rooms[0];
-      onItemClick(id, first_name, last_name);
+      const { id, otherUser } = rooms[0];
+      onItemClick(
+        id,
+        otherUser.first_name,
+        otherUser.last_name,
+        otherUser.avatar_path
+      );
       
       initialSelectionMade.current = true;
     }
   }, [rooms, isLoading, onItemClick]);
 
-
   if (isLoading) {
     return <p>Loading...</p>; // Or render a spinner
   }
-  
+
   if (rooms.length === 0) {
     return <p>No messages found</p>;
   }
-//Function to render in all messagesWITHOUT USING PROPS (YET TO FINISH)
-  
- const handleButtonClick = (roomId, firstName, lastName) => {
-    onItemClick(roomId, firstName, lastName);
+  //Function to render in all messagesWITHOUT USING PROPS (YET TO FINISH)
+
+  const handleButtonClick = (roomId, firstName, lastName, avatar_path) => {
+    onItemClick(roomId, firstName, lastName, avatar_path);
   };
 
   return (
@@ -86,7 +91,14 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
           action
           className="d-flex align-items-center"
           key={room.id}
-          onClick={() => handleButtonClick(room.id, otherUsers[index].first_name, otherUsers[index].last_name)}
+          onClick={() =>
+            handleButtonClick(
+              room.id,
+              otherUsers[index].first_name,
+              otherUsers[index].last_name,
+              otherUsers[index].avatar_path
+            )
+          }
         >
           {otherUsers[index] && (
             <Image
