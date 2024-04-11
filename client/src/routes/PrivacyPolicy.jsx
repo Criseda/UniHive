@@ -24,10 +24,10 @@ const PrivacyPolicy = () => {
         <Col>
           <h2>Information We Collect</h2>
           <p>
-            We collect personal information such as your name, email address,
-            and contact details when you register an account on UniHive. We may
-            also collect information about your usage of our website, such as IP
-            addresses, browser type, and pages visited.
+            The only personal information we collect is your name when you
+            create an account on UniHive. We may also collect additinal
+            information like an optional profile picture and a bio, however
+            these are all optional.
           </p>
         </Col>
       </Row>
@@ -35,11 +35,8 @@ const PrivacyPolicy = () => {
         <Col>
           <h2>How We Use Your Information</h2>
           <p>
-            We use the information we collect to provide and improve our
-            services, personalize your experience, communicate with you, and
-            ensure the security of our platform. We may also use your
-            information for marketing purposes, such as sending promotional
-            emails.
+            We use the information we collect to provide and personalize your
+            experience and ensure the security of our platform.
           </p>
         </Col>
       </Row>

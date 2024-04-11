@@ -73,12 +73,25 @@ const SavedItemList = () => {
           return (
             <Col key={item.id} className="mt-4">
               <Card>
-                <Card.Img
-                  variant="top"
-                  src={item.image_path}
-                  alt={item.name}
-                  style={{ maxHeight: "500px" }}
-                />
+                <div
+                  style={{
+                    height: "500px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    border: "1px solid #ccc", // Grey border
+                  }}
+                >
+                  <img
+                    src={item.image_path}
+                    alt={item.name}
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "contain", // Preserve aspect ratio, may leave blank space
+                    }}
+                  />
+                </div>
                 <Card.Body>
                   <Card.Title>£{item.price || item.highest_bid}</Card.Title>
                   <Card.Text>{item.name}</Card.Text>

@@ -19,6 +19,7 @@ import Ethics from "./routes/CodeOfEthics";
 import Layout from "./Layout";
 import CreateListing from "./routes/CreateListing";
 import Results from "./routes/Results";
+import FAQ from "./routes/FAQ";
 
 // ProtectedRoute is a component that will check if a user is authenticated
 const ProtectedRoute = ({ element }) => {
@@ -99,6 +100,7 @@ const App = () => {
           <Route path="/about" element={<About />} />
           <Route path="/codeofethics" element={<Ethics />} />
           <Route path="/privacypolicy" element={<Privacy />} />
+          <Route path="/faq" element={<FAQ />} />
           <Route
             path="/currentbids"
             element={<ProtectedRoute element={<CurrentBids />} />}
