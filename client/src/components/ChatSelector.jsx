@@ -62,6 +62,7 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
     if (!isLoading && rooms.length > 0 && !initialSelectionMade) {
       const {id, first_name, last_name} = rooms[0];
       onItemClick(id, first_name, last_name);
+      
       setInitialSelectionMade(true);
     }
   }, [rooms, isLoading, onItemClick]);
