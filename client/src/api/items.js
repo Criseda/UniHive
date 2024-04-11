@@ -5,17 +5,17 @@ const BASE_URL = `http://${
 //GET item requests
 
 export async function getListings(page) {
-  const res = await fetch(`${BASE_URL}/listings/${page}`);
+  const res = await fetch(`${BASE_URL}/listings/page/${page}`);
   return await res.json();
 }
 
 export async function getListingsByUser(page, user_id) {
-  const res = await fetch(`${BASE_URL}/listings/user/${page}/${user_id}`);
+  const res = await fetch(`${BASE_URL}/listings/user/page/${page}/${user_id}`);
   return await res.json();
 }
 
 export async function getListingsBySearchQuery(page, query) {
-  const res = await fetch(`${BASE_URL}/listings/search/${page}/${query}`);
+  const res = await fetch(`${BASE_URL}/listings/search/page/${page}/${query}`);
   return await res.json();
 }
 
@@ -30,17 +30,17 @@ export async function getListingImages(id) {
 }
 
 export async function getAuctions(page) {
-  const res = await fetch(`${BASE_URL}/auctions/${page}`);
+  const res = await fetch(`${BASE_URL}/auctions/page/${page}`);
   return await res.json();
 }
 
 export async function getAuctionsByUser(page, user_id) {
-  const res = await fetch(`${BASE_URL}/auctions/user/${page}/${user_id}`);
+  const res = await fetch(`${BASE_URL}/auctions/user/page/${page}/${user_id}`);
   return await res.json();
 }
 
 export async function getAuctionsBySearchQuery(page, query) {
-  const res = await fetch(`${BASE_URL}/auctions/search/${page}/${query}`);
+  const res = await fetch(`${BASE_URL}/auctions/search/page/${page}/${query}`);
   return await res.json();
 }
 
