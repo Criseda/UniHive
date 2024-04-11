@@ -1,9 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import ChatSelector from "./ChatSelector";
+import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import io from "socket.io-client";
+import ChatSelector from "./ChatSelector";
 import { getMessagesOfRoom } from "../api/items";
 import { getLoggedInUser } from "../api/items";
 import { createMessage } from "../api/items";
+import { uploadMessageImage } from "../api/items";
 
 const socket = io("http://localhost:5000");
 
@@ -15,25 +19,59 @@ const Chat = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setIsLoading] = useState(true);
+  const [selectedFileUrl, setSelectedFileUrl] = useState(null);
+  const fileInputRef = useRef(null);
   const inputRef = useRef(null);
   const chatContainerRef = useRef(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const time = new Date().toISOString();
-    // Add to database and create message object
-    createMessage(currentUser.id, room, message, time)
-      .then((newMessage) => {
-        // Send message and receive it myself
-        sendMessage(newMessage);
-        //clear Everything
-        setMessage("");
-        inputRef.current.value = "";
-      })
-      .catch((error) => {
-        console.error("Error creating message:", error);
-        // Handle error here
-      });
+
+    if (fileInputRef.current.files.length > 0) {
+      const formData = new FormData();
+      formData.append("image", fileInputRef.current.files[0]);
+
+      uploadMessageImage(formData)
+        .then((data) => {
+          if (data.imageUrl) {
+            console.log(currentUser.id, room, message, time, data.imageUrl);
+            return createMessage(
+              currentUser.id,
+              room,
+              message,
+              time,
+              data.imageUrl
+            );
+          } else if (data.message) {
+            alert(data.message);
+            throw new Error(data.message);
+          }
+        })
+        .then((newMessage) => {
+          // Send message and receive it myself
+          sendMessage(newMessage);
+          //clear Everything
+          setMessage("");
+          inputRef.current.value = "";
+          setSelectedFileUrl(null);
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+        });
+    } else {
+      createMessage(currentUser.id, room, message, time)
+        .then((newMessage) => {
+          // Send message and receive it myself
+          sendMessage(newMessage);
+          //clear Everything
+          setMessage("");
+          inputRef.current.value = "";
+        })
+        .catch((error) => {
+          console.error("Error creating message:", error);
+        });
+    }
   };
 
   //sends message to the server
@@ -47,6 +85,16 @@ const Chat = () => {
     setRoom(roomId);
     socket.emit("joinRoom", { room: roomId });
     //Joined room in backend (/server/app.js):w
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file.type.startsWith("image/")) {
+      alert("File is not an image.");
+      return;
+    }
+    setSelectedFileUrl(URL.createObjectURL(file));
+    console.log(file);
   };
 
   useEffect(() => {
@@ -166,7 +214,7 @@ const Chat = () => {
                               <img
                                 className="img-fluid"
                                 src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg"
-                                alt="image title"
+                                alt="title"
                               />
                             </span>
                             <div className="flex-shrink-0">
@@ -206,6 +254,13 @@ const Chat = () => {
                                 }
                               >
                                 <p>{message.message}</p>
+                                {message.image_path && (
+                                  <img
+                                    src={`http://localhost:5000${message.image_path}`}
+                                    alt="message"
+                                    style={{ maxWidth: '120px', maxHeight: '90px', height: 'auto'}}
+                                  />
+                                )}
                                 <span className="time">{messageTime}</span>
                               </li>
                             );
@@ -217,6 +272,16 @@ const Chat = () => {
                     {/* Send Message section */}
                     <div className="send-box">
                       <form action="">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          ref={fileInputRef}
+                          style={{ display: "none" }}
+                          onChange={handleFileChange}
+                        />
+                        <Button onClick={() => fileInputRef.current.click()}>
+                          <FontAwesomeIcon icon={faPaperclip} /> Upload image
+                        </Button>
                         <input
                           ref={inputRef}
                           type="text"
@@ -236,6 +301,34 @@ const Chat = () => {
                           Send
                         </button>
                       </form>
+                      {selectedFileUrl && (
+                        <div
+                          style={{
+                            position: "relative",
+                            display: "inline-block",
+                          }}
+                        >
+                          <Button
+                            variant="danger"
+                            style={{ position: "absolute", top: 0, right: 0 }}
+                            onClick={() => {
+                              setSelectedFileUrl(null);
+                              fileInputRef.current.value = "";
+                            }}
+                          >
+                            X
+                          </Button>
+                          <img
+                            src={selectedFileUrl}
+                            alt="Selected"
+                            style={{
+                              maxWidth: "400px",
+                              maxHeight: "300px",
+                              height: "auto",
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
