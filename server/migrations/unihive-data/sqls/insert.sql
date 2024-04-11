@@ -3,6 +3,7 @@
 -- INSERTING USERS INTO THE DATABASE
 INSERT INTO app_user (id, first_name, last_name, rating, bio, avatar_path, banned)
 VALUES 
+
 ('user01', 'John', 'Doe', NULL, 'I love hiking and reading.', '/images/default_pfp.jpg', FALSE),
 ('user02', 'Alice', 'Smith', NULL, 'Passionate about cooking and traveling.', '/images/default_pfp.jpg', FALSE),
 ('user03', 'Michael', 'Johnson', NULL, 'Tech enthusiast and avid gamer.', '/images/default_pfp.jpg', FALSE),
