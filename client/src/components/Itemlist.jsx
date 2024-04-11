@@ -24,7 +24,6 @@ const Itemlist = ({ user_id }) => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null); // State to hold the current user's information
 
   useEffect(() => {
@@ -74,9 +73,7 @@ const Itemlist = ({ user_id }) => {
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         ); // sort by created_at
         setData(mergedData); // set data
-        setUser(user.id);
         setCurrentUser(user); // Set the current user's information
-        console.log(user);
       })
       .catch((error) => {
         setError(error);
@@ -181,14 +178,14 @@ const Itemlist = ({ user_id }) => {
                   <Button variant="outline-success" className="mt-auto w-100">
                     View Listing
                   </Button>
-                  {(item.seller_id === user || currentUser.super_user) && ( // Check if the current user is the seller or a superuser
+                  {(item.seller_id === currentUser.id || currentUser.super_user) && ( // Check if the current user is the seller or a superuser
                     <Button
                       variant="outline-danger"
                       className="mt-2 w-100"
                       onClick={() => {
                         item.price
-                          ? deleteListing(item.id)
-                          : deleteAuction(item.id);
+                          ? deleteListing(item.id.split("id")[1])
+                          : deleteAuction(item.id.split("id")[1]);
                         window.location.reload();
                       }}
                     >
