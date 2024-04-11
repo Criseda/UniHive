@@ -83,6 +83,7 @@ const ProfileCard = ({ seller_id }) => {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               onClick={createMessage(seller_id)}
+              disabled={isLoading}
               >
               {isLoading ? "Loading..." : "Message seller"}
             </Link>
