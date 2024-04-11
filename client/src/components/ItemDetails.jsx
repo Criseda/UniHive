@@ -188,7 +188,7 @@ const ItemDetails = () => {
                           onClick={currentUser.super_user ? (isAuction ? deleteAuction(itemId) : deleteListing(itemId)) : null}
                           disabled={isLoading}
                         >
-                          {currentUser.super_user || true ? "Delete Listing" : (isAuction ? "Report Auction" : "Report Listing")}
+                          {currentUser.super_user ? "Delete Listing" : (isAuction ? "Report Auction" : "Report Listing")}
                         </Link>
                       </Button>
                     </div>
