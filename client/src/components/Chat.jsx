@@ -37,7 +37,6 @@ const Chat = () => {
       uploadMessageImage(formData)
         .then((data) => {
           if (data.imageUrl) {
-            console.log(currentUser.id, room, message, time, data.imageUrl);
             return createMessage(
               currentUser.id,
               room,
@@ -98,7 +97,6 @@ const Chat = () => {
       return;
     }
     setSelectedFileUrl(URL.createObjectURL(file));
-    console.log(file);
   };
 
   useEffect(() => {
