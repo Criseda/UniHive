@@ -34,6 +34,11 @@ export async function getAuctions(page) {
   return await res.json();
 }
 
+export async function getAuctionsByBidder(page, bidder_id) {
+  const res = await fetch(`${BASE_URL}/auctions/id/${bidder_id}/page/${page}`);
+  return await res.json();
+}
+
 export async function getAuctionsByUser(page, user_id) {
   const res = await fetch(`${BASE_URL}/auctions/user/page/${page}/${user_id}`);
   return await res.json();
