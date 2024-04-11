@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { getAuctionsByBidder, getLoggedInUser } from "../api/items";
-import { deleteSavedListing, deleteSavedAuction } from "../api/items";
 
 const CurrentBidsList = () => {
   const [items, setItems] = useState([]);
@@ -14,11 +13,9 @@ const CurrentBidsList = () => {
     setIsLoading(true);
     getLoggedInUser()
       .then((data) => {
-        console.log(data);
         return getAuctionsByBidder(0, data.id)
       })
       .then((data) => {
-        console.log(data);
         setItems(data);
       })
       .catch((error) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Image, ListGroup } from "react-bootstrap";
 import { getMessageRoomsOfUser, getLoggedInUser, getUser } from "../api/items";
 import { getMessagesOfRoom } from "../api/items";
@@ -7,15 +7,13 @@ const ChatSelector = ({ onItemClick }) => {
   // prop to handle the click event
   const [isLoading, setIsLoading] = useState(true); // State to hold the loading status
   const [rooms, setRooms] = useState([]); // State to hold the rooms
-  const [currentUser, setCurrentUser] = useState(null); // State to hold the logged in user
   const [otherUsers, setOtherUsers] = useState({}); // State to hold the other users
-  const [initialSelectionMade, setInitialSelectionMade] = useState(false); // State to hold the initial selection status
+  const initialSelectionMade = useRef(false); // State to hold the initial selection status
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await getLoggedInUser(); // Fetch the logged in user
-        setCurrentUser(response); // Update the state with the fetched user
+        const user = await getLoggedInUser(); // Fetch the logged in user
 
         // After the user has been fetched, fetch the rooms
         const fetchRooms = async () => {
@@ -24,9 +22,7 @@ const ChatSelector = ({ onItemClick }) => {
             //logic to fetch most recent message
             const roomsData = await Promise.all(
               response.map(async (room) => {
-                const otherUser = await getUser(
-                  room.user1 === currentUser ? room.user1 : room.user2
-                ); // Fetch the other user
+                const otherUser = await getUser(room.user1 === user ? room.user1 : room.user2); // Fetch the other user
                 const messagesResonse = await getMessagesOfRoom(room.id); // Fetch the messages of the room
                 const lastMessage = messagesResonse[messagesResonse.length - 1]; // Get the last message
                 return {
@@ -39,9 +35,8 @@ const ChatSelector = ({ onItemClick }) => {
             setRooms(roomsData); // Update the state with the fetched rooms
             // Fetch the other users
             const otherUsers = await Promise.all(
-              response.map(
-                (room) =>
-                  getUser(room.user1 === currentUser ? room.user1 : room.user2) // Fetch the other user
+              response.map((room) =>
+                getUser(room.user1 === user ? room.user1 : room.user2)// Fetch the other user
               )
             );
             setOtherUsers(otherUsers); // Update the state with the fetched users
@@ -63,7 +58,7 @@ const ChatSelector = ({ onItemClick }) => {
   //Function to handle when first landing on messages
   //Function to handle when first landing on messages
   useEffect(() => {
-    if (!isLoading && rooms.length > 0 && !initialSelectionMade) {
+    if (!isLoading && rooms.length > 0 && !initialSelectionMade.current) {
       const { id, otherUser } = rooms[0];
       onItemClick(
         id,
@@ -71,8 +66,8 @@ const ChatSelector = ({ onItemClick }) => {
         otherUser.last_name,
         otherUser.avatar_path
       );
-
-      setInitialSelectionMade(true);
+      
+      initialSelectionMade.current = true;
     }
   }, [rooms, isLoading, onItemClick]);
 

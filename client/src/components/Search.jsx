@@ -11,7 +11,7 @@ const Search = () => {
   const navigate = useNavigate();
 
   const handleSearchQuery = () => {
-    if (query_input !== undefined && query_input !== null && query_input != "") {
+    if (query_input !== undefined && query_input !== null && query_input !== "") {
       navigate(`/results/${option_input}/${query_input}`);
     }
     //

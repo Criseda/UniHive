@@ -69,7 +69,6 @@ const CreateListing = () => {
         formData.images
       );
     }
-
     window.location.href = "/home";
   };
 

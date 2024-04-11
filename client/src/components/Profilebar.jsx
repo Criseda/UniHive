@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Image, Container, Col, Alert, Modal } from "react-bootstrap";
+import { Button, Image, Container, Col, Alert } from "react-bootstrap";
 import { getUser, getLoggedInUser, deleteUser } from "../api/items";
 import Stars from "./Star";
 import EditProfileModal from "./EditProfileModal";
