@@ -185,7 +185,7 @@ const ItemDetails = () => {
                         <Link
                           to={true ? "/home" : "#"}
                           className="text-decoration-none text-white"
-                          onClick={currentUser.super_user ? (isAuction ? deleteAuction(itemId) : deleteListing(itemId)) : null}
+                          onClick={() => { if (currentUser.super_user) { if(isAuction) deleteAuction(itemId); else deleteListing(itemId);}}}
                           disabled={isLoading}
                         >
                           {currentUser.super_user ? "Delete Listing" : (isAuction ? "Report Auction" : "Report Listing")}
