@@ -17,6 +17,8 @@ const Chat = () => {
   const [loading, setIsLoading] = useState(true);
   const inputRef = useRef(null);
   const chatContainerRef = useRef(null);
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -43,8 +45,10 @@ const Chat = () => {
     setMessage("");
   };
 
-  const handleItemClick = (roomId) => {
+  const handleItemClick = (roomId, firstName, lastName) => {
     setRoom(roomId);
+    setfirstName(firstName);
+    setlastName(lastName);
     socket.emit("joinRoom", { room: roomId });
     //Joined room in backend (/server/app.js):w
   };
@@ -177,8 +181,9 @@ const Chat = () => {
                               />
                             </div>
                             <div className="flex-grow-1 ms-3">
-                              <h3>person name</h3>
-                              <p>Item name</p>
+                              <h3>{firstName} {lastName}</h3>
+                              {/* might remove the item name */}
+                              <p>{/* might remove the item name */}</p>
                             </div>
                           </div>
                         </div>

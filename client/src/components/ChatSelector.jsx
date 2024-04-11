@@ -3,7 +3,7 @@ import { Image, ListGroup } from "react-bootstrap";
 import { getMessageRoomsOfUser, getLoggedInUser, getUser } from "../api/items";
 
 
-const ChatSelector = ({onItemClick}) => {
+const ChatSelector = ({onItemClick}) => { // prop to handle the click event
   const [isLoading, setIsLoading] = useState(true); // State to hold the loading status
   const [rooms, setRooms] = useState([]); // State to hold the rooms
   const [currentUser, setCurrentUser] = useState(null); // State to hold the logged in user
@@ -47,8 +47,8 @@ const ChatSelector = ({onItemClick}) => {
   }
 //Function to render in all messagesWITHOUT USING PROPS (YET TO FINISH)
   
- const handleButtonClick = (roomId) => {
-    onItemClick(roomId);
+ const handleButtonClick = (roomId, firstName, lastName) => {
+    onItemClick(roomId, firstName, lastName);
   };
 
   return (
@@ -58,7 +58,7 @@ const ChatSelector = ({onItemClick}) => {
           action
           className="d-flex align-items-center"
           key={room.id}
-          onClick={() => handleButtonClick(room.id)}
+          onClick={() => handleButtonClick(room.id, otherUsers[index].first_name, otherUsers[index].last_name)}
         >
           {otherUsers[index] && (
             <Image
