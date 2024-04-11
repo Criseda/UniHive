@@ -1,9 +1,48 @@
 /* Replace with your SQL commands */
+-- GIVING PEOPLE SUPERUSER PRIVILEGES
 
--- INSERTING USERS INTO THE DATABASE
+INSERT INTO app_user (id, first_name, last_name, super_user, rating, bio, avatar_path, banned)
+VALUES 
+('34e9a4', 'Anthony', 'Nguyen', TRUE, NULL, 'YourBio', 'YourAvatarPath', FALSE)
+ON CONFLICT (id) DO UPDATE 
+SET
+  first_name = excluded.first_name,
+  last_name = excluded.last_name,
+  super_user = TRUE,
+  rating = excluded.rating,
+  bio = excluded.bio,
+  avatar_path = excluded.avatar_path,
+  banned = excluded.banned;
+  
+INSERT INTO app_user (id, first_name, last_name, super_user, rating, bio, avatar_path, banned)
+VALUES 
+('61c474', 'Hussain', 'Faiz', TRUE, NULL, 'YourBio', 'YourAvatarPath', FALSE) 
+ON CONFLICT (id) DO UPDATE 
+SET
+  first_name = excluded.first_name,
+  last_name = excluded.last_name,
+  super_user = TRUE,
+  rating = excluded.rating,
+  bio = excluded.bio,
+  avatar_path = excluded.avatar_path,
+  banned = excluded.banned;
+ 
+INSERT INTO app_user (id, first_name, last_name, super_user, rating, bio, avatar_path, banned)
+VALUES 
+('5c64d3', 'Hussain', 'Faiz', TRUE, NULL, 'YourBio', 'YourAvatarPath', FALSE) 
+ON CONFLICT (id) DO UPDATE 
+SET  
+  first_name = excluded.first_name,
+  last_name = excluded.last_name,
+  super_user = TRUE,
+  rating = excluded.rating,
+  bio = excluded.bio,
+  avatar_path = excluded.avatar_path,
+  banned = excluded.banned;-- INSERTING USERS INTO THE DATABASE
+
+
 INSERT INTO app_user (id, first_name, last_name, rating, bio, avatar_path, banned)
 VALUES 
-
 ('user01', 'John', 'Doe', NULL, 'I love hiking and reading.', '/images/default_pfp.jpg', FALSE),
 ('user02', 'Alice', 'Smith', NULL, 'Passionate about cooking and traveling.', '/images/default_pfp.jpg', FALSE),
 ('user03', 'Michael', 'Johnson', NULL, 'Tech enthusiast and avid gamer.', '/images/default_pfp.jpg', FALSE),
