@@ -457,7 +457,15 @@ export async function uploadAvatar(formData) {
   return await res.json();
 }
 
+// message image upload route
+export async function uploadMessageImage(formData) {
+  const res = await fetch(`${BASE_URL}/messages/upload`, {
+    method: "POST",
+    body: formData,
+  });
+  return await res.json();
 
+}
 
 // update user bio route
 
