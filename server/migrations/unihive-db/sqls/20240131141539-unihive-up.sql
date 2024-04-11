@@ -61,6 +61,7 @@ CREATE TABLE message (
     sender_id CHAR(6) NOT NULL,
     room_id INT NOT NULL,
     message TEXT NOT NULL,
+    image_path VARCHAR(255) DEFAULT NULL, --url to image (optional)
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES app_user (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (room_id) REFERENCES messageRoom (id) ON DELETE CASCADE ON UPDATE CASCADE
