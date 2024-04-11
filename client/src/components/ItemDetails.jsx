@@ -6,7 +6,7 @@ import SaveItemButton from "./SaveItemButton.jsx";
 import calculateBidIncrement from "./AuctionBidIncrement.js";
 import { Button } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
-import io from "socket.io-client";
+import { createMessage } from "../api/messages"
 
 import {
   getListing,
@@ -14,11 +14,8 @@ import {
   getListingImages,
   getAuctionImages,
   postAuctionBid,
-  createMessageRoom,
   getLoggedInUser,
 } from "../api/items";
-
-const socket = io("http://localhost:5000");
 
 const ItemDetails = () => {
   // get params from the url, assign to itemType and itemId
@@ -124,22 +121,6 @@ const ItemDetails = () => {
     );
   }
 
-  const joinRoom = (id) => {
-    socket.emit("joinRoom", id);
-  };
-
-  //This creates the message room between the user and the seller
-  const createMessage = async () => {
-    const sellerId = item.seller_id;
-    try {
-      const response = await createMessageRoom(sellerId); //This will add the room to the database
-      const roomId = response.id; // Extract the room ID from the response
-      joinRoom(roomId); // Join the room with the given ID
-    } catch (error) {
-      console.error("Failed to create and join room:", error);
-    }
-  };
-
   return (
     <div className="container mt-4">
       <div className="card">
@@ -173,7 +154,7 @@ const ItemDetails = () => {
                         <Link
                           to={isLoading ? "#" : "/messages"}
                           className="text-decoration-none text-primary"
-                          onClick={createMessage}
+                          onClick={() => createMessage(item.seller_id)}
                         >
                           <Button
                             variant="primary"

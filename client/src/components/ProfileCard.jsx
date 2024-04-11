@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Card, Image, Row, Col, Alert } from "react-bootstrap";
 import { getUser, getReviewCount, getLoggedInUser } from "../api/items";
 import Stars from "./Star";
+import { Link } from "react-router-dom";
+import { createMessage } from "../api/messages"
 
 const ProfileCard = ({ seller_id }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -73,17 +75,17 @@ const ProfileCard = ({ seller_id }) => {
             >
               {name} {loggedInUserId === seller_id && "(You)"}
             </a>
-            <a
+            <Link
+              to={isLoading ? "#" : "/messages"}
               className={`small text-decoration-underline m-0 ${
                 isHovered ? "text-muted" : "text-dark"
               }`}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              // if clicked, send user to message page and create a room with them
-              href="#messageurlthing"
-            >
-              Message seller
-            </a>
+              onClick={createMessage(seller_id)}
+              >
+              {isLoading ? "Loading..." : "Message seller"}
+            </Link>
           </Col>
           <Col xs="auto" className="p-0 pt-2">
             <Stars starnumber={rating} size={"sm"} mobileSize={"sm"} />
