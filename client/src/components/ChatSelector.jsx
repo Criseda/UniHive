@@ -55,7 +55,7 @@ const ChatSelector = ({onItemClick}) => { // prop to handle the click event
     };
 
     fetchUser(); // Call the function when the component mounts
-  }, [currentUser]);
+  }, []);
   
 //Function to handle when first landing on messages 
   useEffect(() => {
