@@ -157,6 +157,7 @@ const ItemDetails = () => {
                           to={isLoading ? "#" : "/messages"}
                           className="text-decoration-none text-primary"
                           onClick={() => createMessage(item.seller_id)}
+                          disabled={isLoading}
                         >
                           <Button
                             variant="primary"
@@ -185,8 +186,9 @@ const ItemDetails = () => {
                           to={true ? "/home" : "#"}
                           className="text-decoration-none text-white"
                           onClick={currentUser.super_user ? (isAuction ? deleteAuction(itemId) : deleteListing(itemId)) : null}
+                          disabled={isLoading}
                         >
-                          {currentUser.super_user ? "Delete Listing" : (isAuction ? "Report Auction" : "Report Listing")}
+                          {currentUser.super_user || true ? "Delete Listing" : (isAuction ? "Report Auction" : "Report Listing")}
                         </Link>
                       </Button>
                     </div>
