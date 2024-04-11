@@ -48,7 +48,7 @@ const Itemlist = ({ user_id }) => {
           fetchAuctions = getAuctionsBySearchQuery(page, query);
           break;
         default:
-          throw "Invalid Option.";
+          throw new Error("Invalid Option.");
       }
     } else {
       fetchListings = user_id
@@ -81,7 +81,7 @@ const Itemlist = ({ user_id }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [page, option, query]);
+  }, [page, option, query, user_id]);
 
   const handleCardClick = (key) => {
     navigate(`/item/${key}`);
@@ -109,7 +109,7 @@ const Itemlist = ({ user_id }) => {
         <Row>
           <Col className="mb-4">
             <Button
-              disabled={page == 0}
+              disabled={page === 0}
               variant="outline-success"
               className="w-100"
               onClick={() => {
@@ -122,7 +122,7 @@ const Itemlist = ({ user_id }) => {
           </Col>
           <Col className="mb-4">
             <Button
-              disabled={data.length == 0}
+              disabled={data.length === 0}
               variant="outline-success"
               className="w-100"
               onClick={() => {
@@ -178,7 +178,7 @@ const Itemlist = ({ user_id }) => {
                   <Button variant="outline-success" className="mt-auto w-100">
                     View Listing
                   </Button>
-                  {item.seller_id == user ? (
+                  {item.seller_id === user ? (
                     <Button
                       variant="outline-danger"
                       className="mt-2 w-100"
@@ -201,7 +201,7 @@ const Itemlist = ({ user_id }) => {
       <Row>
         <Col className="mb-4">
           <Button
-            disabled={page == 0}
+            disabled={page === 0}
             variant="outline-success"
             className="w-100"
             onClick={() => {
@@ -214,7 +214,7 @@ const Itemlist = ({ user_id }) => {
         </Col>
         <Col className="mb-4">
           <Button
-            disabled={data.length == 0}
+            disabled={data.length === 0}
             variant="outline-success"
             className="w-100"
             onClick={() => {
