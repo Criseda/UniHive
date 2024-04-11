@@ -56,6 +56,7 @@ const Chat = () => {
           setMessage("");
           inputRef.current.value = "";
           setSelectedFileUrl(null);
+          fileInputRef.current.value = ""; // Clear the file input
         })
         .catch((error) => {
           console.error("Error uploading image:", error);
@@ -227,7 +228,9 @@ const Chat = () => {
                               />
                             </div>
                             <div className="flex-grow-1 ms-3">
-                              <h3>{firstName} {lastName}</h3>
+                              <h3>
+                                {firstName} {lastName}
+                              </h3>
                               {/* might remove the item name */}
                               <p>{/* might remove the item name */}</p>
                             </div>
@@ -261,7 +264,11 @@ const Chat = () => {
                                   <img
                                     src={`http://localhost:5000${message.image_path}`}
                                     alt="message"
-                                    style={{ maxWidth: '120px', maxHeight: '90px', height: 'auto'}}
+                                    style={{
+                                      maxWidth: "120px",
+                                      maxHeight: "90px",
+                                      height: "auto",
+                                    }}
                                   />
                                 )}
                                 <span className="time">{messageTime}</span>
