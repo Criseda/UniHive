@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import "../css/createlisting.css";
 import { getLoggedInUser } from "../api/items";
@@ -13,6 +13,7 @@ const CreateListing = () => {
     price: "£", // Set the pound symbol as default
     date: "",
   });
+  const fileInputRef = useRef(null);
   const [user, setUser] = useState(null);
 
   const handlePriceChange = (e) => {
@@ -40,6 +41,9 @@ const CreateListing = () => {
     );
     if (!allAreImages) {
       alert("One or more of the selected files are not images.");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Clear the file input
+      }
       return;
     }
 
@@ -140,6 +144,7 @@ const CreateListing = () => {
             accept="image/*"
             multiple
             onChange={handleImageChange}
+            ref={fileInputRef}
           />
         </Form.Group>
 
