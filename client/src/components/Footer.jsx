@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom"; // Import Link from React Router
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebook,
@@ -17,13 +18,16 @@ const Footer = () => {
             <h5>UniHive</h5>
             <ul>
               <li>
-                <a href="/about">About Us</a>
+                <Link to="/about">About Us</Link>{" "}
+                {/* Use Link instead of anchor tag */}
               </li>
               <li>
-                <a href="/privacypolicy">Privacy Policy</a>
+                <Link to="/privacypolicy">Privacy Policy</Link>{" "}
+                {/* Use Link instead of anchor tag */}
               </li>
               <li>
-                <a href="/codeofethics">Code of Ethics</a>
+                <Link to="/codeofethics">Code of Ethics</Link>{" "}
+                {/* Use Link instead of anchor tag */}
               </li>
             </ul>
           </Col>
@@ -31,10 +35,12 @@ const Footer = () => {
             <h5>Connect</h5>
             <ul className="list-unstyled">
               <li>
-                <a href="/contact">Contact Us</a>
+                <Link to="/credits">Credits</Link>{" "}
+                {/* Use Link instead of anchor tag */}
               </li>
               <li>
-                <a href="/faq">FAQ</a>
+                <Link to="/faq">FAQ</Link>{" "}
+                {/* Use Link instead of anchor tag */}
               </li>
             </ul>
           </Col>

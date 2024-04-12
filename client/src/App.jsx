@@ -19,6 +19,7 @@ import Ethics from "./routes/CodeOfEthics";
 import CreateListing from "./routes/CreateListing";
 import Results from "./routes/Results";
 import FAQ from "./routes/FAQ";
+import Credits from "./routes/Credits";
 import Footer from "./components/Footer";
 import Nav from "./components/Navbar";
 import NavOut from "./components/NavbarLoggedOut";
@@ -106,6 +107,7 @@ const App = () => {
         <Route path="/codeofethics" element={<Ethics />} />
         <Route path="/privacypolicy" element={<Privacy />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/credits" element={<Credits />} />
         <Route
           path="/currentbids"
           element={<ProtectedRoute element={<CurrentBids />} />}

@@ -5,9 +5,9 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Logo from "../images/logo.png";
 import { logoutRoute } from "../api/authentication";
 import { getLoggedInUser } from "../api/items";
+import { Link } from "react-router-dom";
 
 const MyNavbar = () => {
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
 
@@ -18,9 +18,6 @@ const MyNavbar = () => {
       })
       .catch((error) => {
         setError(error);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   });
 
@@ -32,7 +29,7 @@ const MyNavbar = () => {
     <Navbar bg="dark" variant="dark" expand="lg" className="sticky-top">
       <Container>
         {/* Logo on the left */}
-        <Navbar.Brand href="/about">
+        <Navbar.Brand as={Link} to="/about">
           <img
             src={Logo}
             alt="UniHive Logo"
@@ -48,37 +45,34 @@ const MyNavbar = () => {
         <Navbar.Collapse id="navbarResponsive">
           {/* Left-aligned links */}
           <Nav className="me-auto">
-            <Nav.Link href="/home">
+            <Nav.Link as={Link} to="/home">
               <i className="bi bi-house"></i> Home
             </Nav.Link>
           </Nav>
 
           {/* Right-aligned icons */}
           <Nav className="ms-auto">
-            <Nav.Link href="/sell">
+            <Nav.Link as={Link} to="/sell">
               <i className="bi bi-cash-coin"></i> Sell an Item
             </Nav.Link>
-            <Nav.Link href="/SavedItem">
+            <Nav.Link as={Link} to="/SavedItem">
               <i className="bi bi-heart"></i> Saved Items
             </Nav.Link>
-            <Nav.Link href="/messages">
+            <Nav.Link as={Link} to="/messages">
               <i className="bi bi-envelope"></i> Messages
             </Nav.Link>
 
-            {/* Dropdown for additional menu items if needed */}
+            {/* Dropdown */}
             <NavDropdown title="More" id="navbarDropdown">
-              {loading ? (
-                <NavDropdown.Item href={`#`}>Loading</NavDropdown.Item>
-              ) : (
-                <NavDropdown.Item href={`/profile/${user}`}>
-                  Account
-                </NavDropdown.Item>
-              )}
-              <NavDropdown.Item href="/currentbids">
+              <NavDropdown.Item as={Link} to={`/profile/${user}`}>
+                Account
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/currentbids">
                 Current Bids
               </NavDropdown.Item>
               <NavDropdown.Item
-                href={logoutRoute}
+                as={Link} // Use Link instead of anchor tag
+                to={logoutRoute}
                 onClick={() => {
                   sessionStorage.clear();
                   localStorage.clear();
@@ -86,7 +80,6 @@ const MyNavbar = () => {
               >
                 Logout
               </NavDropdown.Item>
-              {/* Add more dropdown items as needed */}
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
