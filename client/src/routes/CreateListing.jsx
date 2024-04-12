@@ -4,8 +4,6 @@ import "../css/createlisting.css";
 import { getLoggedInUser } from "../api/items";
 import { createListing, createAuction, uploadItemImages } from "../api/items";
 
-
-
 const CreateListing = () => {
   const [formData, setFormData] = useState({
     itemName: "",
@@ -25,7 +23,7 @@ const CreateListing = () => {
       /\B(?=(\d{3})+(?!\d))/g,
       ","
     ); // Add commas to the numeric value
-    setFormData({ ...formData, [name]: "£" + numberWithCommas }); // Add £ symbol back to the formatted value
+    setFormData({ ...formData, [name]: "£" + numberWithCommas, rawPrice: formattedValue }); // Store both the formatted and raw price
   };
 
   const handleChange = (e) => {
@@ -35,10 +33,20 @@ const CreateListing = () => {
 
   const handleImageChange = (e) => {
     const images = Array.from(e.target.files);
+
+    // Check if all files are images
+    const allAreImages = images.every((image) =>
+      image.type.startsWith("image/")
+    );
+    if (!allAreImages) {
+      alert("One or more of the selected files are not images.");
+      return;
+    }
+
     setFormData({ ...formData, images });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const currentDate = new Date(); // gets the current date
     const selectedDate = new Date(formData.date); // gets the selected date
@@ -47,7 +55,17 @@ const CreateListing = () => {
       return;
     }
     // remove the pound symbol and commas from the price before submitting
-    const price = formData.price.replace(/^£|,/g, "");
+    const price = formData.rawPrice;
+
+    // Upload the images before creating the listing or auction
+    const uploadFormData = new FormData();
+    formData.images.forEach((image) => {
+      uploadFormData.append(`items`, image);
+    });
+    const response = await uploadItemImages(uploadFormData);
+    const imageUrls = response.imageUrls; // The URLs of the uploaded images
+    console.log(imageUrls);
+
     //ADD CONDITIONAL TO ADD AUCTION OR LISTING
     if (formData.listingType === "fixedPrice") {
       console.log("created a listing");
@@ -56,7 +74,7 @@ const CreateListing = () => {
         formData.itemName,
         formData.description,
         price,
-        formData.images
+        imageUrls
       );
     }
     if (formData.listingType === "auction") {
@@ -70,12 +88,12 @@ const CreateListing = () => {
         formData.description,
         price,
         date,
-        formData.images
+        imageUrls
       );
     }
 
     console.log(formData);
-    window.location.href = "/home";
+    // window.location.href = "/home";
   };
 
   //get the logged in user
