@@ -24,7 +24,11 @@ const CreateListing = () => {
       /\B(?=(\d{3})+(?!\d))/g,
       ","
     ); // Add commas to the numeric value
-    setFormData({ ...formData, [name]: "£" + numberWithCommas, rawPrice: formattedValue }); // Store both the formatted and raw price
+    setFormData({
+      ...formData,
+      [name]: "£" + numberWithCommas,
+      rawPrice: formattedValue,
+    }); // Store both the formatted and raw price
   };
 
   const handleChange = (e) => {
@@ -68,11 +72,9 @@ const CreateListing = () => {
     });
     const response = await uploadItemImages(uploadFormData);
     const imageUrls = response.imageUrls; // The URLs of the uploaded images
-    console.log(imageUrls);
 
     //ADD CONDITIONAL TO ADD AUCTION OR LISTING
     if (formData.listingType === "fixedPrice") {
-      console.log("created a listing");
       createListing(
         user.id,
         formData.itemName,
@@ -82,7 +84,6 @@ const CreateListing = () => {
       );
     }
     if (formData.listingType === "auction") {
-      console.log("created an auction");
       const dateObject = new Date(formData.date);
       const date = dateObject.toISOString();
 
@@ -96,8 +97,7 @@ const CreateListing = () => {
       );
     }
 
-    console.log(formData);
-    // window.location.href = "/home";
+    window.location.href = "/home";
   };
 
   //get the logged in user
