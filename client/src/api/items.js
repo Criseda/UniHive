@@ -388,7 +388,7 @@ export async function createAuction(
   description,
   opening_bid,
   closing_date,
-  image_path
+  imagePaths
 ) {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -406,10 +406,28 @@ export async function createAuction(
       description: description,
       opening_bid: opening_bid,
       closing_date: closing_date,
-      image_path: image_path,
+      image_path: imagePaths[0],
     }),
   });
-  return await res.json();
+
+  const auction = await res.json();
+
+  // Create an auction image for each additional image
+  for (let i = 1; i < imagePaths.length; i++) {
+    await fetch(`${BASE_URL}/auction_images/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: token,
+        auction_id: auction.id,
+        image_path: imagePaths[i],
+      }),
+    });
+  }
+
+  return auction;
 }
 // createa a listing
 export async function createListing(
@@ -417,7 +435,7 @@ export async function createListing(
   name,
   description,
   price,
-  image_path
+  imagePaths
 ) {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -434,10 +452,28 @@ export async function createListing(
       name: name,
       description: description,
       price: price,
-      image_path: image_path,
+      image_path: imagePaths[0],
     }),
   });
-  return await res.json();
+
+  const listing = await res.json();
+
+  // Create a listing image for each additional image
+  for (let i = 1; i < imagePaths.length; i++) {
+    await fetch(`${BASE_URL}/listing_images/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: token,
+        listing_id: listing.id,
+        image_path: imagePaths[i],
+      }),
+    });
+  }
+
+  return listing;
 }
 
 // get specific user
