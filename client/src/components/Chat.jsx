@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Tab, Container, Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import io from "socket.io-client";
 import ChatSelector from "./ChatSelector";
-import { getMessagesOfRoom } from "../api/items";
-import { getLoggedInUser } from "../api/items";
-import { createMessage } from "../api/items";
-import { uploadMessageImage } from "../api/items";
+import {
+  getMessagesOfRoom,
+  getLoggedInUser,
+  createMessage,
+  uploadMessageImage,
+} from "../api/items";
 
 const socket = io("http://localhost:5000");
 
@@ -22,8 +24,8 @@ const Chat = () => {
   const fileInputRef = useRef(null);
   const inputRef = useRef(null);
   const chatContainerRef = useRef(null);
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [avatarPath, setAvatarPath] = useState("");
 
   const handleSubmit = (event) => {
@@ -85,8 +87,8 @@ const Chat = () => {
 
   const handleItemClick = (roomId, firstName, lastName, avatarPath) => {
     setRoom(roomId);
-    setfirstName(firstName);
-    setlastName(lastName);
+    setFirstName(firstName);
+    setLastName(lastName);
     setAvatarPath(avatarPath); // Add this line to set the avatarPath state
     socket.emit("joinRoom", { room: roomId });
     //Joined room in backend (/server/app.js):w
@@ -104,8 +106,7 @@ const Chat = () => {
   useEffect(() => {
     getLoggedInUser()
       .then((response) => {
-        const user = response;
-        setCurrentUser(user);
+        setCurrentUser(response);
       })
       .catch((error) => {
         setError(error);
@@ -148,28 +149,24 @@ const Chat = () => {
     }
   }, [messages]);
 
-  //Need to implement room concept but use user icons to change room number.
-  //Need to implement the ability to generate a unique room number everytime a user is created.
-
   if (loading) {
     return null; // makes it less jarring when the page loads
   }
 
   if (error) {
     return (
-      <div className="container mt-4">
+      <Container className="mt-4">
         <div className="alert alert-danger">Error: {error.message}</div>
-      </div>
+      </Container>
     );
   }
 
   return (
     <section className="message-area">
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
+      <Container>
+        <Row>
+          <Col>
             <div className="chat-area">
-              {/* chatlist */}
               <div className="chatlist">
                 <div className="modal-dialog-scrollable">
                   <div className="modal-content">
@@ -192,46 +189,26 @@ const Chat = () => {
                       </ul>
                     </div>
                     <div className="modal-body">
-                      {/* chat-list */}
                       <div className="chat-lists">
-                        <div className="tab-content" id="myTabContent">
-                          <div
-                            className="tab-pane fade show active"
-                            id="Open"
-                            role="tabpanel"
-                            aria-labelledby="Open-tab"
-                          >
-                            {/* chat-list */}
+                        <Tab.Content>
+                          <Tab.Pane eventKey="open" active>
                             <div className="chat-list">
-                              {/* stacked chats */}
                               <ChatSelector onItemClick={handleItemClick} />
                             </div>
-                            {/* chat-list */}
-                          </div>
-                        </div>
+                          </Tab.Pane>
+                        </Tab.Content>
                       </div>
-                      {/* chat-list */}
                     </div>
                   </div>
                 </div>
               </div>
-              {/* chatlist */}
-              {/* chatbox */}
-
               <div className="chatbox">
                 <div className="modal-dialog-scrollable">
                   <div className="modal-content">
                     <div className="msg-head">
-                      <div className="row">
-                        <div className="col-8">
+                      <Row>
+                        <Col xs={8}>
                           <div className="d-flex align-items-center">
-                            <span className="chat-icon">
-                              <img
-                                className="img-fluid"
-                                src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg"
-                                alt="title"
-                              />
-                            </span>
                             <div className="flex-shrink-0">
                               <img
                                 className="img-fluid"
@@ -248,14 +225,12 @@ const Chat = () => {
                               <p>{/* might remove the item name */}</p>
                             </div>
                           </div>
-                        </div>
-                      </div>
+                        </Col>
+                      </Row>
                     </div>
-                    {/* converstaion area */}
                     <div className="modal-body" ref={chatContainerRef}>
                       <div className="msg-body">
                         <ul>
-                          {/*renders messages*/}
                           {messages.map((message, index) => {
                             const isSentByCurrentUser =
                               message.sender_id === currentUser.id;
@@ -294,8 +269,6 @@ const Chat = () => {
                         </ul>
                       </div>
                     </div>
-                    {/* converstaion area END*/}
-                    {/* Send Message section */}
                     <div className="send-box">
                       <form onSubmit={handleSubmit}>
                         <input
@@ -360,10 +333,9 @@ const Chat = () => {
                 </div>
               </div>
             </div>
-            {/* chatbox */}
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
     </section>
   );
 };
