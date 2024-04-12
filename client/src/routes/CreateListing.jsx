@@ -106,7 +106,7 @@ const CreateListing = () => {
 
     //ADD CONDITIONAL TO ADD AUCTION OR LISTING
     if (formData.listingType === "fixedPrice") {
-      createListing(
+      await createListing(
         user.id,
         formData.itemName,
         formData.description,
@@ -118,7 +118,7 @@ const CreateListing = () => {
       const dateObject = new Date(formData.date);
       const date = dateObject.toISOString();
 
-      createAuction(
+      await createAuction(
         user.id,
         formData.itemName,
         formData.description,
