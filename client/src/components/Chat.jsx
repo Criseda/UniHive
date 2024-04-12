@@ -117,16 +117,18 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    getMessagesOfRoom(room)
-      .then((response) => {
-        setMessages(response);
-      })
-      .catch((error) => {
-        setError(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (room) {
+      getMessagesOfRoom(room)
+        .then((response) => {
+          setMessages(response);
+        })
+        .catch((error) => {
+          setError(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   }, [room]);
 
   //looks for messages

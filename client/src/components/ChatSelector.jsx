@@ -20,9 +20,12 @@ const ChatSelector = ({ onItemClick }) => {
           try {
             const response = await getMessageRoomsOfUser(); // Fetch the rooms
             //logic to fetch most recent message
+
             const roomsData = await Promise.all(
               response.map(async (room) => {
-                const otherUser = await getUser(room.user1 === user ? room.user1 : room.user2); // Fetch the other user
+                const otherUser = await getUser(
+                  room.user1 === user ? room.user1 : room.user2
+                ); // Fetch the other user
                 const messagesResonse = await getMessagesOfRoom(room.id); // Fetch the messages of the room
                 const lastMessage = messagesResonse[messagesResonse.length - 1]; // Get the last message
                 return {
@@ -35,8 +38,8 @@ const ChatSelector = ({ onItemClick }) => {
             setRooms(roomsData); // Update the state with the fetched rooms
             // Fetch the other users
             const otherUsers = await Promise.all(
-              response.map((room) =>
-                getUser(room.user1 === user ? room.user1 : room.user2)// Fetch the other user
+              response.map(
+                (room) => getUser(room.user1 === user ? room.user1 : room.user2) // Fetch the other user
               )
             );
             setOtherUsers(otherUsers); // Update the state with the fetched users
@@ -66,7 +69,7 @@ const ChatSelector = ({ onItemClick }) => {
         otherUser.last_name,
         otherUser.avatar_path
       );
-      
+
       initialSelectionMade.current = true;
     }
   }, [rooms, isLoading, onItemClick]);
