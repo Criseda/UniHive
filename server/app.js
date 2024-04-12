@@ -48,17 +48,14 @@ const socketIO = require("socket.io")(http, {
 
 //validiating the connection
 socketIO.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
 
 //when detecting send_message event send the message to the room (chat box)
   socket.on("send_message", (data) => {
-    console.log("bro is sending a message: ", data); //debugging like crazy
     //socket.to(data.room).emit("receive_message", data);
     socketIO.in(data.room).emit("receive_message", data);
   });
   //when detecting joinRoom event join the room
   socket.on("joinRoom", ({ room }) => {
-    console.log(`User joined room: ${room}`);
     socket.join(room);
   });
   
