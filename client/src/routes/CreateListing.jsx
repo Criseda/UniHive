@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import "../css/createlisting.css";
 import { getLoggedInUser } from "../api/items";
-import { createListing, createAuction } from "../api/items";
+import { createListing, createAuction, uploadItemImages } from "../api/items";
 
 const CreateListing = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +13,7 @@ const CreateListing = () => {
     price: "£", // Set the pound symbol as default
     date: "",
   });
+  const fileInputRef = useRef(null);
   const [user, setUser] = useState(null);
 
   const handlePriceChange = (e) => {
@@ -23,7 +24,11 @@ const CreateListing = () => {
       /\B(?=(\d{3})+(?!\d))/g,
       ","
     ); // Add commas to the numeric value
-    setFormData({ ...formData, [name]: "£" + numberWithCommas }); // Add £ symbol back to the formatted value
+    setFormData({
+      ...formData,
+      [name]: "£" + numberWithCommas,
+      rawPrice: formattedValue,
+    }); // Store both the formatted and raw price
   };
 
   const handleChange = (e) => {
@@ -33,11 +38,55 @@ const CreateListing = () => {
 
   const handleImageChange = (e) => {
     const images = Array.from(e.target.files);
+
+    // Check if all files are images
+    const allAreImages = images.every((image) =>
+      image.type.startsWith("image/")
+    );
+    if (!allAreImages) {
+      alert("One or more of the selected files are not images.");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; // Clear the file input
+      }
+      return;
+    }
+
     setFormData({ ...formData, images });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    //check if item name is provided
+    if (formData.itemName === "") {
+      alert("Please provide an item name");
+      return;
+    }
+
+    //check if description is provided
+    if (formData.description === "") {
+      alert("Please provide a description");
+      return;
+    }
+
+    //check if images are provided
+    if (formData.images.length === 0) {
+      alert("Please provide at least one image");
+      return;
+    }
+
+    //check if more than 10 images are provided
+    if (formData.images.length > 10) {
+      alert("Please upload no more than 10 images");
+      return;
+    }
+
+    //check if price is provided
+    if (!formData.rawPrice || formData.rawPrice === "0") {
+      alert("Please provide a price.");
+      return;
+    }
+
     const currentDate = new Date(); // gets the current date
     const selectedDate = new Date(formData.date); // gets the selected date
     if (selectedDate < currentDate) {
@@ -45,7 +94,16 @@ const CreateListing = () => {
       return;
     }
     // remove the pound symbol and commas from the price before submitting
-    const price = formData.price.replace(/^£|,/g, "");
+    const price = formData.rawPrice;
+
+    // Upload the images before creating the listing or auction
+    const uploadFormData = new FormData();
+    formData.images.forEach((image) => {
+      uploadFormData.append(`items`, image);
+    });
+    const response = await uploadItemImages(uploadFormData);
+    const imageUrls = response.imageUrls; // The URLs of the uploaded images
+
     //ADD CONDITIONAL TO ADD AUCTION OR LISTING
     if (formData.listingType === "fixedPrice") {
       createListing(
@@ -53,7 +111,7 @@ const CreateListing = () => {
         formData.itemName,
         formData.description,
         price,
-        formData.images
+        imageUrls
       );
     }
     if (formData.listingType === "auction") {
@@ -66,9 +124,10 @@ const CreateListing = () => {
         formData.description,
         price,
         date,
-        formData.images
+        imageUrls
       );
     }
+
     window.location.href = "/home";
   };
 
@@ -116,6 +175,7 @@ const CreateListing = () => {
             accept="image/*"
             multiple
             onChange={handleImageChange}
+            ref={fileInputRef}
           />
         </Form.Group>
 
