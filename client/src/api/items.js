@@ -231,19 +231,24 @@ export async function getAllMessageRooms() {
 export async function getMessagesOfRoom(id) {
   try {
     const res = await fetch(`${BASE_URL}/messages/room/messages/${id}`);
-    const messages =  await res.json();
+    const messages = await res.json();
     //sort messages by id in descending order
-    messages.sort((a, b) => (a.id - b.id));
+    messages.sort((a, b) => a.id - b.id);
     return messages;
   } catch (error) {
     console.error("Error fetching messages:", error);
-    return[];
+    return [];
   }
-
 }
- 
-//send a new message 
-export async function createMessage(sender_id, room_id, message, time, imageUrl) { 
+
+//send a new message
+export async function createMessage(
+  sender_id,
+  room_id,
+  message,
+  time,
+  imageUrl
+) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
@@ -271,7 +276,6 @@ export async function createMessage(sender_id, room_id, message, time, imageUrl)
 
   return await res.json();
 }
-
 
 //JWT Requests
 
@@ -379,11 +383,18 @@ export async function getLoggedInUser() {
     body: JSON.stringify({
       token: token,
     }),
-  }); 
+  });
   return await res.json();
 }
-//create an auction 
-export async function createAuction(seller_id, name, description, opening_bid, closing_date, image_path) {
+//create an auction
+export async function createAuction(
+  seller_id,
+  name,
+  description,
+  opening_bid,
+  closing_date,
+  imagePaths
+) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
@@ -400,13 +411,37 @@ export async function createAuction(seller_id, name, description, opening_bid, c
       description: description,
       opening_bid: opening_bid,
       closing_date: closing_date,
-      image_path: image_path,
+      image_path: imagePaths[0],
     }),
   });
-  return await res.json();
+
+  const auction = await res.json();
+
+  // Create an auction image for each additional image
+  for (let i = 1; i < imagePaths.length; i++) {
+    await fetch(`${BASE_URL}/auction_images/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: token,
+        auction_id: auction.id,
+        image_path: imagePaths[i],
+      }),
+    });
+  }
+
+  return auction;
 }
-// createa a listing 
-export async function createListing(seller_id, name, description, price, image_path) {
+// createa a listing
+export async function createListing(
+  seller_id,
+  name,
+  description,
+  price,
+  imagePaths
+) {
   const token = localStorage.getItem("token");
   if (!token) {
     return null;
@@ -422,12 +457,29 @@ export async function createListing(seller_id, name, description, price, image_p
       name: name,
       description: description,
       price: price,
-      image_path: image_path,
+      image_path: imagePaths[0],
     }),
   });
-  return await res.json();
-}
 
+  const listing = await res.json();
+
+  // Create a listing image for each additional image
+  for (let i = 1; i < imagePaths.length; i++) {
+    await fetch(`${BASE_URL}/listing_images/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: token,
+        listing_id: listing.id,
+        image_path: imagePaths[i],
+      }),
+    });
+  }
+
+  return listing;
+}
 
 // get specific user
 export async function getUser(id) {
@@ -466,7 +518,20 @@ export async function uploadMessageImage(formData) {
     body: formData,
   });
   return await res.json();
+}
 
+//item image upload route
+export async function uploadItemImages(formData) {
+  const res = await fetch(`${BASE_URL}/image_upload/itemImages`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error(`Server responded with status ${res.status}`);
+  }
+
+  return await res.json();
 }
 
 // update user bio route
@@ -482,7 +547,7 @@ export async function updateUserBio(user_id, newBio) {
   return await res.json();
 }
 
-// delete user 
+// delete user
 export async function deleteUser(id) {
   const token = localStorage.getItem("token");
   if (!token) {

@@ -48,7 +48,9 @@ const ItemInfo = ({ item, isAuction, itemId }) => {
           )}
         </small>
       </div>
-      <p className="card-text">{item.description}</p>
+      <pre className="card-text" style={{ fontFamily: "inherit", margin: 0 }}>
+        {item.description}
+      </pre>
     </>
   );
 };

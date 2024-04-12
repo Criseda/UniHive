@@ -112,8 +112,18 @@ SESSION_SECRET=super_secret_SESSION_key
 - Added a few npm packages to the server like multer and file-type to handle image uploads and prevent malicious files from being uploaded.
 - the profile page is complete.
 
+## Cristian Preda @ 12th Apr 2024:
+
+### create-item-image-fix commit:
+- Fixed the issue where the image was not being uploaded to the server when creating a new item.
+- Added a new route to the server to handle the image upload.
+- Added a new route to the client to handle the image upload (in `items.js`).
+- Changed `createAuction` and `createListing` routes to handle multiple images.
+- Updated `CreateListing.jsx` component to handle multiple images.
+- Added a few checks to prevent the user from uploading more than 10 images, but they have to upload one
+- Other checks making sure they provide the title, description, price and date for the item.
+
 
 ## TODO
 
-- Also add the auction to the saved item list, if the user has bidded on it.
 - implement a little notification thing? to signal when the auction ended, if you have won it or not. (would probably need a new page altogether, or maybe another modal, a notification box or something like that.)
