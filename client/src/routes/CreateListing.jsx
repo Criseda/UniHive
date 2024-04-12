@@ -56,6 +56,37 @@ const CreateListing = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    //check if item name is provided
+    if (formData.itemName === "") {
+      alert("Please provide an item name");
+      return;
+    }
+
+    //check if description is provided
+    if (formData.description === "") {
+      alert("Please provide a description");
+      return;
+    }
+
+    //check if images are provided
+    if (formData.images.length === 0) {
+      alert("Please provide at least one image");
+      return;
+    }
+
+    //check if more than 10 images are provided
+    if (formData.images.length > 10) {
+      alert("Please upload no more than 10 images");
+      return;
+    }
+
+    //check if price is provided
+    if (!formData.rawPrice || formData.rawPrice === "0") {
+      alert("Please provide a price.");
+      return;
+    }
+
     const currentDate = new Date(); // gets the current date
     const selectedDate = new Date(formData.date); // gets the selected date
     if (selectedDate < currentDate) {
