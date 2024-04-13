@@ -11,7 +11,7 @@ import {
   uploadMessageImage,
 } from "../api/items";
 
-const socket = io("http://localhost:5000");
+const socket = io(`http://${process.env.REACT_APP_CLIENT_HOST || "localhost"}:5000`);
 
 const Chat = () => {
   const [message, setMessage] = useState("");
@@ -250,7 +250,7 @@ const Chat = () => {
                                 {message.image_path && (
                                   <>
                                     <img
-                                      src={`http://localhost:5000${message.image_path}`}
+                                      src={`http://${process.env.REACT_APP_CLIENT_HOST || "localhost"}:5000${message.image_path}`}
                                       alt="message"
                                       style={{
                                         maxWidth: "240px",

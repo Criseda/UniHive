@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 import { createMessageRoom } from "./items"
 
-const socket = io("http://localhost:5000");
+const socket = io(`http://${process.env.REACT_APP_CLIENT_HOST || "localhost"}:5000`);
 
 export const joinRoom = (id) => {
     socket.emit("joinRoom", id);
