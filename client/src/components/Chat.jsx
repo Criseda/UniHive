@@ -166,172 +166,166 @@ const Chat = () => {
   return (
     <section className="message-area">
       <Container>
-        <Row>
-          <Col>
-            <div className="chat-area">
-              <div className="chatlist">
-                <div className="modal-dialog-scrollable">
-                  <div className="modal-content">
-                    <div className="chat-header">
-                      <ul className="nav nav-tabs" id="myTab" role="tablist">
-                        <li className="nav-item" role="presentation">
-                          <button
-                            className="nav-link active"
-                            id="Open-tab"
-                            data-bs-toggle="tab"
-                            data-bs-target="#Open"
-                            type="button"
-                            role="tab"
-                            aria-controls="Open"
-                            aria-selected="true"
-                          >
-                            Chats
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="modal-body">
-                      <div className="chat-lists">
-                        <Tab.Content>
-                          <Tab.Pane eventKey="open" active>
-                            <div className="chat-list">
-                              <ChatSelector onItemClick={handleItemClick} />
-                            </div>
-                          </Tab.Pane>
-                        </Tab.Content>
-                      </div>
-                    </div>
+        <Row className="chat-area">
+          <Col className="chatlist" xs={4}>
+            <div className="modal-dialog-scrollable">
+              <div className="modal-content">
+                <div className="chat-header">
+                  <ul className="nav nav-tabs" id="myTab" role="tablist">
+                    <li className="nav-item" role="presentation">
+                      <button
+                        className="nav-link active"
+                        id="Open-tab"
+                        data-bs-toggle="tab"
+                        data-bs-target="#Open"
+                        type="button"
+                        role="tab"
+                        aria-controls="Open"
+                        aria-selected="true"
+                      >
+                        Chats
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+                <div className="modal-body">
+                  <div className="chat-lists">
+                    <Tab.Content>
+                      <Tab.Pane eventKey="open" active>
+                        <div className="chat-list">
+                          <ChatSelector onItemClick={handleItemClick} />
+                        </div>
+                      </Tab.Pane>
+                    </Tab.Content>
                   </div>
                 </div>
               </div>
-              <div className="chatbox">
-                <div className="modal-dialog-scrollable">
-                  <div className="modal-content">
-                    <div className="msg-head">
-                      <Row>
-                        <Col xs={8}>
-                          <div className="d-flex align-items-center">
-                            <div className="flex-shrink-0">
-                              <img
-                                className="img-fluid"
-                                src={avatarPath}
-                                alt="user img"
-                                style={{ width: "4rem", height: "4rem" }}
-                              />
-                            </div>
-                            <div className="flex-grow-1 ms-3">
-                              <h3>
-                                {firstName} {lastName}
-                              </h3>
-                              {/* might remove the item name */}
-                              <p>{/* might remove the item name */}</p>
-                            </div>
-                          </div>
-                        </Col>
-                      </Row>
-                    </div>
-                    <div className="modal-body" ref={chatContainerRef}>
-                      <div className="msg-body">
-                        <ul>
-                          {messages.map((message, index) => {
-                            const isSentByCurrentUser =
-                              message.sender_id === currentUser.id;
-                            const messageTime = new Date(
-                              message.created_at
-                            ).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            });
-                            return (
-                              <li
-                                key={index}
-                                className={
-                                  isSentByCurrentUser ? "reply" : "sender"
-                                }
-                              >
-                                {message.image_path && (
-                                  <>
-                                    <img
-                                      src={`http://localhost:5000${message.image_path}`}
-                                      alt="message"
-                                      style={{
-                                        maxWidth: "240px",
-                                        maxHeight: "180px",
-                                        height: "auto",
-                                      }}
-                                    />
-                                    <br />
-                                  </>
-                                )}
-                                <p>{message.message}</p>
-                                <span className="time">{messageTime}</span>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="send-box">
-                      <form onSubmit={handleSubmit}>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          ref={fileInputRef}
-                          style={{ display: "none" }}
-                          onChange={handleFileChange}
-                        />
-                        <Button onClick={() => fileInputRef.current.click()}>
-                          <FontAwesomeIcon icon={faPaperclip} /> Upload image
-                        </Button>
-                        <input
-                          ref={inputRef}
-                          type="text"
-                          className="form-control"
-                          aria-label="message…"
-                          placeholder="Write message…"
-                          onChange={(event) => {
-                            setMessage(event.target.value);
-                          }}
-                        />
-                        <button
-                          type="button"
-                          onClick={handleSubmit}
-                          disabled={!message.trim()}
-                        >
-                          <i className="fa fa-paper-plane" aria-hidden="true" />{" "}
-                          Send
-                        </button>
-                      </form>
-                      {selectedFileUrl && (
-                        <div
-                          style={{
-                            position: "relative",
-                            display: "inline-block",
-                          }}
-                        >
-                          <Button
-                            variant="danger"
-                            style={{ position: "absolute", top: 0, right: 0 }}
-                            onClick={() => {
-                              setSelectedFileUrl(null);
-                              fileInputRef.current.value = "";
-                            }}
-                          >
-                            X
-                          </Button>
+            </div>
+          </Col>
+          <Col className="chatbox" xs={8}>
+            <div className="modal-dialog-scrollable">
+              <div className="modal-content">
+                <div className="msg-head">
+                  <Row>
+                    <Col>
+                      <div className="d-flex align-items-center">
+                        <div className="flex-shrink-0">
                           <img
-                            src={selectedFileUrl}
-                            alt="Selected"
-                            style={{
-                              maxWidth: "400px",
-                              maxHeight: "300px",
-                              height: "auto",
-                            }}
+                            className="img-fluid"
+                            src={avatarPath}
+                            alt="user img"
+                            style={{ width: "4rem", height: "4rem" }}
                           />
                         </div>
-                      )}
-                    </div>
+                        <div className="flex-grow-1 ms-3">
+                          <h3>
+                            {firstName} {lastName}
+                          </h3>
+                          {/* might remove the item name */}
+                          <p>{/* might remove the item name */}</p>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+                <div className="modal-body" ref={chatContainerRef}>
+                  <div className="msg-body">
+                    <ul>
+                      {messages.map((message, index) => {
+                        const isSentByCurrentUser =
+                          message.sender_id === currentUser.id;
+                        const messageTime = new Date(
+                          message.created_at
+                        ).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        });
+                        return (
+                          <li
+                            key={index}
+                            className={isSentByCurrentUser ? "reply" : "sender"}
+                          >
+                            {message.image_path && (
+                              <>
+                                <img
+                                  src={`http://localhost:5000${message.image_path}`}
+                                  alt="message"
+                                  style={{
+                                    maxWidth: "240px",
+                                    maxHeight: "180px",
+                                    height: "auto",
+                                  }}
+                                />
+                                <br />
+                              </>
+                            )}
+                            <p>{message.message}</p>
+                            <span className="time">{messageTime}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
+                </div>
+                <div className="send-box">
+                  <form onSubmit={handleSubmit}>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
+                    <Button onClick={() => fileInputRef.current.click()}>
+                      <FontAwesomeIcon icon={faPaperclip} /> Upload image
+                    </Button>
+                    <input
+                      ref={inputRef}
+                      type="text"
+                      className="form-control"
+                      aria-label="message…"
+                      placeholder="Write message…"
+                      onChange={(event) => {
+                        setMessage(event.target.value);
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={handleSubmit}
+                      disabled={!message.trim()}
+                    >
+                      <i className="fa fa-paper-plane" aria-hidden="true" />{" "}
+                      Send
+                    </button>
+                  </form>
+                  {selectedFileUrl && (
+                    <div
+                      style={{
+                        position: "relative",
+                        display: "inline-block",
+                      }}
+                    >
+                      <Button
+                        variant="danger"
+                        style={{ position: "absolute", top: 0, right: 0 }}
+                        onClick={() => {
+                          setSelectedFileUrl(null);
+                          fileInputRef.current.value = "";
+                        }}
+                      >
+                        X
+                      </Button>
+                      <img
+                        src={selectedFileUrl}
+                        alt="Selected"
+                        style={{
+                          maxWidth: "400px",
+                          maxHeight: "300px",
+                          height: "auto",
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
