@@ -106,19 +106,6 @@ npm run drop-db
 Now that the database is set up and created on the local machine, let's set up the environment variables.
 Check `.env.example` file in both client and server. Copy what is in `.env.example`, then in the same directory create a `.env` file. Paste the example variables into the `.env`. You can leave the SESSION and the JWT variables the example variables while testing. But in production build we will need to provide the app cryptographically random keys for those variables.
 
-## Historic changes
-
-v0.1.0 - Initial commit
-
-- npm init @ /server (to create package.json file)
-- npm i express pg cors (to install express, pg and cors)
-- added gitignore file
-
-### to install react
-
-- npx create-react-app client (to create react app)
-- cleaned up react app of unnecessary files
-
 ## Integrate with your tools
 
 - [ ] [Set up project integrations](https://gitlab.cs.man.ac.uk/a38062an/first_group_project/-/settings/integrations)
@@ -153,21 +140,8 @@ Our first year team project for the University of Manchester.
 
 ## Support
 
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Authors and acknowledgment
-
-Insert your name here:
--Cristian Preda
-
-## License
-
-ISC
+Contact @criseda or leave an issue on the repo.
 
 ## Project status
 
-Ongoing
+Completed (Minor Updates Ongoing)
