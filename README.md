@@ -106,30 +106,6 @@ npm run drop-db
 Now that the database is set up and created on the local machine, let's set up the environment variables.
 Check `.env.example` file in both client and server. Copy what is in `.env.example`, then in the same directory create a `.env` file. Paste the example variables into the `.env`. You can leave the SESSION and the JWT variables the example variables while testing. But in production build we will need to provide the app cryptographically random keys for those variables.
 
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.cs.man.ac.uk/a38062an/first_group_project/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
----
-
 ## Name
 
 First Year Team Project
@@ -140,8 +116,8 @@ Our first year team project for the University of Manchester.
 
 ## Support
 
-Contact @criseda or leave an issue on the repo.
+Contact @criseda
 
 ## Project status
 
-Completed (Minor Updates Ongoing)
+Completed
